@@ -24,7 +24,7 @@
         {
             "type": "Button",
             "label": "sign/symptom",
-            "value": "Blurred Vision"
+            "value": "Blurred vision"
         },
         {
             "type": "Button",

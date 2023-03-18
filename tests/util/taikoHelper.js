@@ -100,17 +100,17 @@ async function validateFormFromFile(configurations) {
     for (var configuration of configurations) {
         var label = configuration.label
         if (configuration.short_name !== undefined)
-            label = configuration.short_name
+            label = configuration.short_name.trim();
         switch (configuration.type) {
             case 'Group':
                 await validateFormFromFile(configuration.value)
                 break;
             case 'Date':
                 var dateFormatted = date.addDaysAndReturnDateInShortFormat(configuration.value)
-                assert.ok(await text(dateFormatted, toRightOf(label)).exists(), dateFormatted + " To Right of " + label + " is not exist.")
+                assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${dateFormatted}"]`).exists(), dateFormatted + " To Right of " + label + " is not exist.")
                 break;
             default:
-                assert.ok(await text(configuration.value, toRightOf(label)).exists(), configuration.value + " To Right of " + label + " is not exist.")
+                assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${configuration.value}"]`).exists(), configuration.value + " To Right of " + label + " is not exist.")
         }
     }
 }

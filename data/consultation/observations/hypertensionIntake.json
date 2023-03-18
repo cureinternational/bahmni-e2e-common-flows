@@ -44,7 +44,7 @@
                 },
                 {
                     "type": "TextBox",
-                    "label": "Duration of smoking (in years) ",
+                    "label": "Duration of smoking (in years)",
                     "value": "5"
                 },
                 {
