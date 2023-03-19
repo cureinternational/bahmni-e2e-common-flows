@@ -86,7 +86,7 @@ step("Enter appointment time <appointmentTime> into Start time", async function 
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
     await click($(".fc-widget-content"), toRightOf(`${appointmentTime}`));
-    await waitFor(async () => !(await $("overlay").exists()))
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     gauge.dataStore.scenarioStore.put("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
 });
 
