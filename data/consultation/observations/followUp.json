@@ -1,0 +1,15 @@
+{
+    "ObservationFormName": "Follow Up",
+    "ObservationFormDetails": [
+        {
+            "type": "Date",
+            "label": "Return visit date",
+            "value": 4
+        },
+        {
+            "type": "TextArea",
+            "label": "Reason for visit",
+            "value": "Follow up appointment"
+        }
+    ]
+}

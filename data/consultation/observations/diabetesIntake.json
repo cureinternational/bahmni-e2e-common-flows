@@ -2,6 +2,12 @@
     "ObservationFormName": "Diabetes Intake",
     "ObservationFormDetails": [
         {
+            "type": "Button",
+            "label": "Diabetes type",
+            "value": "Type 2 diabetes",
+            "value_view": "Diabetes mellitus, type 2 "
+        },
+        {
             "type": "Date",
             "label": "Date of last patient visit",
             "value": -3
