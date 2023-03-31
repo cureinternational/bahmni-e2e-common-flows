@@ -92,7 +92,7 @@ async function downloadAndReturnBase64Image() {
 
 
 async function randomZipCode() {
-    let jsonfile = await csv().fromFile(path.resolve(__dirname, "../../data/registration/addresshierarchy.csv"));
+    let jsonfile = await csv().fromFile(path.resolve(__dirname, "../../data/", process.env.addresshierarchyPath));
     return jsonfile[faker.datatype.number({ min: 1, max: jsonfile.length })]["ZIP"]
 }
 module.exports = {
