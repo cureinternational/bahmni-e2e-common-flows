@@ -58,29 +58,34 @@ beforeScenario(async (context) => {
         await openBrowser(browserOptions)
     }
     await setConfig({ ignoreSSLErrors: true });
-    let scenarioName = context.currentScenario.name;
-    let videoDir = process.env.video_file_path + '/' + scenarioName.replace(/ /g, "_")
-    gauge.dataStore.scenarioStore.put("videoDir", videoDir)
-    await video.startRecording(videoDir + '/video.mp4', 5);
+    // video generated is not helping.. if more than one tests are ran then the most of the time the failed output video is having some random images.
+    // if (process.env.record_video) {
+    //     let scenarioName = context.currentScenario.name;
+    //     let videoDir = process.env.video_file_path + '/' + scenarioName.replace(/ /g, "_")
+    //     gauge.dataStore.scenarioStore.put("videoDir", videoDir)
+    //     await video.startRecording(videoDir + '/video.mp4', 5);
+    // }
 });
 
 afterScenario(async (context) => {
-    let videoDir = gauge.dataStore.scenarioStore.get("videoDir")
-    try {
-        if (!context.currentScenario.isFailed) {
-            fileExtension.removeDir(videoDir);
-            console.log("Video deleted for scenario - " + context.currentScenario.name)
-        } else {
-            await video.stopRecording();
-            if (fileExtension.exists(videoDir)) {
-                console.log("Video successfully saved - " + videoDir + '/video.mp4')
-            } else {
-                console.log("Video not successfully saved for scenario - " + context.currentScenario.name)
-            }
-        }
-    } catch (e) {
-        console.log("Error Stopping Video - " + e.message)
-    }
+    // if (process.env.record_video) {
+    //     let videoDir = gauge.dataStore.scenarioStore.get("videoDir")
+    //     try {
+    //         if (!context.currentScenario.isFailed) {
+    //             fileExtension.removeDir(videoDir);
+    //             console.log("Video deleted for scenario - " + context.currentScenario.name)
+    //         } else {
+    //             await video.stopRecording();
+    //             if (fileExtension.exists(videoDir)) {
+    //                 console.log("Video successfully saved - " + videoDir + '/video.mp4')
+    //             } else {
+    //                 console.log("Video not successfully saved for scenario - " + context.currentScenario.name)
+    //             }
+    //         }
+    //     } catch (e) {
+    //         console.log("Error Stopping Video - " + e.message)
+    //     }
+    // }
     try {
         await closeBrowser();
     }
