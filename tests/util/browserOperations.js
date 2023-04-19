@@ -18,12 +18,12 @@ const headless = process.env.headless_chrome.toLowerCase() === 'true';
 
 beforeSuite(async () => {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    try {
-        fileExtension.removeDir(process.env.video_file_path);
-    } catch (e) {
-        console.log("Error Deleting directory - " + process.env.video_file_path + ". Error message - " + e.message)
-    }
-    await manageUsers.setRoles()
+    // try {
+    //     fileExtension.removeDir(process.env.video_file_path);
+    // } catch (e) {
+    //     console.log("Error Deleting directory - " + process.env.video_file_path + ". Error message - " + e.message)
+    // }
+    // await manageUsers.setRoles()
 });
 
 afterSuite(async () => {
@@ -65,7 +65,7 @@ beforeScenario(async (context) => {
     //     gauge.dataStore.scenarioStore.put("videoDir", videoDir)
     //     await video.startRecording(videoDir + '/video.mp4', 5);
     // }
-});
+}, { tags: ['ui'] });
 
 afterScenario(async (context) => {
     // if (process.env.record_video) {
@@ -92,4 +92,4 @@ afterScenario(async (context) => {
     catch (e) {
         console.log("Error closing browser - " + e.message)
     }
-});
+}, { tags: ['ui'] });
