@@ -46,7 +46,7 @@ step("Enter patient random first name", async function () {
     var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
     var patientGender = users.getRandomPatientGender();
     if (!firstName) {
-        firstName = faker.name.firstName(patientGender).replace(" ","");
+        firstName = faker.name.firstName(patientGender).replace(" ", "");
         gauge.dataStore.scenarioStore.put("patientFirstName", firstName)
     }
     gauge.message(`firstName ${firstName}`)
@@ -57,7 +57,7 @@ step("Enter patient random middle name", async function () {
     var middleName = gauge.dataStore.scenarioStore.get("patientMiddleName")
     var patientGender = users.getRandomPatientGender()
     if (!middleName) {
-        middleName = faker.name.middleName(patientGender).replace(" ","");
+        middleName = faker.name.middleName(patientGender).replace(" ", "");
         gauge.dataStore.scenarioStore.put("patientMiddleName", middleName)
     }
     gauge.message(`middleName ${middleName}`)
@@ -70,7 +70,7 @@ step("Enter patient random last name", async function () {
     var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
     var patientGender = users.getRandomPatientGender()
     if (!lastName) {
-        lastName = faker.name.lastName(patientGender).replace(" ","");
+        lastName = faker.name.lastName(patientGender).replace(" ", "");
         gauge.dataStore.scenarioStore.put("patientLastName", lastName)
     }
     gauge.message(`lastName ${lastName}`)
@@ -395,22 +395,29 @@ step("Upload patient image", async function () {
 });
 
 step("Enter random pinCode", async function () {
-    var pinCode = await users.randomZipCode();
+    var pinCode = gauge.dataStore.scenarioStore.get("pincode")
+    if (!pinCode) {
+        await users.randomZipCodeStateAndDistrict();
+        pinCode = gauge.dataStore.scenarioStore.get("pincode")
+    }
     await write(pinCode, into(textBox(toRightOf("Pin Code"))));
     await click(link(pinCode));
-    gauge.message(`pinCode ${pinCode}`)
 });
 
 step("Enter random Locality/Sector", async function () {
-    var localitySector = faker.address.street()
+    var locality = gauge.dataStore.scenarioStore.get("locality")
+    localitySector = !locality ? faker.address.secondaryAddress() : locality;
+    gauge.dataStore.scenarioStore.put("localitySector",localitySector)
     await write(localitySector, into(textBox(toRightOf("Locality/Sector"))));
     gauge.message(`localitySector ${localitySector}`)
 });
 
 step("Enter random House number/Flat number", async function () {
-    var houseNumber = faker.address.buildingNumber()
-    await write(houseNumber, into(textBox(toRightOf("House number/Flat number"))));
-    gauge.message(`houseNumber ${houseNumber}`)
+    var buildingNumber = gauge.dataStore.scenarioStore.get("buildingNumber")
+    buildingNumber = !buildingNumber ? faker.address.buildingNumber() : buildingNumber;
+    gauge.dataStore.scenarioStore.put("buildingNumber",buildingNumber)
+    await write(buildingNumber, into(textBox(toRightOf("House number/Flat number"))));
+    gauge.message(`buildingNumber ${buildingNumber}`)
 });
 
 step("Enter random email address", async function () {

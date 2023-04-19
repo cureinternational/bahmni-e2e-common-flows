@@ -91,9 +91,15 @@ async function downloadAndReturnBase64Image() {
 }
 
 
-async function randomZipCode() {
+async function randomZipCodeStateAndDistrict() {
     let jsonfile = await csv().fromFile(path.resolve(__dirname, "../../data/", process.env.addresshierarchyPath));
-    return jsonfile[faker.datatype.number({ min: 1, max: jsonfile.length })]["ZIP"]
+    var randomRow = faker.datatype.number({ min: 1, max: jsonfile.length });
+    var pincode = jsonfile[randomRow]["ZIP"]
+    gauge.dataStore.scenarioStore.put("pincode", pincode)
+    var state = jsonfile[randomRow]["STATE"]
+    gauge.dataStore.scenarioStore.put("state", state)
+    var district = jsonfile[randomRow]["DISTRICT"]
+    gauge.dataStore.scenarioStore.put("district", district)
 }
 module.exports = {
     getRegID: getRegID,
@@ -104,7 +110,7 @@ module.exports = {
     getRandomPatientGender: getRandomPatientGender,
     randomNumber: randomNumber,
     downloadAndReturnImage: downloadAndReturnImage,
-    randomZipCode: randomZipCode,
+    randomZipCodeStateAndDistrict: randomZipCodeStateAndDistrict,
     downloadAndReturnBase64Image: downloadAndReturnBase64Image
 
 }
