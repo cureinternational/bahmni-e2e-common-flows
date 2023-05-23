@@ -23,7 +23,7 @@ beforeSuite(async () => {
     // } catch (e) {
     //     console.log("Error Deleting directory - " + process.env.video_file_path + ". Error message - " + e.message)
     // }
-    // await manageUsers.setRoles()
+   // await manageUsers.setRoles()
 });
 
 afterSuite(async () => {

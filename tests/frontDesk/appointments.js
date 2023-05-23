@@ -23,7 +23,8 @@ const {
     below,
     press,
     scrollTo,
-    evaluate
+    evaluate,
+    clear
 } = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
@@ -49,30 +50,58 @@ step("Select patient", async function () {
     var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
     var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
-    await write(patientIdentifierValue, into($("//*[@data-testid='patient-search']//INPUT")))
-    await waitFor(async () => (await $(`//DIV[text()='${patientName}']`).exists()));
+    await write(patientIdentifierValue, into($("//input[@role='searchbox']")))
+    await waitFor(async () => (await $(`//a[text()='${patientName}']`).exists()));
     await waitFor(200);
-    await evaluate($(`//DIV[text()='${patientName}']`), (el) => el.click());
+    await evaluate($(`//a[text()='${patientName}']`), (el) => el.click());
 });
 
 step("Select service <service>", async function (service) {
     await dropDown(toRightOf("Service")).select(service);
 });
 
-step("Search and select service", async function () {
-    await write(process.env.service, into($("//*[@data-testid='service-search']//INPUT")))
-    await waitFor(async () => (await $("//DIV[text()='" + process.env.service + "' and contains(@id,'option')]").exists()));
+step("Search and select category", async function () {
+    await write(process.env.category, into($("//div[@data-testid='appointment-category-search']//input")))
+    await waitFor(async () => (await $("//div[text()='" + process.env.category + "']").exists()));
     await waitFor(200);
-    await evaluate($("//DIV[text()='" + process.env.service + "' and contains(@id,'option')]"), (el) => el.click());
+    await evaluate($("//div[text()='" + process.env.category + "']"), (el) => el.click());
 });
 
+step("Search and select speciality", async function () {
+    await write(process.env.speciality, into($("//div[@data-testid='speciality-search']//input")))
+    await waitFor(async () => (await $("//div[text()='" + process.env.speciality + "']").exists()));
+    await waitFor(200);
+    await evaluate($("//div[text()='" + process.env.speciality + "']"), (el) => el.click());
+});
+
+
+step("Search and select service", async function () {
+    await write(process.env.service, into($("//div[@data-testid='service-search']//input")))
+    await waitFor(async () => (await $("//div[text()='" + process.env.service + "']").exists()));
+    await waitFor(200);
+    await evaluate($("//div[text()='" + process.env.service + "']"), (el) => el.click());
+});
+step("Search and select provider", async function () {
+    await write(process.env.provider, into($("//div[@data-testid='provider-search']//input")))
+    await waitFor(async () => (await $("//div[text()='" + process.env.provider + "']").exists()));
+    await waitFor(200);
+    await evaluate($("//div[text()='" + process.env.provider + "']"), (el) => el.click());
+});
+step("Search and select location", async function () {
+    await write(process.env.location, into($("//div[@data-testid='location-search']//input")))
+    await waitFor(async () => (await $("//div[text()='" + process.env.location + "']").exists()));
+    await waitFor(200);
+    await evaluate($("//div[text()='" + process.env.location + "']"), (el) => el.click());
+});
 step("Search and select appointment location", async function () {
     await click("Location");
     await click(process.env.appointmentLocation);
 });
 
-step("Select appointment date", async function () {
-    await timeField({ type: "date" }, toRightOf("Date")).select(date.tomorrow());
+step("Select appointment date <date>", async function (date) {
+    //await timeField({ type: "date" }, below("Appointment date")).select(date.tomorrow());
+    await clear(textBox(below("Appointment date")))
+    await write(date,into(textBox(below("Appointment date"))))
 });
 
 step("Select location <location>", async function (location) {
@@ -80,9 +109,17 @@ step("Select location <location>", async function (location) {
 });
 
 step("Enter appointment time <appointmentTime> into Start time", async function (appointmentTime) {
-    await write(appointmentTime, into(textBox(toRightOf("Start Time"))));
-    await click(`${appointmentTime} am`)
+    await write(appointmentTime, into(textBox(below("From"))));
+    //await click(`${appointmentTime}`)
 });
+
+step("Close the appointment popup",async function(){
+    await click("Add new appointment")
+    await click("Appointments List")
+    await click("Yes")
+
+
+})
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
     await click($(".fc-widget-content"), toRightOf(`${appointmentTime}`));
@@ -139,12 +176,13 @@ step("Goto List view", async function () {
     await click(link("List view"));
 });
 
-step("select the walk in appointment option", async function () {
-    await click(checkBox(toLeftOf("Walk-in Appointment")))
+step("select the Regular appointment option", async function () {
+    await click('Regular Appointment')
 });
 
 step("select the teleconsultation appointment option", async function () {
-    await click(checkBox(toLeftOf("Teleconsultation")))
+    /*will enable once the teleconsultation is enabled */
+   // await click(checkBox(toLeftOf("Teleconsultation")))
 });
 
 step("select the recurring appointment option", async function () {

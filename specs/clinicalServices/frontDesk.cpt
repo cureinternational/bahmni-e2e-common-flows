@@ -27,10 +27,8 @@
 * Enter patient random last name
 * Enter patient random gender
 * Enter random age of the patient
-* Enter random House number/Flat number
-* Enter random Locality/Sector
-* Enter random village
-* Enter random pinCode
+* Enter random kebele
+* Enter random Woreda
 * Enter patient random mobile number
 * Enter random email address
 * Upload patient image
@@ -51,10 +49,9 @@
 # Start an OPD Visit
 * Click Start OPD Visit
 * Verify no error displayed on page
-* Enter registration fees "100"
-* Save visit data
 * wait for overlay and Saved to disappear
 * Verify no error displayed on page
+* Click back button
 * Click back button
 
 # Start a <visit> Visit
@@ -81,8 +78,11 @@
 * Open "Registration" module
 * Open newly created patient details by search
 * Enter visit details
+* Open Patient ADT page
+* Open Visit attributes
 * Confirm if you want to close the visit
 * Close visit
+
 
 # Receptionist creates the patient
 * Open "Registration" module
@@ -105,7 +105,7 @@
 * Enter patient gender <gender>
 * Enter age of the patient <age>
 * Enter patient mobile number <mobileNumber>
-* Enter random House number/Flat number
+* Enter random kebele
 * Enter random Locality/Sector
 * Enter random village
 * Enter random pinCode

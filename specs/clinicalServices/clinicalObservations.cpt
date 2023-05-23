@@ -66,8 +66,8 @@
 * View all appointments
 * Goto appointments's date
 * Click patient name
-* Join teleconsultation
 * Verify the details in Appointments display control with status "Scheduled"
+* Close the appointment popup
 
 # Enroll in program <program> stage <programStage> starting <numberOfYearsAgo_startDate> years ago with treatment start <numberOfYearsAgo_treatmentDate> years ago, id <id>, dr incharge <doctor> and treatment stage <stage>
 * Begin new program enrollment

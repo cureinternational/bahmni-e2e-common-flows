@@ -25,13 +25,19 @@ const {
     reload,
     timeField,
     attach,
-    fileField
+    fileField,
+    switchTo,
+    title,
+    closeBrowser,
+    doubleClick
 } = require('taiko');
 var users = require("../util/users");
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const { faker } = require('@faker-js/faker/locale/en_IND');
+const alert=require("../../../components/taikoalert")
 var assert = require("assert");
+const { closeTab } = require('taiko');
 
 step("Open <moduleName> module", async function (moduleName) {
     try {
@@ -134,6 +140,10 @@ step("Enter patient random mobile number", async function () {
     else if (await text("Phone Number").exists(500, 1000)) {
         if (gauge.dataStore.scenarioStore.get("isNewPatient"))
             await write(mobile, into(textBox(toRightOf("Phone Number"))));
+    }
+    else if (await text("Mobile Phone").exists(500, 1000)) {
+        if (gauge.dataStore.scenarioStore.get("isNewPatient"))
+            await write(mobile, into(textBox(toRightOf("Mobile Phone"))));
     }
     gauge.dataStore.scenarioStore.put("patientMobileNumber", mobile)
     gauge.message(`mobile ${mobile}`)
@@ -244,9 +254,9 @@ step("Click back button next to Create new", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 step("Enter visit details", async function () {
-    await scrollTo(button("Enter Visit Details"))
-    await highlight(button("Enter Visit Details"))
-    await click(button("Enter Visit Details"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await scrollTo(button("Enter Visit page Details"))
+    await highlight(button("Enter Visit page Details"))
+    await click(button("Enter Visit page Details"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
@@ -256,6 +266,9 @@ step("Close visit", async function () {
     await click(button("Close Visit"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await taikoHelper.repeatUntilNotFound($("#overlay"))
     await taikoHelper.repeatUntilFound(link("Create New"))
+    await closeTab()
+    await closeTab()
+
 });
 
 step("Click on home page and goto registration module", async function () {
@@ -383,6 +396,16 @@ step("wait for create new button", async function () {
     await waitFor(link("Create New"))
 });
 
+step("Open Patient ADT page",async function(){
+waitFor(async () => !(await text('Patient ADT Page').exists()))
+await click(text('Patient ADT Page'),toRightOf(text('Home Dashboard')))
+})
+
+step("Open Visit attributes",async function()
+{
+    waitFor(async () => !(await text('Visit Attributes').exists()))
+    await click(text('Visit Attributes',toLeftOf(text('Registration'))))
+})
 step("Confirm if you want to close the visit", async function () {
     await waitFor(2000)
     await confirm('Are you sure you want to close this visit?', async () => await accept())
@@ -394,34 +417,23 @@ step("Upload patient image", async function () {
     await click(button("Confirm Photo"))
 });
 
-step("Enter random pinCode", async function () {
-    var pinCode = gauge.dataStore.scenarioStore.get("pincode")
-    if (!pinCode) {
-        await users.randomZipCodeStateAndDistrict();
-        pinCode = gauge.dataStore.scenarioStore.get("pincode")
-    }
-    await write(pinCode, into(textBox(toRightOf("Pin Code"))));
-    await click(link(pinCode));
+step("Enter random kebele", async function () {
+    await users.randomZipCodeStateAndDistrict();
+    var kebele = gauge.dataStore.scenarioStore.get("kebele")
+    await write(kebele, into(textBox(toRightOf("Kebele"))));
+    gauge.message(`kebele ${kebele}`)
 });
 
-step("Enter random Locality/Sector", async function () {
-    var locality = gauge.dataStore.scenarioStore.get("locality")
-    localitySector = !locality ? faker.address.secondaryAddress() : locality;
-    gauge.dataStore.scenarioStore.put("localitySector",localitySector)
-    await write(localitySector, into(textBox(toRightOf("Locality/Sector"))));
-    gauge.message(`localitySector ${localitySector}`)
+step("Enter random Woreda", async function () {
+    var woreda =  gauge.dataStore.scenarioStore.get("woreda")
+    await write(woreda, into(textBox(toRightOf("Woreda"))));
+    gauge.message(`wordea ${woreda}`)
+    await click(link(woreda))
 });
 
-step("Enter random House number/Flat number", async function () {
-    var buildingNumber = gauge.dataStore.scenarioStore.get("buildingNumber")
-    buildingNumber = !buildingNumber ? faker.address.buildingNumber() : buildingNumber;
-    gauge.dataStore.scenarioStore.put("buildingNumber",buildingNumber)
-    await write(buildingNumber, into(textBox(toRightOf("House number/Flat number"))));
-    gauge.message(`buildingNumber ${buildingNumber}`)
-});
 
 step("Enter random email address", async function () {
     var emailAddress = faker.internet.email()
-    await write(emailAddress, into(textBox(toRightOf("Email Address"))));
+    await write(emailAddress, into(textBox(toRightOf("Email"))));
     gauge.message(`emailAddress ${emailAddress}`)
 });

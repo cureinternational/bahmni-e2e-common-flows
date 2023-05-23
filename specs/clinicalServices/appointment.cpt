@@ -18,7 +18,7 @@
 * Open calender at time <appointmentTime>
 * Select patient
 * Search and select service
-* select the walk in appointment option
+* select the Regular appointment option
 * Check and Save
 * wait for "1000"
 * Click Close
@@ -58,14 +58,18 @@
 * Click Cancel all
 * reload the page
 
-# Receptionist creates a teleconsultation appointment <appointmentTime>
+# Receptionist creates a regular appointment <appointmentTime>
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto Next week
 * Open calender at time <appointmentTime>
 * Select patient
+* Search and select category
+* Search and select speciality
 * Search and select service
-* select the teleconsultation appointment option
+* Search and select provider
+* Search and select location
+* select the Regular appointment option
 * Check and Save
 * wait for "1000"
 * Click Close

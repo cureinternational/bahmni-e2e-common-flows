@@ -38,34 +38,36 @@ var taikoHelper = require("./util/taikoHelper");
 var users = require("./util/users");
 const csvConfig = require("./util/csvConfig");
 var date = require("./util/date");
+var taikointeractions=require("./../../components/taikointeractions")
+var taikoclick=require("../../components/taikoclick")
+var taikowrite=require ("../../components/taikowrite")
+
 
 
 
 step("Goto Bed creation", async function () {
-    await click("Beds");
+    taikoclick.clickText('Bed')
 });
 
 step("Goto Admin home", async function () {
-    await click(link(toLeftOf("Admission Locations")));
+    taikoclick.clickLinkLeftTo('Admission Locations')
 });
 
 step("Goto Dictionary", async function () {
-    await click("Dictionary")
+    taikoclick.clickText('Dictionary')
 });
 
 step("Open <submodule>", async function (submodule) {
-    await click(submodule);
+    taikoclick.clickElement(submodule)
 });
 
 step("Open patient2 details by search", async function () {
     var patientIdentifierValue = gauge.dataStore.scenarioStore.get("merge_patientIdentifier2");
     gauge.message(patientIdentifierValue)
-    await write(patientIdentifierValue)
-    await press('Enter', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
-    try {
-        await click(link(patientIdentifierValue))
-    } catch (e) { }
+    taikowrite.writeText(patientIdentifierValue)
+    taikointeractions.pressEnter()
+    taikoHelper.repeatUntilNotFound($("#overlay"))
+    taikoclick.clickLink(patientIdentifierValue)
 });
 
 step("Verify patient1 details are open", async function () {
@@ -75,21 +77,21 @@ step("Verify patient1 details are open", async function () {
 });
 
 step("Open Form builder", async function () {
-    await click("Form Builder");
+    taikoclick.clickText("Form Builder")
 });
 
 step("Create a form", async function () {
-    await click("Create a Form");
+    taikoclick.clickText('Create a Form')
 });
 
 step("Enter form name", async function () {
     var formName = users.randomName(10)
     gauge.dataStore.scenarioStore.put("FormName", formName)
-    await write(formName, into(textBox(below("Form Name"))));
+    taikowrite.writeIntoTextAreaBelow("Form Name")    
 });
 
 step("start creating a form", async function () {
-    await click("Create Form");
+    taikoclick.clickText('Create Form')
 });
 
 step("put formname <formName>", async function (formName) {
@@ -190,7 +192,7 @@ step("Goto Report Administration", async function () {
 
 step("Create Period Indicator Report", async function () {
     await click("Period Indicator Report")
-    await write(users.randomName(10), below("Name"))
+    await write(users.randomName(10), $('input#name'))
     await click("Submit")
 });
 

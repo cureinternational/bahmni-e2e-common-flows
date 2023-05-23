@@ -45,14 +45,31 @@ step("Enter History and examination details <filePath>", async function (filePat
     for (var chiefComplaint of historyAndExaminationDetails.Chief_Complaints) {
         await scrollTo("Chief Complaint")
         await write(chiefComplaint.Chief_Complaint, into(textBox(toRightOf("Chief Complaint"))));
-        await click(chiefComplaint.Chief_Complaint, below(textBox(toRightOf("Chief Complaint"))));
-        await write(chiefComplaint.Sign_symptom_duration, into($("//*[text()='Sign/symptom duration']//ancestor::div[@class='form-field-content-wrap']//input")));
-        await click(button(chiefComplaint.Units), toRightOf("Units"));
+        await click( link(chiefComplaint.Chief_Complaint));
+        await write(chiefComplaint.Sign_symptom_duration, into($("//input[@type='number']")));
+        await dropDown(toRightOf('for')).select(chiefComplaint.Units)
     }
-    await write(historyAndExaminationDetails.History_of_present_illness, into($("//*[text()='History of present illness']//ancestor::div[@class='form-field-content-wrap']//textarea")));
-    await click(historyAndExaminationDetails.Smoking_status, toRightOf("Smoking status"));
-    await attach(path.join('./bahmni-e2e-common-flows/data/consultation/observations/patientReport.jpg'), to($("//*[@class='image-upload']/input")), { force: true });
-    await attach(path.join('./bahmni-e2e-common-flows/data/consultation/observations/Video.mp4'), to($("//*[@class='video-upload']/input")), { force: true });
+    await write(historyAndExaminationDetails.History_Notes, into(textBox(toRightOf("History Notes"))));
+    await click(historyAndExaminationDetails.Smoking_status, toRightOf("Smoking History"));
+    await attach(path.join('./bahmni-e2e-common-flows/data/consultation/observations/patientReport.jpg'), to($("//*[@class='consultation-image']/input")), { force: true });
+    await attach(path.join('./bahmni-e2e-common-flows/data/consultation/observations/Video.mp4'), to($("//*[@class='consultation-video']/input")), { force: true });
+});
+
+step("Enter Orthopaedic followup <filePath>", async function (filePath) {
+    await click(link("Orthopaedic Followup"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    var followup = `./bahmni-e2e-common-flows/data/${filePath}.json`
+
+    var followupdetails = JSON.parse(fileExtension.parseContent(followup))
+    gauge.dataStore.scenarioStore.put("orthopaedicfollowupdetails", followupdetails)
+    await dropDown(toRightOf('Author')).select(followupdetails.author)
+    await write(followupdetails.comment, into(textBox(toRightOf("Comment"))));
+    await write(followupdetails.subjective, into(textBox(toRightOf("Subjective"))));
+    await write(followupdetails.objective, into(textBox(toRightOf("Objective"))));
+    await write(followupdetails.assessment, into(textBox(toRightOf("Assessment"))));
+    await write(followupdetails.plan, into(textBox(toRightOf("Plan"))));
+    await write(followupdetails.comment, into(textBox(toRightOf("Comments"))));
+
 });
 
 step("Click patient name", async function () {

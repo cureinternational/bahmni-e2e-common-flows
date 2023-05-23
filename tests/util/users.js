@@ -47,7 +47,7 @@ function getGender(gender) {
         return "Undisclosed"
 }
 
-function getRegID() {
+function getRegID() {   
     return "BAH-".concat(randomNumber(10000, 1000000));
 }
 function getRandomPatientGender() {
@@ -92,14 +92,12 @@ async function downloadAndReturnBase64Image() {
 
 
 async function randomZipCodeStateAndDistrict() {
-    let jsonfile = await csv().fromFile(path.resolve(__dirname, "../../data/", process.env.addresshierarchyPath));
-    var randomRow = faker.datatype.number({ min: 1, max: jsonfile.length });
-    var pincode = jsonfile[randomRow]["ZIP"]
-    gauge.dataStore.scenarioStore.put("pincode", pincode)
-    var state = jsonfile[randomRow]["STATE"]
-    gauge.dataStore.scenarioStore.put("state", state)
-    var district = jsonfile[randomRow]["DISTRICT"]
-    gauge.dataStore.scenarioStore.put("district", district)
+    let rows = await csv().fromFile(path.resolve(__dirname, "../../data/", process.env.addresshierarchyPath));
+    var randomRow = faker.datatype.number({ min: 1, max: rows.length });
+    var kebele = rows[randomRow]["kebele"]
+    gauge.dataStore.scenarioStore.put("kebele", kebele)
+    var woreda = rows[randomRow]["woreda"]
+    gauge.dataStore.scenarioStore.put("woreda", woreda)
 }
 module.exports = {
     getRegID: getRegID,
