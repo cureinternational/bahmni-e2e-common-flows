@@ -437,3 +437,8 @@ step("Enter random email address", async function () {
     await write(emailAddress, into(textBox(toRightOf("Email"))));
     gauge.message(`emailAddress ${emailAddress}`)
 });
+
+step("Select registration location",async function(){
+    var location=process.env.Registration_location
+    await dropDown(toRightOf("Registration Location")).select(location);
+})

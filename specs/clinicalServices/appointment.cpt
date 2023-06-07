@@ -25,20 +25,25 @@
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 
-# Receptionist creates a recurring appointment for days <days> at time <appointmentTime>
+# Receptionist creates a recurring appointment for <days> days every <times> at time <appointmentTime>
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto Today
 * Open calender at time <appointmentTime>
 * Select patient
+* Search and select category
+* Search and select speciality
 * Search and select service
+* Search and select provider
+* Search and select location
 * select the recurring appointment option
-* select the Start date as today
-* select the End date as after few occurances                
 * select Repeats every <days> days
+* select the End date as after <times> occurances                
 * Check and Save
 * wait for "1000"
 * Click Close
+* Select List View in Appointments
+* Get Apointmnet Date and Time
 
 # Receptionist cancels the newly created appointment
 * Open "Appointment scheduling" module
@@ -46,6 +51,14 @@
 * Goto appointments's date
 * Click patient name
 * Cancel the appointment
+* reload the page
+
+# Receptionist cancels all the newly created appointment
+* Open "Appointment scheduling" module
+* View all appointments
+* Goto appointments's date
+* Click patient name
+* Cancels all the appointment
 * reload the page
 
 
@@ -70,6 +83,7 @@
 * Search and select provider
 * Search and select location
 * select the Regular appointment option
+* select appointment status as "Scheduled"
 * Check and Save
 * wait for "1000"
 * Click Close
@@ -91,6 +105,10 @@
 * Should not find the patient's name
 
 # Cancel the appointment
+* Click Cancel
+* Cancel appointment
+
+# Cancels all the appointment
 * Click Cancel
 * Cancel appointment
 

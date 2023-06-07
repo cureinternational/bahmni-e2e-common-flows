@@ -180,6 +180,10 @@ step("select the Regular appointment option", async function () {
     await click('Regular Appointment')
 });
 
+step("select appointment status as <status>",async function(status){
+    await click(status)
+})
+
 step("select the teleconsultation appointment option", async function () {
     /*will enable once the teleconsultation is enabled */
    // await click(checkBox(toLeftOf("Teleconsultation")))
@@ -189,17 +193,17 @@ step("select the recurring appointment option", async function () {
     await click("Recurring Appointment");
 });
 
-step("select the Start date as today", async function () {
-    await click("Today", below("Starts"));
+step("select the Start date as <appointmentDate>", async function (appointmentDate) {
+    await write(appointmentDate, below("Appointment start date"));
     gauge.dataStore.scenarioStore.put("appointmentStartDate", new Date())
 });
 
-step("select the End date as after few occurances", async function () {
-    await click("After", below("Ends"));
+step("select the End date as after <times> occurances", async function (times) {
+    await write(times,$('input#occurrences'))
 });
 
 step("select Repeats every <numberOfDays> days", async function (numberOfDays) {
-    await write(numberOfDays, into(textBox(below("Repeats"))));
+    await write(numberOfDays, into(textBox(below("Repeats every"))));
 });
 
 step("Click Cancel all", async function () {
@@ -213,8 +217,14 @@ step("Click Cancel", async function () {
 });
 
 step("Cancel appointment", async function () {
-    await scrollTo($('#yes'))
-    await click($('#yes'))
+    if(button(text("Cancel")).isDisabled())
+    {
+        var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
+        var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
+        dropDown(toRightOf("Patient:").select(patientName+" ("+patientid+")"))
+    }
+    await scrollTo(text("Cancel All"))
+    await click(button(text("Cancel All")))
 });
 
 step("Open admin tab of Appointments", async function () {
@@ -258,5 +268,5 @@ step("Verify the details in Appointments display control with status <status>", 
     let appointmentDate = gauge.dataStore.scenarioStore.get("appointmentDate");
     let appointmentStartTime = gauge.dataStore.scenarioStore.get("appointmentStartTime");
     let appointmentEndTime = gauge.dataStore.scenarioStore.get("appointmentEndTime");
-    assert.ok(text(`${appointmentStartTime} - ${appointmentEndTime}`, toRightOf(appointmentDate, toLeftOf(status), within($("//*[text()='Appointments']/ancestor::section")))).exists())
+    assert.ok(text(`${appointmentStartTime} - ${appointmentEndTime}`, toRightOf(appointmentDate, toLeftOf(status))).exists())
 });
