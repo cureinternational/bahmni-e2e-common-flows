@@ -261,14 +261,11 @@ step("Enter visit details", async function () {
 });
 
 step("Close visit", async function () {
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     await scrollTo(button("Close Visit"))
     await highlight(button("Close Visit"))
     await click(button("Close Visit"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await taikoHelper.repeatUntilFound(link("Create New"))
-    await closeTab()
-    await closeTab()
-
+    await waitFor(2000)
 });
 
 step("Click on home page and goto registration module", async function () {
@@ -397,17 +394,20 @@ step("wait for create new button", async function () {
 });
 
 step("Open Patient ADT page",async function(){
-waitFor(async () => !(await text('Patient ADT Page').exists()))
-await click(text('Patient ADT Page'),toRightOf(text('Home Dashboard')))
-})
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    waitFor(async () => !(await text('Patient ADT Page').exists()))
+    await click('Patient ADT Page',{ waitForNavigation: true, retryTimeout: process.env.actionTimeout })}
+)
 
 step("Open Visit attributes",async function()
 {
+    await waitFor(15000)
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     waitFor(async () => !(await text('Visit Attributes').exists()))
-    await click(text('Visit Attributes',toLeftOf(text('Registration'))))
+    await click('Visit Attributes',{ waitForNavigation: true, retryTimeout: process.env.actionTimeout })
 })
 step("Confirm if you want to close the visit", async function () {
-    await waitFor(2000)
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     await confirm('Are you sure you want to close this visit?', async () => await accept())
 });
 

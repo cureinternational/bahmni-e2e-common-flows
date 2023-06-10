@@ -19,6 +19,7 @@
 * Select patient
 * Search and select service
 * select the Regular appointment option
+* select appointment status as "Scheduled"
 * Check and Save
 * wait for "1000"
 * Click Close
@@ -51,14 +52,6 @@
 * Goto appointments's date
 * Click patient name
 * Cancel the appointment
-* reload the page
-
-# Receptionist cancels all the newly created appointment
-* Open "Appointment scheduling" module
-* View all appointments
-* Goto appointments's date
-* Click patient name
-* Cancels all the appointment
 * reload the page
 
 
@@ -105,11 +98,6 @@
 * Should not find the patient's name
 
 # Cancel the appointment
-* Click Cancel
-* Cancel appointment
-
-# Cancels all the appointment
-* Click Cancel
 * Cancel appointment
 
 # Validate Appointment Details in Clinical Dashboard with status as <status>

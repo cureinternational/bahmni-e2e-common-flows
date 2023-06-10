@@ -20,7 +20,8 @@ const {
     near,
     to,
     link,
-    timeField
+    timeField,
+    evaluate
 } = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const fileExtension = require("../util/fileExtension")
@@ -74,8 +75,8 @@ step("Enter Orthopaedic followup <filePath>", async function (filePath) {
 
 step("Click patient name", async function () {
     var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-    await scrollTo(`${firstName}`)
-    await click(`${firstName}`)
+    await scrollTo($(`//div[@class='fc-title' and contains(text(),'${firstName}')]`))
+    await evaluate($(`//div[@class='fc-title' and contains(text(),'${firstName}')]`), (el) => el.click())
 });
 
 step("Should not find the patient's name", async function () {

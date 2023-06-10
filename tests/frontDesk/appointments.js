@@ -115,7 +115,7 @@ step("Enter appointment time <appointmentTime> into Start time", async function 
 
 step("Close the appointment popup",async function(){
     await click("Add new appointment")
-    await click("Appointments List")
+    await click("Summary")
     await click("Yes")
 
 
@@ -181,7 +181,7 @@ step("select the Regular appointment option", async function () {
 });
 
 step("select appointment status as <status>",async function(status){
-    await click(status)
+    await evaluate($(`input#${status}`), (el) => el.click())
 })
 
 step("select the teleconsultation appointment option", async function () {
@@ -217,14 +217,40 @@ step("Click Cancel", async function () {
 });
 
 step("Cancel appointment", async function () {
-    if(button(text("Cancel")).isDisabled())
+    var btnstatus=await button("Cancel").isDisabled()
+    if(btnstatus)
     {
         var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
         var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
-        dropDown(toRightOf("Patient:").select(patientName+" ("+patientid+")"))
+        await dropDown("Patient:").select(patientName+" ("+patientid+")")
+        await scrollTo(text("Cancel"))
+        await click("Cancel")
+        var yesBtn=await button("Yes").exists()
+        if(yesBtn)
+        {
+            await click("Yes")
+        }
+        var cancelallBtn=await button("Cancel All").exists()
+        if(cancelallBtn)
+        {
+            await click("Cancel All")
+        }
     }
-    await scrollTo(text("Cancel All"))
-    await click(button(text("Cancel All")))
+    else if(!btnstatus)
+    {
+        await click("Cancel")
+        var yesBtn=await button("Yes").exists()
+        if(yesBtn)
+        {
+            await click("Yes")
+        }
+        var cancelallBtn=await button("Cancel All").exists()
+        if(cancelallBtn)
+        {
+            await click("Cancel All")
+        }
+        
+    }
 });
 
 step("Open admin tab of Appointments", async function () {
