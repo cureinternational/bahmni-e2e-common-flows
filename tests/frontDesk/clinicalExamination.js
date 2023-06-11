@@ -23,6 +23,16 @@ var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 var date = require("../util/date")
 
+step("click radiology",async function(){
+
+    await click("Radiology")
+})
+
+step("click laboratory",async function(){
+
+    await click("Laboratory")
+})
+
 step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile) {
     var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionFile}.json`;
     var testPrescription = JSON.parse(fileExtension.parseContent(prescriptionFile))
@@ -31,7 +41,7 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
     await taikoHelper.repeatUntilFound(text(testPrescription.test))
     console.log("test found.")
     await click(testPrescription.test, { force: true })
-    console.log("Selected test.")
+    console.log("Selected test. " +testPrescription.test)
     await waitFor(100)
 });
 
@@ -59,9 +69,9 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
             if (await textBox(toRightOf("Drug Name")).exists()) {
                 await write(drugName, into(textBox(toRightOf("Drug Name"))));
                 await click(link(drugName, below(textBox(toRightOf("Drug Name")))));
+                await write(medicalPrescriptions.dose, into(textBox(toRightOf("Dose"))));
                 await dropDown(toRightOf("Units")).select(medicalPrescriptions.units);
                 await dropDown(toRightOf("Frequency")).select(medicalPrescriptions.frequency)
-                await write(medicalPrescriptions.dose, into(textBox(toRightOf("Dose"))));
                 await write(medicalPrescriptions.duration, into(textBox(toRightOf("Duration"))));
                 await write(medicalPrescriptions.notes, into(textBox(toRightOf("Additional Instructions"))));
             }
@@ -129,15 +139,8 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
     gauge.message(medicalDiagnosis)
     await click("Diagnoses");
     await write(medicalDiagnosis.diagnosis.diagnosisName, into(textBox(below("Diagnoses"))));
-    await waitFor(() => $("(//A[starts-with(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]").isVisible())
-    await click($("(//A[starts-with(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]"))
+    await waitFor(() => $("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]").isVisible())
+    await click($("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]"))
     await click(medicalDiagnosis.diagnosis.order, below("Order"));
     await click(medicalDiagnosis.diagnosis.certainty, below("Certainty"));
-    for (var i = 0; i < medicalDiagnosis.condition.length; i++) {
-        await write(medicalDiagnosis.condition[i].conditionName, into(textBox(below("Condition"))));
-        await waitFor(() => $("(//A[starts-with(text(),\"" + medicalDiagnosis.condition[i].conditionName + "\")])[1]").isVisible())
-        await click($("(//A[starts-with(text(),\"" + medicalDiagnosis.condition[i].conditionName + "\")])[1]"))
-        await click(medicalDiagnosis.condition[i].status, below($("//div[@class='col col2']//*[contains(text(),'Status')]")));
-        await click("Add", below("Action"))
-    }
 });

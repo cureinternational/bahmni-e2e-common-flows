@@ -87,7 +87,7 @@ step("Verify medical prescription in patient clinical dashboard", async function
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         assert.ok(await text(medicalPrescriptions.drug_name, within($("#Treatments"))).exists())
         assert.ok(await text(`${medicalPrescriptions.dose} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($("#Treatments"))).exists())
-        assert.ok(await text(`${medicalPrescriptions.duration} Days`, within($("#Treatments"))).exists())
+        assert.ok(await text(`${medicalPrescriptions.duration} Day(s)`, within($("#Treatments"))).exists())
     }
 });
 
@@ -108,7 +108,7 @@ step("Verify vitals", async function () {
 
 step("Verify diagnosis in patient clinical dashboard", async function () {
     var medicalDiagnosis = gauge.dataStore.scenarioStore.get("medicalDiagnosis")
-    assert.ok(await text(medicalDiagnosis.diagnosis.diagnosisName, toLeftOf(medicalDiagnosis.diagnosis.certainty, toRightOf(medicalDiagnosis.diagnosis.order)), within($("#Diagnoses"))).exists())
+    assert.ok(await text(medicalDiagnosis.diagnosis.diagnosisName, toLeftOf(medicalDiagnosis.diagnosis.certainty, toRightOf(medicalDiagnosis.diagnosis.order)), within($("#Diagnosis"))).exists())
 });
 
 step("Verify condition in patient clinical dashboard", async function () {
@@ -124,8 +124,8 @@ step("Verify condition in patient clinical dashboard", async function () {
 step("Verify history & examination in patient clinical dashboard", async function () {
     var historyAndExaminationDetails = gauge.dataStore.scenarioStore.get("historyAndExaminationDetails")
     assert.ok(await text(`${historyAndExaminationDetails.Chief_Complaints[0].Chief_Complaint} since ${historyAndExaminationDetails.Chief_Complaints[0].Sign_symptom_duration} ${historyAndExaminationDetails.Chief_Complaints[0].Units}`, toRightOf("Chief Complaint"), within($("#History-and-Examinations"))).exists())
-    assert.ok(await text(`${historyAndExaminationDetails.History_of_present_illness}`, within($("#History-and-Examinations")), toRightOf("HPI")).exists())
-    assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($("#History-and-Examinations")), toRightOf("Smoking status")).exists())
+    assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($("#History-and-Examinations")), toRightOf("Examination Notes")).exists())
+    assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($("#History-and-Examinations")), toRightOf("Smoking History")).exists())
     assert.ok(await $("//a[@class='img-concept']/img").exists(), "Image not displayed on history & examination");
     await scrollTo($("//a[@class='img-concept']/img"));
     await click($("//a[@class='img-concept']/img"));
@@ -138,6 +138,7 @@ step("Verify history & examination in patient clinical dashboard", async functio
     await click($(`.obs-play-btn`));
     assert.ok(await $(`.video-dialog`).isVisible(), "Video is not opened.");
     await evaluate($(`//*[@class='ngdialog-close clearfix']`), (el) => el.click())
+    await click($('.back-btn'), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
 });
 
 step("Verify consultation notes in patient clinical dashboard", async function () {

@@ -55,8 +55,15 @@
 * Save data
 * Verify no error displayed on page
 
+# Doctor prescribes radiology <tests>
+* Open "Orders" Tab
+* Doctor prescribe tests <tests>
+* Save data
+* Verify no error displayed on page
+
 # Doctor prescribes tests <tests>
 * Open "Orders" Tab
+* click laboratory
 * Doctor prescribe tests <tests>
 * Save data
 * Verify no error displayed on page
@@ -77,7 +84,7 @@
 * Enroll in program
 
 # Doctor notes the diagnosis and conditions <diagnosis_condition>
-* Open "Diagnoses" Tab
+* Open "Diagnosis" Tab
 * Doctor notes the diagnosis and condition <diagnosis_condition>
 * Save data
 * Verify no error displayed on page
@@ -89,8 +96,12 @@
 
 # Verify diagnosis and condition in patient clinical dashboard
 * Verify diagnosis in patient clinical dashboard
-* Verify condition in patient clinical dashboard
 
 # Enter Form Values and validate no error is displayed on save <formPath>
 * Enter Form Values <formPath>
+* Verify no error displayed on page
+
+# Enter Orthopaedic Followup <orthoPaedicFollowup>
+* Enter Orthopaedic followup <orthoPaedicFollowup>
+* Save data
 * Verify no error displayed on page

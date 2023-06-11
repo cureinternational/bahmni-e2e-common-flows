@@ -1,17 +1,7 @@
 {
     "diagnosis": {
-      "diagnosisName": "Copper Fever",
+      "diagnosisName": "fever",
       "order": "PRIMARY",
       "certainty": "CONFIRMED"
-    },
-    "condition": [
-      {
-        "conditionName": "Diabetes Mellitus Complicating Pregnancy, Antepartum",
-        "status": "Active"
-      },
-      {
-        "conditionName": "High blood pressure",
-        "status": "Inactive"
-      }
-    ]
+    }
   }
