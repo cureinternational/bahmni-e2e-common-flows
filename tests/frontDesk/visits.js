@@ -158,10 +158,10 @@ step("Verify no error displayed on page", async function () {
 
 step("Validate obs <form> on the patient clinical dashboard", async function (formPath) {
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
-    gauge.dataStore.scenarioStore.put(obsFormValues.ObservationFormName, obsFormValues)
+    gauge.dataStore.scenarioStore.put(obsFormValues.ObservationClinicalFormName, obsFormValues)
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await evaluate($("//SPAN[normalize-space()='" + obsFormValues.ObservationFormName.trim() + "']/..//i[@class='fa fa-eye']"), (el) => el.click())
+    await evaluate($("//SPAN[normalize-space()='" + obsFormValues.ObservationClinicalFormName.trim() + "']/..//i[@class='fa fa-eye']"), (el) => el.click())
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await taikoHelper.validateFormFromFile(obsFormValues.ObservationFormDetails, obsFormValues.ObservationFormName)
+    await taikoHelper.validateFormFromFile(obsFormValues.ObservationFormDetails, obsFormValues.ObservationClinicalFormName)
     await click($('.ngdialog-close'))
 });

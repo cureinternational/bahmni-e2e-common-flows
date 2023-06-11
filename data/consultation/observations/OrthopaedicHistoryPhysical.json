@@ -1,0 +1,96 @@
+{
+    "ObservationFormName": "Orthopaedic History  & Physical",
+    "ObservationClinicalFormName":"Orthopaedic H&P",
+    "ObservationFormDetails": [
+        {
+            "type": "Dropdown",
+            "label": "Author",
+            "value": "Dr Tim Nunn"
+        },
+        {
+            "type": "TextArea",
+            "label": "Comment",
+            "value": "Orthopaedic history comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "HPI/HPC",
+            "value": "HPI/HPC comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "PMH",
+            "value": "PMH comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Exam",
+            "value": "Exam comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Xray",
+            "value": "Xray comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Lab",
+            "value": "Lab comments"
+        },
+        {
+            "type": "Input",
+            "label": "HEIGHT (Cm)",
+            "value": "170"
+        },
+        {
+            "type": "Input",
+            "label": "WEIGHT (Kg)",
+            "value": "70"
+        },
+        {
+            "type": "Input",
+            "label": "Pulse",
+            "value": "170"
+        },
+        {
+            "type": "Input",
+            "label": "Temperature",
+            "value": "98"
+        },
+        {
+            "type": "Input",
+            "label": "RR",
+            "value": "70"
+        },
+        {
+            "type": "Input",
+            "label": "SPO2",
+            "value": "98"
+        },
+        {
+            "type": "Input",
+            "label": "Systolic",
+            "value": "170"
+        },
+        {
+            "type": "Input",
+            "label": "Diastolic",
+            "value": "190"
+        },
+        {
+            "type": "Button",
+            "label": "Posture",
+            "value": "Sitting"
+        },
+        {
+            "type": "TextArea",
+            "label": "Impression",
+            "value": "Impression comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "automation test comments"
+        }
+    ]
+}

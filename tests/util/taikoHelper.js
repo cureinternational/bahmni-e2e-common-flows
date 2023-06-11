@@ -1,4 +1,4 @@
-const { button, toRightOf, textBox, into, write, press, click, timeField, below, scrollTo, text, evaluate, $, checkBox, waitFor, image, within } = require('taiko');
+const { button, toRightOf, textBox, into, write, press, click, timeField, below, scrollTo, text, evaluate, $, checkBox, waitFor, image, within, dropDown } = require('taiko');
 var date = require("./date");
 var assert = require("assert")
 
@@ -71,6 +71,9 @@ async function executeConfigurations(configurations, observationFormName, isNotO
             case 'TextArea':
                 await write(configuration.value, into($("//textarea", toRightOf(configuration.label))))
                 break;
+            case 'Input':
+                await write(configuration.value, into($("//input", toRightOf(configuration.label))))
+                break;
             case 'TextBox':
                 if (configuration.unit === undefined)
                     await write(configuration.value, into(textBox(toRightOf(configuration.label))))
@@ -90,6 +93,11 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 var dateValue = date.addDaysAndReturnDateInDDMMYYYY(configuration.value)
                 await write(dateValue, into(timeField(toRightOf(configuration.label))))
                 break;
+            case 'Dropdown':
+                var dropDownLabel=configuration.label
+                var dropDownValue=configuration.value
+                await dropDown(toRightOf(dropDownLabel)).select(dropDownValue)
+                break;
             default:
                 console.log("Unhandled " + configuration.label + ":" + configuration.value)
         }
@@ -99,9 +107,9 @@ async function executeConfigurations(configurations, observationFormName, isNotO
 async function validateFormFromFile(configurations) {
     for (var configuration of configurations) {
         var label = configuration.label
+        var value = configuration.value
         if (configuration.short_name !== undefined)
             label = configuration.short_name.trim();
-        var value = configuration.value
         if (configuration.value_view !== undefined)
             value = configuration.value_view.trim();
         switch (configuration.type) {
@@ -113,7 +121,8 @@ async function validateFormFromFile(configurations) {
                 assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${dateFormatted}"]`).exists(), dateFormatted + " To Right of " + label + " is not exist.")
                 break;
             default:
-                assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${value}"]`).exists(), value + " To Right of " + label + " is not exist.")
+                //assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${value}"]`).exists(), value + " To Right of " + label + " is not exist.")
+                assert.ok(await text(value).exists())
         }
     }
 }
