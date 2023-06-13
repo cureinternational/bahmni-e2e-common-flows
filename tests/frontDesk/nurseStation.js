@@ -116,8 +116,10 @@ step("Enter Form Values <observationFormFile>", async function (observationFormF
 	await taikoHelper.repeatUntilNotFound($("#overlay"))
 	if (!await link(observationFormValues.ObservationFormName).exists(500, 1000)) {
 		await click("Add New Obs Form", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+		await scrollTo(button(observationFormValues.ObservationFormName))
 		await click(button(observationFormValues.ObservationFormName));
 	} else {
+		await scrollTo(button(observationFormValues.ObservationFormName))
 		await click(link(observationFormValues.ObservationFormName));
 	}
 	await taikoHelper.repeatUntilNotFound($("#overlay"))

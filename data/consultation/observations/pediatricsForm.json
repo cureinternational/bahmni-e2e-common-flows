@@ -1,0 +1,21 @@
+{
+    "ObservationFormName": "Pediatrics Form",
+    "ObservationClinicalFormName":"Pediatrics Form",
+    "ObservationFormDetails": [
+        {
+            "type": "Dropdown",
+            "label": "Author",
+            "value": "Dr Tim Nunn"
+        },
+        {
+            "type": "Date",
+            "label": "Date",
+            "value": "-1"
+        },
+        {
+            "type": "TextArea",
+            "label": "Delivery History",
+            "value": "Delivery History comments"
+        }
+    ]
+}

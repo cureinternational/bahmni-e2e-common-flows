@@ -395,13 +395,14 @@ step("wait for create new button", async function () {
 
 step("Open Patient ADT page",async function(){
     waitFor(async () => !(await text('Patient ADT Page').exists()))
-    await click('Patient ADT Page',{ waitForNavigation: true, retryTimeout: process.env.actionTimeout })}
+    await click('Patient ADT Page',{waitForEvents: ['targetNavigated', 'DOMContentLoaded'],navigationTimeout: process.env.actionTimeout})
+}
 )
 
 step("Open Visit attributes",async function()
 {
     waitFor(async () => !(await text('Visit Attributes').exists()))
-    await click('Visit Attributes',{ waitForNavigation: true, retryTimeout: process.env.actionTimeout })
+    await click('Visit Attributes',{waitForEvents: ['targetNavigated', 'DOMContentLoaded'], navigationTimeout: process.env.actionTimeout})
 })
 step("Confirm if you want to close the visit", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))

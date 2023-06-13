@@ -7,7 +7,8 @@ const {
     closeTab,
     $,
     video,
-    waitFor
+    waitFor,
+    getConfig
 } = require('taiko');
 const path = require('path');
 const taikoHelper = require("../util/taikoHelper");
@@ -57,7 +58,7 @@ beforeScenario(async (context) => {
         await closeBrowser();
         await openBrowser(browserOptions)
     }
-    await setConfig({ ignoreSSLErrors: true });
+    await setConfig({ ignoreSSLErrors: true ,retryTimeout:30000});
     // video generated is not helping.. if more than one tests are ran then the most of the time the failed output video is having some random images.
     // if (process.env.record_video) {
     //     let scenarioName = context.currentScenario.name;

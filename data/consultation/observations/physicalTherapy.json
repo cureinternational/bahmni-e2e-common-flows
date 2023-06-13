@@ -1,0 +1,26 @@
+{
+    "ObservationFormName": "Physical Therapy",
+    "ObservationClinicalFormName":"Physical Therapy",
+    "ObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Diagnosis:",
+            "value": "Diagnosis comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "Automation comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Plan",
+            "value": "Plan comments"
+        },
+        {
+            "type": "Dropdown",
+            "label": "Completed By",
+            "value": "Ashenafi Girma"
+        }
+    ]
+}
