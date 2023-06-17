@@ -29,9 +29,11 @@ const {
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 var assert = require("assert");
+const { stat } = require('fs');
 
 step("View all appointments", async function () {
-    await click(process.env.appointmentList);
+    var list=process.env.appointmentList
+    await click(list);
 });
 
 step("Begin capturing appointment details", async function () {
@@ -168,7 +170,11 @@ step("Goto day view of the calendar", async function () {
 
 
 step("Click Close", async function () {
-    await click(button("Close", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout }))
+    await click($('//div[@class="AddAppointment_close__2kahG"]'))
+    if(await text("Discar").exists())
+    {
+    await click('Discard')
+    }
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
@@ -181,7 +187,8 @@ step("select the Regular appointment option", async function () {
 });
 
 step("select appointment status as <status>",async function(status){
-    await evaluate($(`input#${status}`), (el) => el.click())
+    var appointMentStatus=`//span[text()="${status}"]`
+    await click($(appointMentStatus))
 })
 
 step("select the teleconsultation appointment option", async function () {
@@ -296,3 +303,16 @@ step("Verify the details in Appointments display control with status <status>", 
     let appointmentEndTime = gauge.dataStore.scenarioStore.get("appointmentEndTime");
     assert.ok(text(`${appointmentStartTime} - ${appointmentEndTime}`, toRightOf(appointmentDate, toLeftOf(status))).exists())
 });
+
+step("Verify the appointment locations",async function(){
+ 
+    var locations=process.env.registrationLocations.split(',')
+
+    for(let i=0;i<locations.length;i++)
+    {
+        await write(locations[i], into($("//div[@data-testid='location-search']//input")))
+        assert.ok(await $("//div[text()='" + locations[i] + "']").exists());
+        await click($("//div[@data-testid='location-search']//button[1]"))
+    }
+    
+})

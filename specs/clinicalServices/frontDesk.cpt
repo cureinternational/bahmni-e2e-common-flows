@@ -10,6 +10,7 @@
 * Check if "Clinical Service" app is opened
 * wait for overlay to disappear
 * Log out if still logged in
+* Verify the login locations in login page
 * Login as user <user>
 
 # Logout and Login to Bahmni location <location> as a <user>
