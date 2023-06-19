@@ -63,38 +63,43 @@ step("Select service <service>", async function (service) {
 });
 
 step("Search and select category", async function () {
-    await write(process.env.category, into($("//div[@data-testid='appointment-category-search']//input")))
-    await waitFor(async () => (await $("//div[text()='" + process.env.category + "']").exists()));
-    await waitFor(200);
-    await evaluate($("//div[text()='" + process.env.category + "']"), (el) => el.click());
+    await selectDropDown('appointment-category-search',process.env.category)
 });
 
 step("Search and select speciality", async function () {
-    await write(process.env.speciality, into($("//div[@data-testid='speciality-search']//input")))
-    await waitFor(async () => (await $("//div[text()='" + process.env.speciality + "']").exists()));
-    await waitFor(200);
-    await evaluate($("//div[text()='" + process.env.speciality + "']"), (el) => el.click());
+    await selectDropDown('speciality-search',process.env.speciality)
 });
 
+step("Search and select speciality as <speciality>", async function (speciality) {
+    await selectDropDown('speciality-search',speciality)
+});
 
 step("Search and select service", async function () {
-    await write(process.env.service, into($("//div[@data-testid='service-search']//input")))
-    await waitFor(async () => (await $("//div[text()='" + process.env.service + "']").exists()));
-    await waitFor(200);
-    await evaluate($("//div[text()='" + process.env.service + "']"), (el) => el.click());
+    await selectDropDown('service-search',process.env.service)
 });
+
+step("Search and select service as <service>", async function (service) {
+    await selectDropDown('service-search',service)
+});
+
 step("Search and select provider", async function () {
-    await write(process.env.provider, into($("//div[@data-testid='provider-search']//input")))
-    await waitFor(async () => (await $("//div[text()='" + process.env.provider + "']").exists()));
-    await waitFor(200);
-    await evaluate($("//div[text()='" + process.env.provider + "']"), (el) => el.click());
+    await selectDropDown('provider-search',process.env.provider)
+});
+
+step("Search and select provider as <provider>", async function (provider) {
+    await selectDropDown('provider-search',provider)
 });
 step("Search and select location", async function () {
-    await write(process.env.location, into($("//div[@data-testid='location-search']//input")))
-    await waitFor(async () => (await $("//div[text()='" + process.env.location + "']").exists()));
-    await waitFor(200);
-    await evaluate($("//div[text()='" + process.env.location + "']"), (el) => el.click());
+    await selectDropDown('location-search',process.env.location)
 });
+
+async function selectDropDown(locator,value){
+    var element=`//div[@data-testid='${locator}']//input`
+    await write(value, into($(element)))
+    await waitFor(async () => (await $("//div[text()='" + value + "']").exists()));
+    await waitFor(200);
+    await evaluate($("//div[text()='" + value + "']"), (el) => el.click());
+}
 step("Search and select appointment location", async function () {
     await click("Location");
     await click(process.env.appointmentLocation);
@@ -232,6 +237,7 @@ step("Cancel appointment", async function () {
         await dropDown("Patient:").select(patientName+" ("+patientid+")")
         await scrollTo(text("Cancel"))
         await click("Cancel")
+        await waitFor(500)
         var yesBtn=await button("Yes").exists()
         if(yesBtn)
         {
@@ -246,6 +252,7 @@ step("Cancel appointment", async function () {
     else if(!btnstatus)
     {
         await click("Cancel")
+        await waitFor(500)
         var yesBtn=await button("Yes").exists()
         if(yesBtn)
         {

@@ -83,6 +83,25 @@
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 
+# Receptionist creates a regular appointment <appointmentTime> on same day for provider <provider> for speciality <speciality> for service <service>
+* Open "Appointment scheduling" module
+* View all appointments
+* Goto Today
+* Open calender at time <appointmentTime>
+* Select patient
+* Search and select category
+* Search and select speciality as <speciality>
+* Search and select service as <service>
+* Search and select provider as <provider>
+* Search and select location
+* select the Regular appointment option
+* select appointment status as "Scheduled"
+* Check and Save
+* wait for "1000"
+* Click Close
+* Select List View in Appointments
+* Get Apointmnet Date and Time
+
 # The patient's appointment should not be found
 * Click back button
 * Open "Appointment scheduling" module

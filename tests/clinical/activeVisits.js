@@ -35,3 +35,16 @@ step("Verify the specialitis list", async function () {
     assert.ok(speciliatyList.includes(speciality))
    }
 });
+
+step("Verify the patient visit is added in my patient queue and the <speciality> queue",async function(speciality){
+
+    await click("My Patients")
+    var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
+    var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+    var fullName = firstName+' '+lastName
+    assert.ok(await text(fullName).exists())
+    waitFor(500)
+    await click(speciality)
+    waitFor(500)
+    assert.ok(await text(fullName).exists())
+})

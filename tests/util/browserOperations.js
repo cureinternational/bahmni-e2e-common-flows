@@ -50,7 +50,7 @@ step("close tab", async function () {
 });
 
 beforeScenario(async (context) => {
-    const browserOptions = { headless: headless, args: ["--no-sandbox", "--disable-dev-shm-usage", '--use-fake-ui-for-media-stream', "--window-size=1440,900"] }
+    const browserOptions = { headless: headless, args: ["--no-sandbox", "--disable-dev-shm-usage", '--use-fake-ui-for-media-stream', "--window-size=1440,900"],"ignoreCertificateErrors":true,"secure":false }
     try {
         await openBrowser(browserOptions)
     }
