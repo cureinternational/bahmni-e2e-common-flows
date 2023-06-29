@@ -425,3 +425,21 @@ step("Enter random email address", async function () {
     await write(emailAddress, into(textBox(toRightOf("Email Address"))));
     gauge.message(`emailAddress ${emailAddress}`)
 });
+
+step("Enter random state for <AuthType>", async function (AuthType) {
+    if (AuthType == "DEMOGRAPHICS") {
+        var state = gauge.dataStore.scenarioStore.get("state")
+        await write(state, into(textBox(toRightOf("State"))));
+    }
+});
+
+step("Enter random District and pincode for <AuthType>", async function (AuthType) {
+    if (AuthType == "DEMOGRAPHICS") {
+        var state = gauge.dataStore.scenarioStore.get("district")
+        await write(state, into(textBox(toRightOf("District"))));
+        var pinCode = gauge.dataStore.scenarioStore.get("pincode")
+        await write(pinCode, into(textBox(toRightOf("Pin Code"))));
+        await click(link(pinCode));
+    }
+
+});
