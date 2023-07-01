@@ -46,7 +46,9 @@ step("Enter History and examination details <filePath>", async function (filePat
     for (var chiefComplaint of historyAndExaminationDetails.Chief_Complaints) {
         await scrollTo("Chief Complaint")
         await write(chiefComplaint.Chief_Complaint, into(textBox(toRightOf("Chief Complaint"))));
-        await click( link(chiefComplaint.Chief_Complaint));
+        await waitFor(async ()=>(await $("//a[contains(text(),'"+chiefComplaint.Chief_Complaint+"')]").exists()))
+        await waitFor(200);
+        await evaluate($("//a[contains(text(),'"+chiefComplaint.Chief_Complaint+"')]"), (el) => el.click());
         await write(chiefComplaint.Sign_symptom_duration, into($("//input[@type='number']")));
         await dropDown(toRightOf('for')).select(chiefComplaint.Units)
     }

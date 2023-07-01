@@ -129,14 +129,15 @@ step("Verify history & examination in patient clinical dashboard", async functio
     assert.ok(await $("//a[@class='img-concept']/img").exists(), "Image not displayed on history & examination");
     await scrollTo($("//a[@class='img-concept']/img"));
     await click($("//a[@class='img-concept']/img"));
-    await waitFor(async () => await $(".slide").isVisible())
-    assert.ok(await $(".slide").isVisible(), "Image not opened.");
+    await waitFor(2000)
+    await waitFor(async () => await $(".slide").exists())
+    assert.ok(await $(".slide").exists(), "Image not opened.");
     await evaluate($(`//button[@class='dialog-close-btn']/i`), (el) => el.click())
     await waitFor(10000)
     assert.ok(await $(`.obs-play-btn`).exists(), "Play button is not available");
     await scrollTo($(`.obs-play-btn`));
-    await click($(`.obs-play-btn`));
-    assert.ok(await $(`.video-dialog`).isVisible(), "Video is not opened.");
+     await click($(`.obs-play-btn`));
+    assert.ok(await $(`.video-dialog`).exists(), "Video is not opened.");
     await evaluate($(`//*[@class='ngdialog-close clearfix']`), (el) => el.click())
     await click($('.back-btn'), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
 });

@@ -228,40 +228,39 @@ step("Click Cancel", async function () {
     await click('Cancel')
 });
 
-step("Cancel appointment", async function () {
-    var btnstatus=await button("Cancel").isDisabled()
+step("Cancel <type> appointment", async function (type) {
+    var btnstatus= await button("Cancel").isDisabled()
     if(btnstatus)
     {
         var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
         var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
         await dropDown("Patient:").select(patientName+" ("+patientid+")")
         await scrollTo(text("Cancel"))
-        await click("Cancel")
-        await waitFor(500)
-        var yesBtn=await button("Yes").exists()
-        if(yesBtn)
+        await click($('//button[contains(text(),"Cancel")]'))
+        await waitFor(1000)
+        if("regular"==type)
         {
-            await click("Yes")
+
+            await evaluate($("button#yes"), (el) => el.click())  
         }
-        var cancelallBtn=await button("Cancel All").exists()
-        if(cancelallBtn)
+
+        else if("recurring"==type)
         {
-            await click("Cancel All")
+            await evaluate($("button#yes_all"), (el) => el.click())        
         }
     }
-    else if(!btnstatus)
+    else
     {
-        await click("Cancel")
-        await waitFor(500)
-        var yesBtn=await button("Yes").exists()
-        if(yesBtn)
+        await scrollTo(text("Cancel"))
+        await click($('//button[contains(text(),"Cancel")]'))
+        await waitFor(1000)
+        if("regular"==type)
         {
-            await click("Yes")
+            await evaluate($("button#yes"), (el) => el.click())
         }
-        var cancelallBtn=await button("Cancel All").exists()
-        if(cancelallBtn)
+        else if("recurring"==type)
         {
-            await click("Cancel All")
+            await evaluate($("button#yes_all"), (el) => el.click())
         }
         
     }
@@ -323,3 +322,4 @@ step("Verify the appointment locations",async function(){
     }
     
 })
+

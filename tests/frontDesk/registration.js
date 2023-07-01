@@ -38,6 +38,7 @@ const { faker } = require('@faker-js/faker/locale/en_IND');
 const alert=require("../../../components/taikoalert")
 var assert = require("assert");
 const { closeTab } = require('taiko');
+const { ClientRequest } = require('http');
 
 step("Open <moduleName> module", async function (moduleName) {
     try {
@@ -48,6 +49,12 @@ step("Open <moduleName> module", async function (moduleName) {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
+step("Click on <type> patient",async function(type){
+    if("cure"==type)
+    {
+        await click(text('CURE patient'))
+    }
+})
 step("Enter patient random first name", async function () {
     var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
     var patientGender = users.getRandomPatientGender();
@@ -265,8 +272,12 @@ step("Close visit", async function () {
     await scrollTo(button("Close Visit"))
     await highlight(button("Close Visit"))
     await click(button("Close Visit"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await closeTab()
-    await closeTab()
+    await reload()
+    await switchTo(/Patient Registration/)
+    await closeTab(/Patient Registration/)
+    await switchTo(/ADT/)
+    await closeTab(/ADT/)
+
 });
 
 step("Click on home page and goto registration module", async function () {
@@ -395,19 +406,19 @@ step("wait for create new button", async function () {
 });
 
 step("Open Patient ADT page",async function(){
-    waitFor(async () => !(await text('Patient ADT Page').exists()))
-    await click('Patient ADT Page')
+    await click('Patient ADT Page', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await waitFor(1000)
     await reload()
+    await switchTo(/ADT/)
 }
 )
 
 step("Open Visit attributes",async function()
 {
-    waitFor(async () => !(await text('Visit Attributes').exists()))
-    await click('Visit Attributes')
+    await click('Visit Attributes', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await waitFor(1000)
     await reload()
+    await switchTo(/Patient Registration/)
 })
 step("Confirm if you want to close the visit", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))

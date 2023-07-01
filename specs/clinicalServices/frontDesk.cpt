@@ -21,8 +21,9 @@
 * Log out if still logged in
 * Login as user <user>
 
-# Create a new patient with random patient details
+# Create a new <type> patient with random patient details
 * Click create new patient
+* Click on <type> patient
 * Enter patient random first name
 * Enter patient random middle name
 * Enter patient random last name
@@ -86,17 +87,17 @@
 * Close visit
 
 
-# Receptionist creates the patient
+# Receptionist creates the <type> patient
 * Open "Registration" module
-* Create a new patient with random patient details
+* Create a new <type> patient with random patient details
 
-# Receptionist creates the patient and starts an OPD
-* Receptionist creates the patient
+# Receptionist creates the <type> patient and starts an OPD
+* Receptionist creates the <type> patient
 * Start an OPD Visit
 
-# Receptionist creates the patient and starts an Special OPD
+# Receptionist creates the <type> patient and starts an Special OPD
 * Open "Registration" module
-* Create a new patient with random patient details
+* Create a new <type> patient with random patient details
 * Start an Special OPD Visit
 
 # Create a new patient with gender <gender> with name <firstName> <middleName> <lastName>, aged <age> with mobile number <mobileNumber>
@@ -121,7 +122,7 @@
 
 # Receptionist creates a patient and starts an IPD visit
 * Open "Registration" module
-* Create a new patient with random patient details
+* Create a new "cure" patient with random patient details
 * Start an IPD Visit
 
 # Save data

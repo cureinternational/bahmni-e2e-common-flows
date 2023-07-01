@@ -46,12 +46,12 @@
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 
-# Receptionist cancels the newly created appointment
+# Receptionist cancels the newly created <type> appointment
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
 * Click patient name
-* Cancel the appointment
+* Cancel the <type> appointment
 * reload the page
 
 
@@ -116,8 +116,8 @@
 * Goto Next week
 * Should not find the patient's name
 
-# Cancel the appointment
-* Cancel appointment
+# Cancel the <type> appointment
+* Cancel <type> appointment
 
 # Validate Appointment Details in Clinical Dashboard with status as <status>
 * Goto Clinical application

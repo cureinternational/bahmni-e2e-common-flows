@@ -38,27 +38,25 @@ var taikoHelper = require("./util/taikoHelper");
 var users = require("./util/users");
 const csvConfig = require("./util/csvConfig");
 var date = require("./util/date");
-var taikointeractions=require("./../../components/taikointeractions")
-var taikoclick=require("../../components/taikoclick")
-var taikowrite=require ("../../components/taikowrite")
+var taikoitr=require("./../../components/taikoInteraction")
 
 
 
 
 step("Goto Bed creation", async function () {
-    taikoclick.clickText('Bed')
+    taikoitr.Click("text","Bed",false)
 });
 
 step("Goto Admin home", async function () {
-    taikoclick.clickLinkLeftTo('Admission Locations')
+    taikoitr.Click("link",toLeftOf('Admission Locations'),false)
 });
 
 step("Goto Dictionary", async function () {
-    taikoclick.clickText('Dictionary')
+    taikoitr.Click('text','Dictionary',false)
 });
 
 step("Open <submodule>", async function (submodule) {
-    taikoclick.clickElement(submodule)
+    taikoitr.Click('default',submodule,false)
 });
 
 step("Open patient2 details by search", async function () {
