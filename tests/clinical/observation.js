@@ -37,12 +37,19 @@ step("Click Vitals", async function () {
 });
 
 step("Enter History and examination details <filePath>", async function (filePath) {
-    await click(link("History and Examination"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
     var historyAndExaminationFile = `./bahmni-e2e-common-flows/data/${filePath}.json`
 
     var historyAndExaminationDetails = JSON.parse(fileExtension.parseContent(historyAndExaminationFile))
     gauge.dataStore.scenarioStore.put("historyAndExaminationDetails", historyAndExaminationDetails)
+    if (!await link(historyAndExaminationDetails.ObservationFormName).exists(500, 1000)) {
+		await click("Add New Obs Form", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+		await scrollTo(button(historyAndExaminationDetails.ObservationFormName))
+		await click(button(historyAndExaminationDetails.ObservationFormName));
+	} else {
+		await scrollTo(button(historyAndExaminationDetails.ObservationFormName))
+		await click(link(historyAndExaminationDetails.ObservationFormName));
+	}
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     for (var chiefComplaint of historyAndExaminationDetails.Chief_Complaints) {
         await scrollTo("Chief Complaint")
         await write(chiefComplaint.Chief_Complaint, into(textBox(toRightOf("Chief Complaint"))));
@@ -59,12 +66,20 @@ step("Enter History and examination details <filePath>", async function (filePat
 });
 
 step("Enter Orthopaedic followup <filePath>", async function (filePath) {
-    await click(link("Orthopaedic Followup"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
     var followup = `./bahmni-e2e-common-flows/data/${filePath}.json`
 
     var followupdetails = JSON.parse(fileExtension.parseContent(followup))
     gauge.dataStore.scenarioStore.put("orthopaedicfollowupdetails", followupdetails)
+    if (!await link(followupdetails.ObservationFormName).exists(500, 1000)) {
+		await click("Add New Obs Form", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+		await scrollTo(button(followupdetails.ObservationFormName))
+		await click(button(followupdetails.ObservationFormName));
+	} else {
+		await scrollTo(button(followupdetails.ObservationFormName))
+		await click(link(followupdetails.ObservationFormName));
+	}
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+
     await dropDown(toRightOf('Author')).select(followupdetails.author)
     await write(followupdetails.comment, into(textBox(toRightOf("Comment"))));
     await write(followupdetails.subjective, into(textBox(toRightOf("Subjective"))));

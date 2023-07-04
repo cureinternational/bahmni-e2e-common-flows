@@ -52,7 +52,9 @@ step("Open <moduleName> module", async function (moduleName) {
 step("Click on <type> patient",async function(type){
     if("cure"==type)
     {
-        await click(text('CURE patient'))
+        await taikoHelper.repeatUntilNotFound($("#overlay"))
+        await waitFor(1000)
+        await click($('input#pre-registration-attribute'))
     }
 })
 step("Enter patient random first name", async function () {
@@ -407,7 +409,7 @@ step("wait for create new button", async function () {
 
 step("Open Patient ADT page",async function(){
     await click('Patient ADT Page', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(1000)
+    await waitFor(2000)
     await reload()
     await switchTo(/ADT/)
 }
@@ -416,7 +418,7 @@ step("Open Patient ADT page",async function(){
 step("Open Visit attributes",async function()
 {
     await click('Visit Attributes', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(1000)
+    await waitFor(2000)
     await reload()
     await switchTo(/Patient Registration/)
 })
