@@ -2,6 +2,31 @@ const { button, toRightOf, textBox, into, write, press, click, timeField, below,
 var date = require("./date");
 var assert = require("assert")
 
+
+async function Click(type, value, relativeLocator) {
+    const selector = getSelector(type, value);
+  
+    if (typeof relativeLocator === 'undefined') {
+      await click(selector);
+    } else {
+      await click(selector, relativeLocator);
+    }
+  }
+  
+  function getSelector(type, value) {
+    switch (type) {
+      case 'link':
+        return link(value);
+      case 'text':
+        return text(value);
+      case 'button':
+        return button(value);
+      case 'near':
+        return near(value);
+      default:
+        throw new Error('Invalid type: ' + type);
+    }
+  }
 async function repeatUntilEnabled(element) {
     var isDisabled = true;
     do {

@@ -279,6 +279,7 @@ step("Close visit", async function () {
     await closeTab(/Patient Registration/)
     await switchTo(/ADT/)
     await closeTab(/ADT/)
+    await waitFor(2000)
 
 });
 
