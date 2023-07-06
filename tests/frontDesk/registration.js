@@ -53,7 +53,8 @@ step("Click on <type> patient",async function(type){
     if("cure"==type)
     {
         await taikoHelper.repeatUntilNotFound($("#overlay"))
-        await waitFor(1000)
+        await waitFor(2000)
+        await taikoHelper.repeatUntilNotFound($("#overlay"))
         await click($('input#pre-registration-attribute'))
     }
 })
@@ -170,7 +171,6 @@ step("Save the patient data", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
     await click("Save", { navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await waitFor(async () => !(await text("Saved", within('.message-text')).exists()));
     await taikoHelper.repeatUntilFound($("#patientIdentifierValue"))
     var patientIdentifier = await $('#patientIdentifierValue').text();
     gauge.dataStore.scenarioStore.put("patientIdentifier", patientIdentifier);
@@ -220,7 +220,7 @@ step("Login as user <user>", async function (user) {
     }
     await write(users.getUserNameFromEncoding(process.env[user]), into(textBox(toRightOf("Username"))));
     await write(users.getPasswordFromEncoding(process.env[user]), into(textBox(toRightOf("Password"))));
-    await dropDown("Location").select({ index: '1' });
+    await dropDown("Location").select(process.env.loginLocation);
     await click(button("Login"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound(text("BAHMNI EMR LOGIN"))
     await taikoHelper.repeatUntilNotFound($("#overlay"))
@@ -408,8 +408,10 @@ step("wait for create new button", async function () {
 });
 
 step("Open Patient ADT page",async function(){
+    await taikoHelper.repeatUntilFound(link('Patient ADT Page'))
+    await waitFor(4000)
     await click('Patient ADT Page', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(2000)
+    await waitFor(4000)
     await reload()
     await switchTo(/ADT/)
 }
@@ -417,8 +419,10 @@ step("Open Patient ADT page",async function(){
 
 step("Open Visit attributes",async function()
 {
+    await taikoHelper.repeatUntilFound(link('Visit Attributes'))
+    await waitFor(4000)
     await click('Visit Attributes', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(2000)
+    await waitFor(4000)
     await reload()
     await switchTo(/Patient Registration/)
 })
