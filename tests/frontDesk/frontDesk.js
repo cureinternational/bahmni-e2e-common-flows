@@ -48,3 +48,16 @@ step("Verify the visit locations",async function(){
         assert.ok(actualLocationsList.includes(location))
     })
 })
+
+step("Verify the appointments in grid view",async function(){
+    await verifyGrid('Specialities')
+    await verifyGrid('Providers')
+    await verifyGrid('Services')
+    await verifyGrid('Locations')
+})
+
+async function verifyGrid(gridName){
+ var table=`//h3[text()='${gridName}']//parent::div//table`
+ var bool=await $(`${table}`).exists()
+ assert.ok(await $(`${table}`).exists())
+}
