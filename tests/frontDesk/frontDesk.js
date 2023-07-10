@@ -17,9 +17,10 @@ const {
     confirm,
     accept,
     button,
-    link
+    link,evaluate
 } = require('taiko');
 var assert = require("assert");
+const { getDefaultHighWaterMark } = require('stream');
 
 step("Verify the login locations in login page",async function(){
     var actualLocationsList=[]
@@ -61,3 +62,57 @@ async function verifyGrid(gridName){
  var bool=await $(`${table}`).exists()
  assert.ok(await $(`${table}`).exists())
 }
+
+step("Click on <wardType>",async function(wardType){
+
+    var ward=`//span[contains(text(),'${wardType}')]`
+    await scrollTo($(`${ward}`))
+    await click($(`${ward}`))
+})
+
+step("Enter the patient id in search box",async function(){
+    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
+})
+
+step("Verify the patient presence in the <wardType>",async function(wardType){
+    var ward=`//span[contains(text(),'${wardType}')]`
+    await scrollTo($(`${ward}`))
+    await click($(`${ward}`))
+    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
+    assert.ok(text(patientIdentifierValue).exists())
+})
+
+step("Admit the patient to ipd in <visitType> visit",async function(visitType){
+
+    await dropDown("Patient Movement:").select("Admit Patient");
+    await click("Admit")
+    await waitFor(1000)
+    if(visitType=='OPD')
+    {
+        await click('Continue with current Visit')
+    }
+    else
+    {
+        await click('Yes')
+
+    }
+})
+step("Search and select patient",async function(){
+    var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
+    var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+    var patientName = `${firstName} ${lastName}`
+    await write(patientName, into($("//input[@id='patientIdentifier']")))
+    await waitFor(async () => (await $(`//div[contains(text(),'${patientName}')]`).exists()));
+    await waitFor(200);
+    await evaluate($(`//div[contains(text(),'${patientName}')]`), (el) => el.click());
+})
+step("Select a bed from <wardType>",async function(wardType){
+    var ward=`//span[contains(text(),'${wardType}')]`
+    await scrollTo($(`${ward}`))
+    await click($(`${ward}`))
+    await click($('//ward-layout//descendant::li[@class="col available"]'))
+    await waitFor(1000)
+    await click("Assign")
+})
