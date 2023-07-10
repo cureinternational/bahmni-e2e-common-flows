@@ -392,11 +392,10 @@ step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
 });
 
 step("Choose newly created patient", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
     var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
 
-    await write(patientIdentifierValue);
+    await write(firstName);
     await click(`${firstName} ${lastName}`, {
         waitForNavigation: true,
         navigationTimeout: process.env.actionTimeout
