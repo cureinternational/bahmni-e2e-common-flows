@@ -132,10 +132,17 @@
 
 # Verify the patient is present in <wardType>
 * Verify the patient presence in the <wardType>
+* Click on home page
 
 # Admit the patient in <wardType>
 * Open Patient ADT page
 * Admit the patient to ipd in "OPD" visit
 * Select a bed from <wardType>
 * Click on home page
+
+# Verify the IPD dashboard
+* Click on IPD
+* Verify the ipd dashboard
+* Click back button
+* Click back button
 

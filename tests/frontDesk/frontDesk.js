@@ -115,4 +115,29 @@ step("Select a bed from <wardType>",async function(wardType){
     await click($('//ward-layout//descendant::li[@class="col available"]'))
     await waitFor(1000)
     await click("Assign")
+    await waitFor(200)
+    await click($(`${ward}`))
+
 })
+
+step("Click on IPD", async function(){
+    await waitFor(200)
+    await click('IPD')
+})
+
+step("Verify the ipd dashboard",async function(){
+    await verifyDisplayControl('Allergies')
+    await verifyDisplayControl('Diagnosis')
+    await verifyDisplayControl('Nutritional Values')
+    await verifyDisplayControl('Forms')
+    await verifyDisplayControl('Vitals')
+    await verifyDisplayControl('Lab Results')
+    await verifyDisplayControl('SF-12 WHODAS Score')
+    await verifyDisplayControl('EQ-5D')
+    await verifyDisplayControl('Recent Radiology Orders')
+
+})
+
+async function verifyDisplayControl(controlName){
+    assert.ok(await text(controlName).exists())
+   }
