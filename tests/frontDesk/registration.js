@@ -292,7 +292,7 @@ step("Click on home page and goto registration module", async function () {
 
 step("Click on home page", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await click($('.back-btn'), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await click($('//a[@class="back-btn" and @id="homeBackLink"]'), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
@@ -429,6 +429,7 @@ step("Open Visit attributes",async function()
 step("Confirm if you want to close the visit", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
     await confirm('Are you sure you want to close this visit?', async () => await accept())
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
 step("Upload patient image", async function () {

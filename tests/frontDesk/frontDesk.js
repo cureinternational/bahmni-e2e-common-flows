@@ -17,9 +17,10 @@ const {
     confirm,
     accept,
     button,
-    link,evaluate
+    link,evaluate, switchTo, closeTab
 } = require('taiko');
 var assert = require("assert");
+var taikoHelper = require("./../util/taikoHelper");
 const { getDefaultHighWaterMark } = require('stream');
 
 step("Verify the login locations in login page",async function(){
@@ -77,8 +78,13 @@ step("Enter the patient id in search box",async function(){
 
 step("Verify the patient presence in the <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    if(!await textBox({ "placeholder": "Search..." }).exists())
+    {
     await scrollTo($(`${ward}`))
     await click($(`${ward}`))
+    }
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
     assert.ok(text(patientIdentifierValue).exists())
@@ -87,6 +93,7 @@ step("Verify the patient presence in the <wardType>",async function(wardType){
 step("Admit the patient to ipd in <visitType> visit",async function(visitType){
 
     await dropDown("Patient Movement:").select("Admit Patient");
+    await waitFor(1000)
     await click("Admit")
     await waitFor(1000)
     if(visitType=='OPD')
@@ -115,14 +122,18 @@ step("Select a bed from <wardType>",async function(wardType){
     await click($('//ward-layout//descendant::li[@class="col available"]'))
     await waitFor(1000)
     await click("Assign")
-    await waitFor(200)
-    await click($(`${ward}`))
-
 })
 
+step("Select the patient",async function(){
+    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click(link(`${patientIdentifierValue}`))
+})
 step("Click on IPD", async function(){
-    await waitFor(200)
-    await click('IPD')
+    await waitFor(3000)
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click($('(//a[@ng-click="showDashboard(dashboard)"])[2]'))
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
 })
 
 step("Verify the ipd dashboard",async function(){
@@ -141,3 +152,8 @@ step("Verify the ipd dashboard",async function(){
 async function verifyDisplayControl(controlName){
     assert.ok(await text(controlName).exists())
    }
+
+step('Close the ADT page',async function(){
+    await switchTo(/ADT/)
+    await closeTab(/ADT/)
+    await waitFor(2000)})

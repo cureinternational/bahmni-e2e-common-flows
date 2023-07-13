@@ -323,3 +323,32 @@ step("Verify the appointment locations",async function(){
     
 })
 
+step("Verify the appointment specialitis list",async function(){
+ 
+    var speciality=process.env.specialityList.split(',')
+
+    for(let i=0;i<speciality.length;i++)
+    {
+        if(speciality[i]!='Active' && speciality[i]!='My Patients' && speciality[i]!='All') {
+            await write(speciality[i], into($("//div[@data-testid='speciality-search']//input")))
+            assert.ok(await $("//div[text()='" + speciality[i] + "']").exists());
+            await click($("//div[@data-testid='speciality-search']//input"))
+        }
+        
+    }
+    
+})
+
+step("Verify if all the providers are present",async function(){
+ 
+    var providers=process.env.providersList.split(',')
+
+    for(let i=0;i<providers.length;i++)
+    {
+        await write(providers[i], into($("//div[@data-testid='provider-search']//input")))
+        assert.ok(await $("//div[text()='" + providers[i] + "']").exists());
+        await click($("//div[@data-testid='provider-search']//button[1]"))
+    }
+    
+})
+
