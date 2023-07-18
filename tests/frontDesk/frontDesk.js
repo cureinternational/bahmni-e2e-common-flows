@@ -130,10 +130,11 @@ step("Select the patient",async function(){
     await click(link(`${patientIdentifierValue}`))
 })
 step("Click on IPD", async function(){
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     await waitFor(3000)
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await click($('(//a[@ng-click="showDashboard(dashboard)"])[2]'))
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await waitFor(async () => (await text('IPD').exists()),{interval: 1000})
+    await click(text('IPD'))
+    await waitFor(async () => (await text('EQ-5D').exists()))
 })
 
 step("Verify the ipd dashboard",async function(){

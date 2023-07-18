@@ -93,8 +93,11 @@ async function downloadAndReturnBase64Image() {
 
 async function randomZipCodeStateAndDistrict() {
     let rows = await csv().fromFile(path.resolve(__dirname, "../../data/", process.env.addresshierarchyPath));
-    var randomRow = faker.datatype.number({ min: 1, max: rows.length });
-    var kebele = rows[randomRow]["kebele"]
+    var kebele = undefined;
+    do{
+        var randomRow = faker.datatype.number({ min: 1, max: rows.length });
+         kebele = rows[randomRow]["kebele"]
+    }while(kebele==undefined)
     gauge.dataStore.scenarioStore.put("kebele", kebele)
     var woreda = rows[randomRow]["woreda"]
     gauge.dataStore.scenarioStore.put("woreda", woreda)

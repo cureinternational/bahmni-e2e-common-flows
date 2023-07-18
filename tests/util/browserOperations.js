@@ -56,41 +56,18 @@ beforeScenario(async (context) => {
     }
     catch (e) {
         await closeBrowser();
+        console.log("Error opening new browser - " + e.message)
         await openBrowser(browserOptions)
     }
-    await setConfig({ ignoreSSLErrors: true ,retryTimeout:30000});
-    // video generated is not helping.. if more than one tests are ran then the most of the time the failed output video is having some random images.
-    // if (process.env.record_video) {
-    //     let scenarioName = context.currentScenario.name;
-    //     let videoDir = process.env.video_file_path + '/' + scenarioName.replace(/ /g, "_")
-    //     gauge.dataStore.scenarioStore.put("videoDir", videoDir)
-    //     await video.startRecording(videoDir + '/video.mp4', 5);
-    // }
+    await setConfig({ ignoreSSLErrors: true ,retryTimeout:30000,waitForNavigation: true});
 }, { tags: ['ui'] });
 
 afterScenario(async (context) => {
-    // if (process.env.record_video) {
-    //     let videoDir = gauge.dataStore.scenarioStore.get("videoDir")
-    //     try {
-    //         if (!context.currentScenario.isFailed) {
-    //             fileExtension.removeDir(videoDir);
-    //             console.log("Video deleted for scenario - " + context.currentScenario.name)
-    //         } else {
-    //             await video.stopRecording();
-    //             if (fileExtension.exists(videoDir)) {
-    //                 console.log("Video successfully saved - " + videoDir + '/video.mp4')
-    //             } else {
-    //                 console.log("Video not successfully saved for scenario - " + context.currentScenario.name)
-    //             }
-    //         }
-    //     } catch (e) {
-    //         console.log("Error Stopping Video - " + e.message)
-    //     }
-    // }
     try {
+        await waitFor(2000)
         await closeBrowser();
     }
     catch (e) {
-        console.log("Error closing browser - " + e.message)
+        console.log("Error closing the existing browser - " + e.message)
     }
 }, { tags: ['ui'] });

@@ -271,16 +271,14 @@ step("Enter visit details", async function () {
 
 step("Close visit", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await waitFor(async () => (await text('Close Visit').exists()),{timeout: 5000, interval: 1000})
     await scrollTo(button("Close Visit"))
     await highlight(button("Close Visit"))
     await click(button("Close Visit"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await reload()
-    await switchTo(/Patient Registration/)
-    await closeTab(/Patient Registration/)
-    await switchTo(/ADT/)
-    await closeTab(/ADT/)
     await waitFor(2000)
-
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await waitFor(2000)
+    await switchTo(/OPD/)
 });
 
 step("Click on home page and goto registration module", async function () {
@@ -429,7 +427,6 @@ step("Open Visit attributes",async function()
 step("Confirm if you want to close the visit", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
     await confirm('Are you sure you want to close this visit?', async () => await accept())
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
 step("Upload patient image", async function () {
