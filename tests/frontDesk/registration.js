@@ -460,3 +460,32 @@ step("Select registration location",async function(){
     var location=process.env.Registration_location
     await dropDown(toRightOf("Registration Location")).select(location);
 })
+
+step("click on Relationships", async function () {
+await click(text("Relationships"))
+})
+
+step("Select the RelationType as <type>", async function (type) {
+    await dropDown(below("Relationships")).select(type);
+})
+
+step("Click on select person", async function () {
+    await click(text("Select Person"))
+})
+
+step("Create a new relation", async function () {
+    await click(text("Register New Person"))
+    await waitFor(2000)
+    var firstName = users.randomName(8)
+    gauge.message(`Relation firstName ${firstName}`)
+    await write(firstName, into($("//input[@name='firstName']")))
+    var lastName = users.randomName(8)
+    gauge.message(`Relation lastName ${lastName}`)
+    await write(lastName, into($("//input[@name='lastName']")))
+    await write('01/01/1970', into($('//input[@name="birthdate"]')))
+    await dropDown(below("Gender")).select('Male');
+    await write(firstName, into(textBox(below("First name"))))
+    await click(text("Register"))
+
+
+})
