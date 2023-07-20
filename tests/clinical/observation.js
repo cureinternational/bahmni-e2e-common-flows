@@ -45,7 +45,8 @@ step("Enter History and examination details <filePath>", async function (filePat
     for (var chiefComplaint of historyAndExaminationDetails.Chief_Complaints) {
         await scrollTo("Chief Complaint")
         await write(chiefComplaint.Chief_Complaint, into(textBox(toRightOf("Chief Complaint"))));
-        await click(chiefComplaint.Chief_Complaint, below(textBox(toRightOf("Chief Complaint"))));
+        await click($("//div[@role='option' and text()='"+chiefComplaint.Chief_Complaint+"']"));
+        // await click(chiefComplaint.Chief_Complaint, below(textBox(toRightOf("Chief Complaint"))));
         await write(chiefComplaint.Sign_symptom_duration, into($("//*[text()='Sign/symptom duration']//ancestor::div[@class='form-field-content-wrap']//input")));
         await click(button(chiefComplaint.Units), toRightOf("Units"));
     }
