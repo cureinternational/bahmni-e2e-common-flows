@@ -94,6 +94,13 @@ step("Click patient name", async function () {
     var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
     await scrollTo($(`//div[@class='fc-title' and contains(text(),'${firstName}')]`))
     await evaluate($(`//div[@class='fc-title' and contains(text(),'${firstName}')]`), (el) => el.click())
+    var btnstatus= await button("Cancel").isDisabled()
+    if(btnstatus)
+    {
+        var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
+        var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
+        await dropDown("Patient:").select(patientName+" ("+patientid+")")
+    }
 });
 
 step("Should not find the patient's name", async function () {

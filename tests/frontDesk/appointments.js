@@ -147,6 +147,12 @@ step("Click Save", async function () {
     await click("Save")
 });
 
+step("Click Update", async function () {
+    await click("Update")
+    await waitFor(2000)
+    await click("Yes, I confirm")
+});
+
 step("Check and Save", async function () {
     await click("Check and Save");
 });
@@ -266,6 +272,23 @@ step("Cancel <type> appointment", async function (type) {
     }
 });
 
+step("Click Edit <type> appointment", async function (type) {
+    var btnstatus= await button("Edit").isDisabled()
+    if(!btnstatus)
+    {
+        await scrollTo(button("Edit"))
+        await click(button("Edit"))
+    }
+
+});
+
+step("Update the time as <time>",async function(time){
+    var value=time.split(" ")
+    await clear(textBox(below("Start time")))
+    await clear(textBox(below("End time")))
+    await write(value[0], into(textBox(below("Start time"))));
+})
+
 step("Open admin tab of Appointments", async function () {
     await click("Admin")
     await taikoHelper.repeatUntilNotFound($("#overlay"))
@@ -352,3 +375,8 @@ step("Verify if all the providers are present",async function(){
     
 })
 
+step("Verify the patient appointment is re-scheduled at <appointmentTime>", async function (appointmentTime){
+    let appointmentStartTime = appointmentTime.split(" ")[0];
+    let appointmentEnd = appointmentTime.split(" ")[1];
+    assert.ok(text(`${appointmentStartTime}:00 ${appointmentEnd} - ${appointmentStartTime}:30 ${appointmentEnd}`, toRightOf('Slot:')).exists())
+ });

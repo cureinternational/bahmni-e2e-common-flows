@@ -1,0 +1,11 @@
+{
+    "ObservationFormName": "Patient Progress Notes and Orders",
+    "ObservationClinicalFormName":"Patient Progress Notes and Orders",
+    "ObservationFormDetails": [
+        {
+            "type": "DateTime",
+            "label": "Date and Time",
+            "value": "-1"
+        }
+    ]
+}

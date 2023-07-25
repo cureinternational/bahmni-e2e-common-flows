@@ -64,6 +64,14 @@
 * Click Cancel all
 * reload the page
 
+# Receptionist edits the newly created <type> appointment to <appointmentTime>
+* Open "Appointment scheduling" module
+* View all appointments
+* Goto appointments's date
+* Click patient name
+* Edit the <type> appointment to <appointmentTime>
+* reload the page
+
 # Receptionist creates a regular appointment <appointmentTime>
 * Open "Appointment scheduling" module
 * View all appointments
@@ -109,6 +117,15 @@
 * Goto appointments's date
 * Should not find the patient's name
 
+# The patient's appointment should be edited to <appointmentTime>
+* Click back button
+* Open "Appointment scheduling" module
+* View all appointments
+* Goto appointments's date
+* Click patient name
+* Verify the patient appointment is re-scheduled at <appointmentTime>
+* reload the page
+
 # The patient's appointment should not be found in next week
 * Click back button
 * Open "Appointment scheduling" module
@@ -124,3 +141,9 @@
 * Open clinical tab with all section
 * Verify the details in Appointments display control with status <status>
 * Click back button
+
+
+# Edit the <type> appointment to <appointmentTime>
+* Click Edit <type> appointment
+* Update the time as <appointmentTime>
+* Click Update
