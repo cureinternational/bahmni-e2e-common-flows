@@ -5,7 +5,49 @@
         {
             "type": "DateTime",
             "label": "Date and Time",
-            "value": "-1"
+            "value": "-1,09:30AM"
+        },
+        {
+            "type": "Group",
+            "label": "Physician Progress Notes Comments",
+            "value": [
+                {
+                    "type":"Button",
+                    "label":"Physician Progress Notes Comments",
+                    "value":"Xray check OK"
+                },
+                {
+                    "type":"Button",
+                    "label":"Physician Progress Notes Comments",
+                    "value":"CBC check OK"
+                }
+            ]
+        },
+        {
+            "type": "Group",
+            "label": "Physician Orders Comments",
+            "value": [
+                {
+                    "type":"Button",
+                    "label":"Physician Orders Comments",
+                    "value":"Prep for OR"
+                },
+                {
+                    "type":"Button",
+                    "label":"Physician Orders Comments",
+                    "value":"Patch cast"
+                }
+            ]
+        },
+        {
+            "type": "TypeDrowpdown",
+            "label": "Name",
+            "value": "Ashenafi Girma"
+        },
+        {
+            "type": "TextArea",
+            "label": "Acknowledged by staff",
+            "value": "Authorized by Dr. Ashenafi"
         }
     ]
 }
