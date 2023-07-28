@@ -229,6 +229,11 @@ step("Click Cancel all", async function () {
     await click("Cancel All")
 });
 
+step("Click yes", async function () {
+    await waitFor(async () => (await $("button#yes").exists()));
+    await evaluate($("button#yes"), (el) => el.click())
+});
+
 step("Click Cancel", async function () {
     await scrollTo('Cancel')
     await click('Cancel')
@@ -294,6 +299,10 @@ step("Open admin tab of Appointments", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
+step("Select awaiting appointments", async function () {
+    await click("Awaiting Appointments")
+});
+
 step("Create a service if it does not exist", async function () {
     if (await text(process.env.service).exists())
         return
@@ -302,6 +311,11 @@ step("Create a service if it does not exist", async function () {
     await write("For test automation", into(textBox({ placeHolder: "Enter description" })))
     await click("Save", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await taikoHelper.repeatUntilNotFound($("#overlay"))
+});
+
+step("Verify the appointment is present in waitlist", async function () {
+    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    assert.ok(await $("//A[text()='" +patientIdentifierValue+ "']").exists());
 });
 
 step("Manage locations", async function () {
@@ -380,3 +394,5 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
     let appointmentEnd = appointmentTime.split(" ")[1];
     assert.ok(text(`${appointmentStartTime}:00 ${appointmentEnd} - ${appointmentStartTime}:30 ${appointmentEnd}`, toRightOf('Slot:')).exists())
  });
+
+

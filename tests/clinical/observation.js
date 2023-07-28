@@ -107,3 +107,9 @@ step("Should not find the patient's name", async function () {
     var fullName = gauge.dataStore.scenarioStore.get("patientFullName")
     assert.ok(!await text(fullName).exists())
 });
+
+
+step("Click patient name from waitlist", async function () {
+    var fullName = gauge.dataStore.scenarioStore.get("patientFullName")
+    await click(text(fullName))
+});  
