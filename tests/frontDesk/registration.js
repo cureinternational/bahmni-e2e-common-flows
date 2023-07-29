@@ -481,11 +481,25 @@ step("Create a new relation", async function () {
     await write(firstName, into($("//input[@name='firstName']")))
     var lastName = users.randomName(8)
     gauge.message(`Relation lastName ${lastName}`)
+    gauge.dataStore.scenarioStore.put("relationName", firstName+' '+lastName)
     await write(lastName, into($("//input[@name='lastName']")))
     await write('01/01/1970', into($('//input[@name="birthdate"]')))
     await dropDown(below("Gender")).select('Male');
     await write(firstName, into(textBox(below("First name"))))
     await click(text("Register"))
+})
 
+step('Click on the newly added relation',async function(){
+    var relationName=gauge.dataStore.scenarioStore.get("relationName")
+    await click(text(relationName))
+})
 
+step('Add the phone number',async function(){
+    await waitFor(2000)
+    var phoneNumber=faker.phone.number('+919#########')
+    await write(phoneNumber,into($('//input[@name="mobilePhone"]')))
+})
+
+step('Update the relation',async function(){
+    await click(text("Update"))
 })

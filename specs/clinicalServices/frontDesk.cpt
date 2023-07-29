@@ -97,13 +97,20 @@
 * Click on select person
 * Create a new relation
 
+# Edit the relation
+* Click on the newly added relation
+* Add the phone number
+* Update the relation
+
 # Receptionist creates the <type> patient and starts an OPD
 * Receptionist creates the <type> patient
 * Start an OPD Visit
 
-# Receptionist creates the <type> patient and adds a relation and starts an OPD
+# Receptionist creates the <type> patient adds and edit a relation and starts an OPD
 * Receptionist creates the <type> patient
 * Add a relation
+* Save the patient data
+* Edit the relation
 * Save the patient data
 * Start an OPD Visit
 
