@@ -21,7 +21,7 @@ const {
 } = require('taiko');
 var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
-var date = require("../util/date")
+var assert = require('assert');
 
 step("click radiology",async function(){
 
@@ -69,6 +69,10 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
             if (await textBox(toRightOf("Drug Name")).exists()) {
                 await write(drugName, into(textBox(toRightOf("Drug Name"))));
                 await click(link(drugName, below(textBox(toRightOf("Drug Name")))));
+                if(medicalPrescriptions.rule!=undefined)
+            {
+                await dropDown(toRightOf("Rule")).select(medicalPrescriptions.rule);
+            }
                 await write(medicalPrescriptions.dose, into(textBox(toRightOf("Dose"))));
                 await dropDown(toRightOf("Units")).select(medicalPrescriptions.units);
                 await dropDown(toRightOf("Frequency")).select(medicalPrescriptions.frequency)
@@ -76,6 +80,16 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
                 await write(medicalPrescriptions.notes, into(textBox(toRightOf("Additional Instructions"))));
             }
             await click("Add");
+            if(medicalPrescriptions.rule!=undefined)
+            {
+             assert.ok(text(medicalPrescriptions.perDay).exists())
+             assert.ok(text(medicalPrescriptions.total).exists())
+            }
+           if(medicalPrescriptions.isIPD=='true')
+           {
+            await click(button('IPD'),toRightOf(medicalPrescriptions.drug_name))
+           }
+
         }
 
     }

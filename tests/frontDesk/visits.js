@@ -86,8 +86,18 @@ step("Verify medical prescription in patient clinical dashboard", async function
         var prescriptionFile = gauge.dataStore.scenarioStore.get("prescriptions" + i)
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         assert.ok(await text(medicalPrescriptions.drug_name, within($("#Treatments"))).exists())
-        assert.ok(await text(`${medicalPrescriptions.dose} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($("#Treatments"))).exists())
+        if(medicalPrescriptions.rule!=undefined)
+        {
+        assert.ok(await text(`${medicalPrescriptions.perDay}, ${medicalPrescriptions.frequency}`, within($("#Treatments"))).exists())
+        }
+        else
+        {
+            assert.ok(await text(`${medicalPrescriptions.dose} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($("#Treatments"))).exists())
+        }
         assert.ok(await text(`${medicalPrescriptions.duration} Day(s)`, within($("#Treatments"))).exists())
+        if(medicalPrescriptions.isIPD=='true'){
+            assert.ok(await text("Add to Drug Chart",toRightOf(medicalPrescriptions.drug_name), within($("#Treatments"))).exists())
+        }
     }
 });
 

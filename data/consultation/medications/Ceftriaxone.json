@@ -1,8 +1,12 @@
 {
     "drug_name": "Ceftriaxone 500 mg",
+    "rule":"mg/kg",
     "units": "mg",
     "frequency": "Every 12 hours",
     "dose": "1",
     "duration": "2",
-    "notes": "Every 12 hours for 5 days"
+    "notes": "Every 12 hours for 5 days",
+    "isIPD":"true",
+    "perDay": "70 mg",
+    "total":"280 mg"
 }

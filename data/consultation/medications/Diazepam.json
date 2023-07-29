@@ -4,5 +4,6 @@
     "frequency": "Every 6 hours",
     "dose": "1",
     "duration": "2",
-    "notes": "Every 6 hours as needed for anxiety"
+    "notes": "Every 6 hours as needed for anxiety",
+    "isIPD":"true"
 }

@@ -4,5 +4,6 @@
     "frequency": "Twice a day",
     "dose": "1",
     "duration": "7",
-    "notes": "Twice a day for 7 days"
+    "notes": "Twice a day for 7 days",
+    "isIPD":"true"
 }
