@@ -1,6 +1,7 @@
 const { button, toRightOf, textBox, into, write, press, click, timeField, below, scrollTo, text, evaluate, $, checkBox, waitFor, image, within, dropDown } = require('taiko');
 var date = require("./date");
-var assert = require("assert")
+var assert = require("assert");
+const { time } = require('console');
 
 
 async function Click(type, value, relativeLocator) {
@@ -118,6 +119,17 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 var dateValue = date.addDaysAndReturnDateInDDMMYYYY(configuration.value)
                 await write(dateValue, into(timeField(toRightOf(configuration.label))))
                 break;
+            case 'DateTime':
+                var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                var timeValue=configuration.value.split(",")[1]
+                await write(dateValue, into(timeField(toRightOf(configuration.label))))
+                await write(timeValue,$('//input[@type="time"]'))
+                break;
+            case 'TypeDrowpdown':
+                var dropDownLabel=configuration.label
+                var dropDownValue=configuration.value
+                await selectDropDown(dropDownLabel, dropDownValue)
+                break;
             case 'Dropdown':
                 var dropDownLabel=configuration.label
                 var dropDownValue=configuration.value
@@ -128,7 +140,14 @@ async function executeConfigurations(configurations, observationFormName, isNotO
         }
     }
 }
-
+async function selectDropDown(locator,value){
+    await click($('div#react-select-2--value'))
+    await write(value, into(toRightOf(locator)))
+    await waitFor(200);
+    var element=`//div[contains(text(),"${value}")]`
+    await waitFor(async () => (await $(`${element}`).exists()))
+    await click($(`${element}`))
+}
 async function validateFormFromFile(configurations) {
     for (var configuration of configurations) {
         var label = configuration.label
@@ -145,8 +164,11 @@ async function validateFormFromFile(configurations) {
                 var dateFormatted = date.addDaysAndReturnDateInShortFormat(value)
                 assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${dateFormatted}"]`).exists(), dateFormatted + " To Right of " + label + " is not exist.")
                 break;
+            case 'DateTime':
+                var dateFormatted = date.addDaysAndReturnDateInShortFormat(value.split(",")[0])
+                assert.ok((text(`${dateFormatted}]`)).exists(), dateFormatted + " To Right of " + label + " is not exist.")
+                break;
             default:
-                //assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${value}"]`).exists(), value + " To Right of " + label + " is not exist.")
                 assert.ok(await text(value).exists())
         }
     }
