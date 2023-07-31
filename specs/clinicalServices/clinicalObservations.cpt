@@ -68,6 +68,16 @@
 * Save data
 * Verify no error displayed on page
 
+# Verify the Radiologist name is displayed for <order>
+* Open "Orders" module
+* Select the patient
+* Click the order <order>
+* Select the Radiologist
+* Click Save
+* Click the order <order>
+* Verify the Radiologist Name
+
+
 # The doctor joins the link for the appointment
 * Open "Appointment scheduling" module
 * View all appointments
