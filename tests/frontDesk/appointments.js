@@ -36,7 +36,7 @@ step("View all appointments", async function () {
     await click(list);
 });
 
-step("Begin capturing appointment details", async function () {
+step("Click Add New appointment", async function () {
     await click("Add new appointment");
 });
 
@@ -115,10 +115,9 @@ step("Select location <location>", async function (location) {
     await dropDown("Location").select(location)
 });
 
-step("Enter appointment time <appointmentTime> into Start time", async function (appointmentTime) {
-    await write(appointmentTime, into(textBox(below("From"))));
-    //await click(`${appointmentTime}`)
-});
+step("Enter appointment time into Start time", async function () {
+    var time= gauge.dataStore.scenarioStore.get("startTime")
+    await write(time,into(textBox({placeholder:"hh:mm"})))});
 
 step("Close the appointment popup",async function(){
     await click("Add new appointment")
@@ -132,6 +131,10 @@ step("Open calender at time <appointmentTime>", async function (appointmentTime)
     await click($(".fc-widget-content"), toRightOf(`${appointmentTime}`));
     await taikoHelper.repeatUntilNotFound($("#overlay"))
     gauge.dataStore.scenarioStore.put("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
+    gauge.dataStore.scenarioStore.put("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
+    gauge.dataStore.scenarioStore.put("startTime", await textBox({ placeHolder: "hh:mm" }).value())
+    gauge.message(`Appointment start date ${gauge.dataStore.scenarioStore.get("startDate")}`)
+    gauge.message(`Appointment start time ${gauge.dataStore.scenarioStore.get("startTime")}`)   
 });
 
 step("put <appointmentDate> as appointment date", async function (appointmentDate) {
@@ -394,5 +397,17 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
     let appointmentEnd = appointmentTime.split(" ")[1];
     assert.ok(text(`${appointmentStartTime}:00 ${appointmentEnd} - ${appointmentStartTime}:30 ${appointmentEnd}`, toRightOf('Slot:')).exists())
  });
+
+ step('Enter the appointment date',async function(){
+    var appointmentDate=gauge.dataStore.scenarioStore.get("startDate")
+    await write(appointmentDate,into(textBox({placeholder:"mm/dd/yyyy"})))
+ })
+ step("Verify the conflict message",async function(){
+    assert.ok(await text("You have an overlapping conflict").exists())
+ }) 
+
+ step("Check and Save anyway",async function(){
+    await click("Save Anyway")
+ })
 
 

@@ -91,6 +91,29 @@
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 
+# Receptionist creates a conflict regular appointment
+* Open "Appointment scheduling" module
+* View all appointments
+* Goto Next week
+* Click Add New appointment
+* Select patient
+* Search and select category
+* Search and select speciality
+* Search and select service
+* Search and select provider
+* Search and select location
+* select the Regular appointment option
+* select appointment status as "Scheduled"
+* Enter the appointment date
+* Enter appointment time into Start time
+* Check and Save
+* Verify the conflict message
+* Check and Save anyway
+* wait for "1000"
+* Click Close
+* Select List View in Appointments
+* Get Apointmnet Date and Time
+
 # Receptionist creates a regular appointment <appointmentTime> on same day for provider <provider> for speciality <speciality> for service <service>
 * Open "Appointment scheduling" module
 * View all appointments
@@ -157,7 +180,7 @@
 # Receptionist creates a waitlist appointment
 * Open "Appointment scheduling" module
 * View all appointments
-* Begin capturing appointment details 
+* Click Add New appointment
 * Select patient 
 * Search and select category
 * Search and select speciality
