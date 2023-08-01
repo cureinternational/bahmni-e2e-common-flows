@@ -91,6 +91,13 @@
 * Open "Registration" module
 * Create a new <type> patient with random patient details
 
+# Receptionist updates the <type> patient
+* Open "Registration" module
+* Open newly created patient details by search
+* Click on <type> patient
+* Save the patient data
+
+
 # Add a relation
 * click on Relationships
 * Select the RelationType as "Father"
@@ -104,6 +111,10 @@
 
 # Receptionist creates the <type> patient and starts an OPD
 * Receptionist creates the <type> patient
+* Start an OPD Visit
+
+# Receptionist updates the newly created patient as <type> patient and starts an OPD
+* Receptionist updates the <type> patient
 * Start an OPD Visit
 
 # Receptionist creates the <type> patient adds and edit a relation and starts an OPD
@@ -168,4 +179,9 @@
 * Verify the ipd dashboard
 * Click back button
 * Click back button
+
+# Verify the patient is present in clinical module
+* Open "Clinical" module
+* Goto All sections and search the newly created patient
+* Verify the patient is not appearing
 

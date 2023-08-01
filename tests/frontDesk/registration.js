@@ -53,7 +53,8 @@ step("Click on <type> patient",async function(type){
     if("cure"==type)
     {
         await taikoHelper.repeatUntilNotFound($("#overlay"))
-        await waitFor(2000)
+        await waitFor(async () => (button("Save")).exists())
+        await waitFor(3000)
         await taikoHelper.repeatUntilNotFound($("#overlay"))
         await click($('input#pre-registration-attribute'))
     }

@@ -158,3 +158,8 @@ step('Close the ADT page',async function(){
     await switchTo(/ADT/)
     await closeTab(/ADT/)
     await waitFor(2000)})
+
+step("Verify the patient is not appearing",async function(){
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    assert.ok(text('No results found').exists())
+})
