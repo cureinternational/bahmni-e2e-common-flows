@@ -21,7 +21,7 @@ const {
 } = require('taiko');
 var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
-const { getDefaultHighWaterMark } = require('stream');
+var fileExtension = require("../util/fileExtension");
 
 step("Verify the login locations in login page",async function(){
     var actualLocationsList=[]
@@ -163,3 +163,63 @@ step("Verify the patient is not appearing",async function(){
     await taikoHelper.repeatUntilNotFound($("#overlay"))
     assert.ok(text('No results found').exists())
 })
+
+step("Verify the columns in the table <tableFile>",async function(tableFile){
+    var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
+    gauge.dataStore.scenarioStore.put("tableFile", tableFile)
+    var table = JSON.parse(fileExtension.parseContent(tableFile))
+    var tableHeaders = table.columns
+    var tableElement=`//table[@class='${table.class}']`
+    var headers=(await $(`${tableElement}//th`).elements()).length
+    for(let i=1;i<headers;i++)
+    {
+     var element=`${tableElement}//th[${i}]`
+     var columnHeader=(await $(element).text()).trim()
+     assert.ok(tableHeaders.includes(columnHeader))
+    }
+})
+
+step("Verify the sorting in the table <tableFile>",async function(tableFile){
+    var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
+    gauge.dataStore.scenarioStore.put("tableFile", tableFile)
+    var table = JSON.parse(fileExtension.parseContent(tableFile))
+    var tableElement=`//table[@class='${table.class}']`
+    var sortByColumn=table.sortBy.column
+    var sortByType=table.sortBy.type
+    var sortByOrder=table.sortBy.order
+    var columnId=table.columns.indexOf(sortByColumn)+1
+    var rows=(await $(`//tbody//tr//td[${columnId}]`).elements()).length
+    var sortByData=[]
+    for(let i=1;i<=rows;i++)
+    {
+        var element=`${tableElement}//tbody//tr[${i}]//td[${columnId}]`
+        var value=await (await $(element).text()).trim()
+        if(value=='')
+        {
+            value=await $(element).text()
+        }
+        sortByData.push(value)
+    }
+    verifyColumnSorting(sortByData,sortByType,sortByOrder)
+})
+
+function verifyColumnSorting(sortByData,sortByType,sortByOrder){
+    var unsortedDates=[...sortByData]
+    var sortedDates=[]
+    if('date'==sortByType)
+    {
+    if('asc'==sortByOrder)
+    {
+        sortedDates=sortDates(sortByData)
+    }
+    else
+   {
+    sortedDates=sortDates(sortByData).reverse()
+   }
+   }
+   assert.ok(JSON.stringify(sortedDates) === JSON.stringify(unsortedDates))
+}
+
+function sortDates(datesArray) {
+    return datesArray.sort((date1, date2) => new Date(date1) - new Date(date2));
+  }
