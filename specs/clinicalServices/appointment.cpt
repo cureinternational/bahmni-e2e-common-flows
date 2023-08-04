@@ -141,7 +141,6 @@
 * Should not find the patient's name
 
 # The patient's appointment should not be found in the waitlist
-* Click back button
 * Open "Appointment scheduling" module
 * Select awaiting appointments
 * Should not find the patient's name
@@ -166,7 +165,6 @@
 * Cancel <type> appointment
 
 # Validate Appointment Details in Clinical Dashboard with status as <status>
-* Goto Clinical application
 * Open clinical tab with all section
 * Verify the details in Appointments display control with status <status>
 * Click back button

@@ -60,7 +60,6 @@ step("Verify the appointments in grid view",async function(){
 
 async function verifyGrid(gridName){
  var table=`//h3[text()='${gridName}']//parent::div//table`
- var bool=await $(`${table}`).exists()
  assert.ok(await $(`${table}`).exists())
 }
 

@@ -52,7 +52,7 @@ step("Select patient", async function () {
     var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
     var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
-    await write(patientIdentifierValue, into($("//input[@role='searchbox']")))
+    await write(firstName, into($("//input[@role='searchbox']")))
     await waitFor(async () => (await $(`//a[text()='${patientName}']`).exists()));
     await waitFor(200);
     await evaluate($(`//a[text()='${patientName}']`), (el) => el.click());
