@@ -38,13 +38,13 @@ step("Verify the specialitis list", async function () {
 
 step("Verify the patient visit is added in my patient queue and the <speciality> queue",async function(speciality){
 
-    await click("My Patients")
+    await click("My Patients", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
     var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
     var fullName = firstName+' '+lastName
     assert.ok(await text(fullName).exists())
     waitFor(500)
-    await click(speciality)
+    await click(speciality, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     waitFor(500)
     assert.ok(await text(fullName).exists())
 })

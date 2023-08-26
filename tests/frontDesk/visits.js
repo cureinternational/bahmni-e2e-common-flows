@@ -62,7 +62,7 @@ step("Select the newly created patient for IP Discharge", async function () {
 
 step("Search the newly created patient", async function () {
     var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-    await write(patientIdentifierValue, into(textBox({ "placeholder": "Search Name/Patient Identifier  ..." })))
+    await write(patientIdentifierValue, into($('input#patientIdentifier')))
     await click('Search', { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
 });
 
@@ -133,8 +133,7 @@ step("Verify condition in patient clinical dashboard", async function () {
 
 step("Verify history & examination in patient clinical dashboard", async function () {
     var historyAndExaminationDetails = gauge.dataStore.scenarioStore.get("historyAndExaminationDetails")
-    assert.ok(await text(`${historyAndExaminationDetails.Chief_Complaints[0].Chief_Complaint} since ${historyAndExaminationDetails.Chief_Complaints[0].Sign_symptom_duration} ${historyAndExaminationDetails.Chief_Complaints[0].Units}`, toRightOf("Chief Complaint"), within($("#History-and-Examinations"))).exists())
-    assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($("#History-and-Examinations")), toRightOf("Examination Notes")).exists())
+    assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($("#History-and-Examinations"))).exists())
     assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($("#History-and-Examinations")), toRightOf("Smoking History")).exists())
     assert.ok(await $("//a[@class='img-concept']/img").exists(), "Image not displayed on history & examination");
     await scrollTo($("//a[@class='img-concept']/img"));

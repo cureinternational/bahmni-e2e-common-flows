@@ -40,8 +40,6 @@ step("put randomly generated names for patient", async function () {
 step("Goto Clinical application", async function () {
     try {
         await goto(process.env.bahmniHome, { waitForNavigation: true, navigationTimeout: process.env.loginTimeout });
-        await waitFor(2000)
-        await reload();
         await taikoHelper.repeatUntilNotFound($("#overlay"))
     } catch (e) {
         await reload();

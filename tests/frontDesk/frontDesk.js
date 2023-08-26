@@ -26,7 +26,7 @@ var fileExtension = require("../util/fileExtension");
 step("Verify the login locations in login page",async function(){
     var actualLocationsList=[]
     var actualLocationLength=(await $('//select[@id="location"]/option').elements()).length
-    for(let i=1;i<actualLocationLength;i++){
+    for(let i=1;i<=actualLocationLength;i++){
         var element=`//select[@id="location"]/option[${i}]`
         actualLocationsList.push(await $(element).text())
     }
@@ -40,7 +40,7 @@ step("Verify the login locations in login page",async function(){
 step("Verify the visit locations",async function(){
     var actualLocationsList=[]
     var actualLocationLength=(await $('//select[@ng-model="selectedLocationUuid"]/option').elements()).length
-    for(let i=1;i<actualLocationLength;i++){
+    for(let i=1;i<=actualLocationLength;i++){
         var element=`//select[@ng-model="selectedLocationUuid"]/option[${i}]`
         var cleanValue=(await $(element).text()).replace("\n","").trim()
         actualLocationsList.push(cleanValue)
@@ -91,6 +91,9 @@ step("Verify the patient presence in the <wardType>",async function(wardType){
 
 step("Admit the patient to ipd in <visitType> visit",async function(visitType){
 
+    taikoHelper.repeatUntilNotFound($("#overlay"))
+    await waitFor(() => dropDown("Patient Movement:").exists(), 8000)
+    await waitFor(4000)
     await dropDown("Patient Movement:").select("Admit Patient");
     await waitFor(1000)
     await click("Admit")

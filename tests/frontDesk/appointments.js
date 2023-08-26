@@ -148,6 +148,7 @@ step("Compute end time", async function () {
 
 step("Click Save", async function () {
     await click("Save")
+    taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
 step("Click Update", async function () {
@@ -235,6 +236,7 @@ step("Click Cancel all", async function () {
 step("Click yes", async function () {
     await waitFor(async () => (await $("button#yes").exists()));
     await evaluate($("button#yes"), (el) => el.click())
+    await waitFor(1000)
 });
 
 step("Click Cancel", async function () {

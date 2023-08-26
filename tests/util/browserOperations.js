@@ -59,7 +59,7 @@ beforeScenario(async (context) => {
         console.log("Error opening new browser - " + e.message)
         await openBrowser(browserOptions)
     }
-    await setConfig({ ignoreSSLErrors: true ,retryTimeout:30000,waitForNavigation: true});
+    await setConfig({ ignoreSSLErrors: true ,retryTimeout:parseInt(process.env.retryTimeout),waitForNavigation: true});
 }, { tags: ['ui'] });
 
 afterScenario(async (context) => {

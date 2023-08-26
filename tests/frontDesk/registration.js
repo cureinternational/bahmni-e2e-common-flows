@@ -41,11 +41,9 @@ const { closeTab } = require('taiko');
 const { ClientRequest } = require('http');
 
 step("Open <moduleName> module", async function (moduleName) {
-    try {
-        await waitFor(async () => (await link("Registration").exists()))
-    } catch (e) { }
+    await waitFor(async () => (await link("Registration").exists()),{timeout: process.env.actionTimeout, interval: 1000})
     await scrollTo(moduleName)
-    await click(moduleName, { waitForNavigation: true, waitForEvents: ['networkIdle', 'DOMContentLoaded'], navigationTimeout: process.env.actionTimeout });
+    await click(moduleName, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
@@ -253,6 +251,7 @@ step("Enter registration fees <arg0>", async function (arg0) {
 
 step("Click back button", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await waitFor(async () => (await $('.back-btn').exists()),{timeout: process.env.actionTimeout, interval: 1000})
     await click($('.back-btn'), { force: true, waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
@@ -291,7 +290,13 @@ step("Click on home page and goto registration module", async function () {
 
 step("Click on home page", async function () {
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await click($('//a[@class="back-btn" and @id="homeBackLink"]'), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await click($('//i[@class="fa fa-home"]'), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+});
+
+step("Click on active patients list", async function () {
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await goto(process.env.bahmniActivePatientList)
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 });
 
@@ -301,13 +306,12 @@ step("Open newly created patient details by search", async function () {
     console.log(`patient Identifier ${patientIdentifierValue}`)
     gauge.message(`patient Identifier ${patientIdentifierValue}`)
 
-    await write(patientIdentifierValue, into(textBox({ "placeholder": "Enter ID" })))
+    await write(patientIdentifierValue, into($('input#registrationNumber')))
     await press('Enter', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound($("#overlay"))
 
-    try {
-        await click(link(patientIdentifierValue), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    } catch (e) { }
+if(await link(patientIdentifierValue).exists()){ await click(link(patientIdentifierValue), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })}       
+
 });
 
 step("Verify correct patient form is open", async function () {
@@ -408,7 +412,7 @@ step("wait for create new button", async function () {
 
 step("Open Patient ADT page",async function(){
     await taikoHelper.repeatUntilFound(link('Patient ADT Page'))
-    await waitFor(4000)
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     await click('Patient ADT Page', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await waitFor(4000)
     await reload()
@@ -419,7 +423,7 @@ step("Open Patient ADT page",async function(){
 step("Open Visit attributes",async function()
 {
     await taikoHelper.repeatUntilFound(link('Visit Attributes'))
-    await waitFor(4000)
+    await taikoHelper.repeatUntilNotFound($("#overlay"))
     await click('Visit Attributes', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await waitFor(4000)
     await reload()

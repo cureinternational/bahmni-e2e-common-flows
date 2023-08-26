@@ -29,7 +29,7 @@ var fileExtension = require("../util/fileExtension");
 step("Click the order <order>", async function (order) {
     var orderFile = `./bahmni-e2e-common-flows/data/${order}.json`;
     var radiologyOrder = JSON.parse(fileExtension.parseContent(orderFile))
-    await click(radiologyOrder.test)
+    await click(text(radiologyOrder.test))
  });
 
  step("Select the Radiologist",async function(){

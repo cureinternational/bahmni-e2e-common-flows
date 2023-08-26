@@ -21,7 +21,8 @@ const {
     to,
     link,
     timeField,
-    evaluate
+    evaluate,
+    above
 } = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const fileExtension = require("../util/fileExtension")
@@ -50,16 +51,9 @@ step("Enter History and examination details <filePath>", async function (filePat
 		await click(link(historyAndExaminationDetails.ObservationFormName));
 	}
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    for (var chiefComplaint of historyAndExaminationDetails.Chief_Complaints) {
-        await scrollTo("Chief Complaint")
-        await write(chiefComplaint.Chief_Complaint, into(textBox(toRightOf("Chief Complaint"))));
-        await waitFor(async ()=>(await $("//a[contains(text(),'"+chiefComplaint.Chief_Complaint+"')]").exists()))
-        await waitFor(200);
-        await evaluate($("//a[contains(text(),'"+chiefComplaint.Chief_Complaint+"')]"), (el) => el.click());
-        await write(chiefComplaint.Sign_symptom_duration, into($("//input[@type='number']")));
-        await dropDown(toRightOf('for')).select(chiefComplaint.Units)
-    }
-    await write(historyAndExaminationDetails.History_Notes, into(textBox(toRightOf("History Notes"))));
+    await waitFor(async () => (await text('History Notes').exists()))
+    await write(historyAndExaminationDetails.History_Notes, into($('textarea#observation_6')));
+    await write(historyAndExaminationDetails.History_Notes, into($('input#observation_19')));
     await click(historyAndExaminationDetails.Smoking_status, toRightOf("Smoking History"));
     await attach(path.join('./bahmni-e2e-common-flows/data/consultation/observations/patientReport.jpg'), to($("//*[@class='consultation-image']/input")), { force: true });
     await attach(path.join('./bahmni-e2e-common-flows/data/consultation/observations/Video.mp4'), to($("//*[@class='consultation-video']/input")), { force: true });

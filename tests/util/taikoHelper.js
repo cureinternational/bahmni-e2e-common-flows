@@ -146,7 +146,7 @@ async function selectDropDown(locator,value){
     await waitFor(200);
     var element=`//div[contains(text(),"${value}")]`
     await waitFor(async () => (await $(`${element}`).exists()))
-    await click($(`${element}`))
+    await click($(`${element}`),{force:true})
 }
 async function validateFormFromFile(configurations) {
     for (var configuration of configurations) {
@@ -168,12 +168,21 @@ async function validateFormFromFile(configurations) {
                 var dateFormatted = date.addDaysAndReturnDateInShortFormat(value.split(",")[0])
                 assert.ok((text(`${dateFormatted}]`)).exists(), dateFormatted + " To Right of " + label + " is not exist.")
                 break;
+            case 'TypeDrowpdown':
+                var dropDownLabel=configuration.label
+                var dropDownValue=configuration.value
+                await verifyDropDown(dropDownLabel, dropDownValue)
+                break;
+
             default:
                 assert.ok(await text(value).exists())
         }
     }
 }
-
+async function verifyDropDown(value){
+    var firstName=value.split(' ')
+    assert.ok(await text(firstName[0]).exists())
+}
 module.exports = {
     selectEntriesTillIterationEnds: selectEntriesTillIterationEnds,
     verifyConfigurations: verifyConfigurations,

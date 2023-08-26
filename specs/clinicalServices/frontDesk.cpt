@@ -7,9 +7,6 @@
 
 # Login to Bahmni as a <user>
 * Goto Clinical application
-* Check if "Clinical Service" app is opened
-* wait for overlay to disappear
-* Log out if still logged in
 * Verify the login locations in login page
 * Login as user <user>
 
