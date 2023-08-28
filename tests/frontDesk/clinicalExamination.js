@@ -23,14 +23,43 @@ var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 var assert = require('assert');
 
+var radiology='Radiology'
+var laboratory='Laboratory'
+var drugName = gauge.dataStore.scenarioStore.get("Drug Name")
+var drugName='Drug Name'
+var rule='Rule'
+var dose='Dose'
+var units='Units'
+var frequency='Frequency'
+var duration='Duration'
+var additonalInstructions='Additional Instructions'
+var add='Add'
+var ipd='IPD'
+var consultation='Consultation'
+var disposition='Disposition'
+var dispositionType='Disposition Type'
+var admissionNotes='Admission Notes'
+var dispositionNotes='Disposition Notes'
+var admitPatient='Admit Patient'
+var dischargePatient='Discharge Patient'
+var overlay='#overlay'
+var save='Save'
+var joinTeleconsultation='Join Teleconsultation'
+var teleConsulation='Tele Consultation'
+var scheduled='Scheduled'
+var closeConsultation='[ng-click="closeTeleConsultation()"]'
+var diagnoses='Diagnoses'
+var order='Order'   
+var certainty='Certainty'
+
 step("click radiology",async function(){
 
-    await click("Radiology")
+    await click(radiology)
 })
 
 step("click laboratory",async function(){
 
-    await click("Laboratory")
+    await click(laboratory)
 })
 
 step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile) {
@@ -56,30 +85,27 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
     var prescriptionsCount = prescriptionsList.length
     gauge.dataStore.scenarioStore.put("prescriptionsCount", prescriptionsCount)
     for (var i = 0; i < prescriptionsCount; i++) {
-
         var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
         gauge.dataStore.scenarioStore.put("prescriptions" + i, prescriptionFile)
-        var drugName = gauge.dataStore.scenarioStore.get("Drug Name")
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         gauge.message(medicalPrescriptions)
-
         if (medicalPrescriptions.drug_name != null) {
             if (drugName == null)
                 drugName = medicalPrescriptions.drug_name;
-            if (await textBox(toRightOf("Drug Name")).exists()) {
-                await write(drugName, into(textBox(toRightOf("Drug Name"))));
-                await click(link(drugName, below(textBox(toRightOf("Drug Name")))));
+            if (await textBox(toRightOf(drugName)).exists()) {
+                await write(drugName, into(textBox(toRightOf(drugName))));
+                await click(link(drugName, below(textBox(toRightOf(drugName)))));
                 if(medicalPrescriptions.rule!=undefined)
             {
-                await dropDown(toRightOf("Rule")).select(medicalPrescriptions.rule);
+                await dropDown(toRightOf(rule)).select(medicalPrescriptions.rule);
             }
-                await write(medicalPrescriptions.dose, into(textBox(toRightOf("Dose"))));
-                await dropDown(toRightOf("Units")).select(medicalPrescriptions.units);
-                await dropDown(toRightOf("Frequency")).select(medicalPrescriptions.frequency)
-                await write(medicalPrescriptions.duration, into(textBox(toRightOf("Duration"))));
-                await write(medicalPrescriptions.notes, into(textBox(toRightOf("Additional Instructions"))));
+                await write(medicalPrescriptions.dose, into(textBox(toRightOf(dose))));
+                await dropDown(toRightOf(units)).select(medicalPrescriptions.units);
+                await dropDown(toRightOf(frequency)).select(medicalPrescriptions.frequency)
+                await write(medicalPrescriptions.duration, into(textBox(toRightOf(duration))));
+                await write(medicalPrescriptions.notes, into(textBox(toRightOf(additonalInstructions))));
             }
-            await click("Add");
+            await click(add);
             if(medicalPrescriptions.rule!=undefined)
             {
              assert.ok(text(medicalPrescriptions.perDay).exists())
@@ -87,7 +113,7 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
             }
            if(medicalPrescriptions.isIPD=='true')
            {
-            await click(button('IPD'),toRightOf(medicalPrescriptions.drug_name))
+            await click(button(ipd),toRightOf(medicalPrescriptions.drug_name))
            }
 
         }
@@ -96,53 +122,52 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
 }
 );
 
-
 step("Doctor captures consultation notes <notes>", async function (notes) {
     gauge.dataStore.scenarioStore.put("consultationNotes", notes)
-    await click("Consultation", { force: true, waitForNavigation: true, waitForStart: 2000 });
+    await click(consultation, { force: true, waitForNavigation: true, waitForStart: 2000 });
     await waitFor(textBox({ placeholder: "Enter Notes here" }))
     await write(notes, into(textBox({ "placeholder": "Enter Notes here" })), { force: true })
     gauge.dataStore.scenarioStore.put("consultationNotes", notes);
 });
 
 step("Doctor clicks consultation", async function () {
-    await click("Consultation", { force: true, waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click(consultation, { force: true, waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Choose Disposition", async function () {
-    await click("Disposition", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await click(disposition, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
 });
 
 step("Doctor advises admitting the patient", async function () {
-    await waitFor(async () => (await dropDown("Disposition Type").exists()))
-    await dropDown("Disposition Type").select('Admit Patient')
-    await write("Admission Notes", into(textBox(below("Disposition Notes"))))
+    await waitFor(async () => (await dropDown(dispositionType).exists()))
+    await dropDown(dispositionType).select(admitPatient)
+    await write(admissionNotes, into(textBox(below(dispositionNotes))))
 });
 
 step("Doctor advises discharging the patient", async function () {
-    await waitFor(async () => (await dropDown("Disposition Type").exists()))
-    await dropDown("Disposition Type").select('Discharge Patient')
-    await write("Discharge Notes", into(textBox(below("Disposition Notes"))))
+    await waitFor(async () => (await dropDown(dispositionType).exists()))
+    await dropDown(dispositionType).select(dischargePatient)
+    await write(dispositionNotes, into(textBox(below(dispositionNotes))))
 });
 
 step("Open <tabName> Tab", async function (tabName) {
     await click(link(tabName), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout, force: true });
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Save visit data", async function () {
-    await click("Save", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await click(save, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
 });
 
 step("Join teleconsultation", async function () {
-    await scrollTo('Join Teleconsultation')
-    await click('Join Teleconsultation');
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await scrollTo(button('Join teleconsultation'), toRightOf("Scheduled"))
-    await click(button('Join teleconsultation', toRightOf("Scheduled")), { waitForNavigation: false, navigationTimeout: 3000 })
-    await highlight('Tele Consultation')
-    await click(($('[ng-click="closeTeleConsultation()"]')));
+    await scrollTo(joinTeleconsultation)
+    await click(joinTeleconsultation);
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await scrollTo(button(joinTeleconsultation), toRightOf(scheduled))
+    await click(button(joinTeleconsultation, toRightOf(scheduled)), { waitForNavigation: false, navigationTimeout: 3000 })
+    await highlight(teleConsulation)
+    await click(($(closeConsultation)));
 });
 
 step("Doctor notes the diagnosis and condition <filePath>", async function (filePath) {
@@ -151,10 +176,10 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
     var medicalDiagnosis = JSON.parse(fileExtension.parseContent(diagnosisFile))
     gauge.dataStore.scenarioStore.put("medicalDiagnosis", medicalDiagnosis)
     gauge.message(medicalDiagnosis)
-    await click("Diagnoses");
-    await write(medicalDiagnosis.diagnosis.diagnosisName, into(textBox(below("Diagnoses"))));
+    await click(diagnoses);
+    await write(medicalDiagnosis.diagnosis.diagnosisName, into(textBox(below(diagnoses))));
     await waitFor(() => $("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]").isVisible())
     await click($("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]"))
-    await click(medicalDiagnosis.diagnosis.order, below("Order"));
-    await click(medicalDiagnosis.diagnosis.certainty, below("Certainty"));
+    await click(medicalDiagnosis.diagnosis.order, below(order));
+    await click(medicalDiagnosis.diagnosis.certainty, below(certainty));
 });

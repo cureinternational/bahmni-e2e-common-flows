@@ -23,14 +23,33 @@ var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
 var fileExtension = require("../util/fileExtension");
 
+var expectedLocationsList=process.env.registrationLocations.split(",")
+   var locationOption='//select[@id="location"]/option'
+   var visitLocationOption='//select[@ng-model="selectedLocationUuid"]/option'
+   var expectedLocationsList=process.env.registrationLocations.split(",")
+   var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+   var overlay='#overlay'
+   var patientMovementDropdown='Patient Movement:'
+   var admitPatient='Admit Patient'
+   var admit='Admit'
+   var continueText='Continue with current Visit'
+   var yes='Yes'
+   var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
+   var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+   var patientIdentifierElement='//input[@id="patientIdentifier"]'
+   var availableBed='//ward-layout//descendant::li[@class="col available"]'
+   var assign='Assign'
+   var ipd='IPD'
+   var eq5d='EQ-5D'
+   var noResultsFound='No results found'
+   
 step("Verify the login locations in login page",async function(){
     var actualLocationsList=[]
-    var actualLocationLength=(await $('//select[@id="location"]/option').elements()).length
+    var actualLocationLength=(await $(locationOption).elements()).length
     for(let i=1;i<=actualLocationLength;i++){
         var element=`//select[@id="location"]/option[${i}]`
         actualLocationsList.push(await $(element).text())
     }
-    var expectedLocationsList=process.env.registrationLocations.split(",")
     expectedLocationsList.forEach((location)=>{
         assert.ok(actualLocationsList.includes(location))
     })
@@ -39,13 +58,12 @@ step("Verify the login locations in login page",async function(){
 
 step("Verify the visit locations",async function(){
     var actualLocationsList=[]
-    var actualLocationLength=(await $('//select[@ng-model="selectedLocationUuid"]/option').elements()).length
+    var actualLocationLength=(await $(visitLocationOption).elements()).length
     for(let i=1;i<=actualLocationLength;i++){
         var element=`//select[@ng-model="selectedLocationUuid"]/option[${i}]`
         var cleanValue=(await $(element).text()).replace("\n","").trim()
         actualLocationsList.push(cleanValue)
     }
-    var expectedLocationsList=process.env.registrationLocations.split(",")
     expectedLocationsList.forEach((location)=>{
         assert.ok(actualLocationsList.includes(location))
     })
@@ -71,7 +89,6 @@ step("Click on <wardType>",async function(wardType){
 })
 
 step("Enter the patient id in search box",async function(){
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
 })
 
@@ -84,59 +101,59 @@ step("Verify the patient presence in the <wardType>",async function(wardType){
     await click($(`${ward}`))
     }
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
     assert.ok(text(patientIdentifierValue).exists())
 })
 
 step("Admit the patient to ipd in <visitType> visit",async function(visitType){
 
-    taikoHelper.repeatUntilNotFound($("#overlay"))
-    await waitFor(() => dropDown("Patient Movement:").exists(), 8000)
+    taikoHelper.repeatUntilNotFound($(overlay))
+    await waitFor(() => dropDown(patientMovementDropdown).exists(), 8000)
     await waitFor(4000)
-    await dropDown("Patient Movement:").select("Admit Patient");
+    await dropDown(patientMovementDropdown).select(admitPatient);
     await waitFor(1000)
-    await click("Admit")
+    await click(admit)
     await waitFor(1000)
     if(visitType=='OPD')
     {
-        await click('Continue with current Visit')
+        await click(continueText)
     }
     else
     {
-        await click('Yes')
+        await click(yes)
 
     }
 })
+
 step("Search and select patient",async function(){
-    var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-    var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+  
     var patientName = `${firstName} ${lastName}`
-    await write(patientName, into($("//input[@id='patientIdentifier']")))
-    await waitFor(async () => (await $(`//div[contains(text(),'${patientName}')]`).exists()));
+    await write(patientName, into($(patientIdentifierElement)))
+    var patientNameElement=`//div[contains(text(),'${patientName}')]`
+    await waitFor(async () => (await $(patientNameElement).exists()));
     await waitFor(200);
-    await evaluate($(`//div[contains(text(),'${patientName}')]`), (el) => el.click());
+    await evaluate($(patientNameElement), (el) => el.click());
 })
 step("Select a bed from <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
     await scrollTo($(`${ward}`))
     await click($(`${ward}`))
-    await click($('//ward-layout//descendant::li[@class="col available"]'))
+    await click($(availableBed))
     await waitFor(1000)
-    await click("Assign")
+    await click(assign)
 })
 
 step("Select the patient",async function(){
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
     await click(link(`${patientIdentifierValue}`))
 })
+
 step("Click on IPD", async function(){
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
     await waitFor(3000)
-    await waitFor(async () => (await text('IPD').exists()),{interval: 1000})
-    await click(text('IPD'))
-    await waitFor(async () => (await text('EQ-5D').exists()))
+    await waitFor(async () => (await text(ipd).exists()),{interval: 1000})
+    await click(text(ipd))
+    await waitFor(async () => (await text(eq5d).exists()))
 })
 
 step("Verify the ipd dashboard",async function(){
@@ -155,15 +172,15 @@ step("Verify the ipd dashboard",async function(){
 async function verifyDisplayControl(controlName){
     assert.ok(await text(controlName).exists())
    }
-
+   
 step('Close the ADT page',async function(){
     await switchTo(/ADT/)
     await closeTab(/ADT/)
     await waitFor(2000)})
 
 step("Verify the patient is not appearing",async function(){
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
-    assert.ok(text('No results found').exists())
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    assert.ok(text(noResultsFound).exists())
 })
 
 step("Verify the columns in the table <tableFile>",async function(tableFile){

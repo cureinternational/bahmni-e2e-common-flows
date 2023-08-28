@@ -45,7 +45,7 @@ var providerSearch='provider-search'
 var locationSearch='location-search'
 var time= gauge.dataStore.scenarioStore.get("startTime")
 var location = 'Location'
-var appointmentDate = 'Appointment date'
+var appointmentDateElement = 'Appointment date'
 var summary='Summary'
 var yes='Yes'
 var fcwidgetcontent='.fc-widget-content'
@@ -71,7 +71,6 @@ var cancelAll='Cancel All'
 var btnYes='button#yes'
 var btnYesAll='button#yes_all'
 var cancel='Cancel'
-var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
 var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
 var cancelBtn='//button[contains(text(),"Cancel")]'
 var patientDropdown='Patient:'
@@ -97,7 +96,7 @@ var locations=process.env.registrationLocations.split(',')
 var providers=process.env.providersList.split(',')
 var providerSearchInput="//div[@data-testid='provider-search']//input"
 var providerSearchBtn="//div[@data-testid='provider-search']//button[1]"
-var appointmentDate=gauge.dataStore.scenarioStore.get("startDate")
+var appointmentStartDate=gauge.dataStore.scenarioStore.get("startDate")
 var conflictMessage='You have an overlapping conflict'
 var saveAnyway='Save Anyway'
 
@@ -173,8 +172,8 @@ step("Search and select appointment location", async function () {
 });
 
 step("Select appointment date <date>", async function (date) {
-    await clear(textBox(below(appointmentDate)))
-    await write(date,into(textBox(below(appointmentDate))))
+    await clear(textBox(below(appointmentDateElement)))
+    await write(date,into(textBox(below(appointmentDateElement))))
 });
 
 step("Select location <location>", async function (locationName) {
@@ -308,7 +307,7 @@ step("Cancel <type> appointment", async function (type) {
     var btnstatus= await button(cancel).isDisabled()
     if(btnstatus)
     {
-        await dropDown(patientDropdown).select(patientName+" ("+patientid+")")
+        await dropDown(patientDropdown).select(patientName+" ("+patientIdentifierValue+")")
         await scrollTo(text(cancel))
         await click($(cancelBtn))
         await waitFor(1000)
