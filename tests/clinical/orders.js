@@ -26,6 +26,8 @@ const {
 var assert = require("assert");
 var fileExtension = require("../util/fileExtension");
 
+var orderCompleted='Order is Completed'
+
 step("Click the order <order>", async function (order) {
     var orderFile = `./bahmni-e2e-common-flows/data/${order}.json`;
     var radiologyOrder = JSON.parse(fileExtension.parseContent(orderFile))
@@ -34,8 +36,8 @@ step("Click the order <order>", async function (order) {
 
  step("Select the Radiologist",async function(){
     var radiologist=process.env.radiologist
-    await waitFor(async () => (await text('Order is Completed').exists()))
-    await dropDown(below('Order is Completed')).select(radiologist)
+    await waitFor(async () => (await text(orderCompleted).exists()))
+    await dropDown(below(orderCompleted)).select(radiologist)
  })
 
  step("Verify the Radiologist Name",async function(){  

@@ -18,26 +18,56 @@ const {
     highlight,
     toLeftOf,
 } = require('taiko');
+
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
+var otScheduling = 'OT Scheduling'
+var newSurgicalBlock = 'New Surgical Block'
+var surgeon = 'Surgeon'
+var locationName = process.env["OTLocation"].split(":")[0]
+var location='Location'
+var startDateTime = 'Start Date-time'
+var endDateTime = 'End Date-time'
+var procedure = 'Procedure'
+var estTime='Est time'
+var estimatedTime='#estTimeMinutesID'
+var add='Add'
+var cancel='Cancel'
+var addSurgery='Add surgery'
+var cancelSurgery='Cancel Surgery'
+var reason='Reason'
+var enterReason='enter reason'
+var confirm='Confirm'
+let surgeonName = 'Surgeon - '+process.env.surgeon
+var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+var overlay='#overlay'
+var cancelBlock='Cancel Block'
+var postPoneBlock='Postpone Block'
+var reason='reason'
+var enterReason='enter reason'
+var save='Save'
+var today='Today'
+var week='Week'
+var edit='Edit'
+
+
 step("Click OT Scheduling", async function() {
-	await click("OT Scheduling")
+	await click(otScheduling)
 });
 
 step("Create a new surgical block", async function() {
-    await scrollTo("New Surgical Block")
-    await highlight("New Surgical Block")
-	await click("New Surgical Block",{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
+    await scrollTo(newSurgicalBlock)
+    await highlight(newSurgicalBlock)
+	await click(newSurgicalBlock,{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
 });
 
 step("Select the surgeon", async function() {
-    await highlight(dropDown(toRightOf("Surgeon")))
-	await dropDown(toRightOf("Surgeon")).select(process.env.surgeon);
+    await highlight(dropDown(toRightOf(surgeon)))
+	await dropDown(toRightOf(surgeon)).select(process.env.surgeon);
 });
 
 step("Select the theatre location", async function() {
-    var locationName = process.env["OTLocation"].split(":")[0]
-	await click(locationName,toRightOf("Location"));
+	await click(locationName,toRightOf(location));
 });
 
 step("Select tomorrow as the theatre booking date", async function() {
@@ -45,82 +75,79 @@ step("Select tomorrow as the theatre booking date", async function() {
     startDate.setHours(11)
     startDate.setMinutes(0)
     var endDate = date.addMinutes(startDate,300)
-	await timeField(toRightOf("Start Date-time")).select(startDate);
-    await timeField(toRightOf("End Date-time")).select(endDate);
+	await timeField(toRightOf(startDateTime)).select(startDate);
+    await timeField(toRightOf(endDateTime).select(endDate));
     
 });
 
 
 step("Enter procedure details", async function() {
-    await write("Procedure",into(textBox(above("Est time"))));
+    await write(procedure,into(textBox(above(estTime))));
 });
 
 step("Enter estimated time", async function() {
-    await write("15", $("#estTimeMinutesID"))
+    await write("15", $(estimatedTime))
 });
 
 step("Add surgery details", async function() {
-	await click("Add");
+	await click(add);
 });
 
 step("Cancel the surgery", async function() {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-    await highlight(button("Cancel"),toRightOf(patientIdentifierValue));
-    await scrollTo("Cancel")
-	await click("Cancel",toRightOf(patientIdentifierValue));
+    await highlight(button(cancel),toRightOf(patientIdentifierValue));
+    await scrollTo(cancel)
+	await click(cancel,toRightOf(patientIdentifierValue));
     await waitFor(patientIdentifierValue)
-    await highlight("Cancel Surgery")
-    await scrollTo("Cancel Surgery")
-    await click("Cancel Surgery");
+    await highlight(cancelSurgery)
+    await scrollTo(cancelSurgery)
+    await click(cancelSurgery);
 });
 
 step("Give reason", async function() {
-	await write("reason",into(textBox({placeHolder:"enter reason"})));
+	await write(reason,into(textBox({placeHolder:enterReason})));
 });
 
 step("Confirm cancellation", async function () {
-	await click("Confirm");
+	await click(confirm);
 });
 
 step("Add surgery", async function() {
-    await click("Add surgery");
+    await click(addSurgery);
 });
 
 step("Click doctor's OT schedule", async function() {
-    let surgeonName = 'Surgeon - '+process.env.surgeon
     await scrollTo(surgeonName)
 	await click(surgeonName)
 });
 
 step("Cancel surgeon's scheduled block", async function() {
-    await scrollTo("Cancel Block")
-	await click("Cancel Block")
+    await scrollTo(cancelBlock)
+	await click(cancelBlock)
     await waitFor("This change will affect all surgeries of the block")
-    await scrollTo("Cancel Block",toRightOf("Postpone Block"))
-    await click("Cancel Block",toRightOf("Postpone Block"))
+    await scrollTo(cancelBlock,toRightOf(postPoneBlock))
+    await click(cancelBlock,toRightOf(postPoneBlock))
 });
 
 step("Enter reason for surgical block cancellation", async function() {
-	await write("reason",into(textBox({placeHolder:"enter reason"})));
+	await write(reason,into(textBox({placeHolder:enterReason})));
 });
 
 step("Save OT data", async function() {
-    await click("Save",{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
-	await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click(save,{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
+	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Enter Patient id / name", async function() {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     await write(patientIdentifierValue,into(textBox({placeHolder:"Enter Patient ID/ Name"})));
     await click(`( ${patientIdentifierValue} )`)
 });
 
 step("Goto operation day", async function () {
-    await click(button(toRightOf("Today"),toLeftOf("Week")))
+    await click(button(toRightOf(today),toLeftOf(week)))
 });
 
 step("Edit doctor's OT schedule", async function() {
-    await highlight(button("Edit"))
-    await scrollTo("Edit")
-    await click(button("Edit"))
+    await highlight(button(edit))
+    await scrollTo(edit)
+    await click(button(edit))
 });

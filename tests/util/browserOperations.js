@@ -17,20 +17,8 @@ const fileExtension = require("../util/fileExtension")
 const manageUsers = require("../util/requestResponse")
 const headless = process.env.headless_chrome.toLowerCase() === 'true';
 
-beforeSuite(async () => {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    // try {
-    //     fileExtension.removeDir(process.env.video_file_path);
-    // } catch (e) {
-    //     console.log("Error Deleting directory - " + process.env.video_file_path + ". Error message - " + e.message)
-    // }
-   // await manageUsers.setRoles()
-});
 
-afterSuite(async () => {
-});
 
-// Return a screenshot file name
 gauge.customScreenshotWriter = async function () {
     const screenshotFilePath = path.join(process.env['gauge_screenshots_dir'],
         `screenshot-${process.hrtime.bigint()}.png`);

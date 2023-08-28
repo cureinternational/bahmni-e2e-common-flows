@@ -31,105 +31,168 @@ const taikoHelper = require("../util/taikoHelper")
 var assert = require("assert");
 const { stat } = require('fs');
 
+var addNewAppointment = 'Add new appointment'
+var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+var patientNameId='Patient Name or ID'
+var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
+var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+var searchbox='//input[@role="searchbox"]'
+var service='Service'
+var appointmentCategorySearch='appointment-category-search'
+var specialitySearch='speciality-search'
+var serviceSearch='service-search'
+var providerSearch='provider-search'
+var locationSearch='location-search'
+var time= gauge.dataStore.scenarioStore.get("startTime")
+var location = 'Location'
+var appointmentDate = 'Appointment date'
+var summary='Summary'
+var yes='Yes'
+var fcwidgetcontent='.fc-widget-content'
+var overlay='#overlay'
+var save='Save'
+var update='Update'
+var yesIConfirm='Yes, I confirm'
+var checkAndSave='Check and Save'
+var btn='button'
+var goNext='[ng-click="goToNext()"]'
+var appointmentStartDate = gauge.dataStore.scenarioStore.get("appointmentStartDate")
+var week='Week'
+var day='Day'
+var closeBtn='//div[@class="AddAppointment_close__2kahG"]'
+var discard='Discard'
+var listView='List view'
+var regularAppointment='Regular Appointment'
+var recurringAppointment='Recurring Appointment'
+var appointmentStartDate='Appointment start date'
+var inputOccurences='input#occurrences'
+var repeatsEvery='Repeats every'
+var cancelAll='Cancel All'
+var btnYes='button#yes'
+var btnYesAll='button#yes_all'
+var cancel='Cancel'
+var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
+var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
+var cancelBtn='//button[contains(text(),"Cancel")]'
+var patientDropdown='Patient:'
+var edit='Edit'
+var startTime='Start time'
+var endTime='End time'
+var admin='Admin'
+var awaitingAppointments='Awaiting Appointments'
+var addNewService='Add New Service'
+var save='Save'
+var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+var manageLocations='Manage Locations'
+var today='Today'
+var listView='List view'
+let appointmentDate = gauge.dataStore.scenarioStore.get("appointmentDate");
+let appointmentStartTime = gauge.dataStore.scenarioStore.get("appointmentStartTime");
+let appointmentEndTime = gauge.dataStore.scenarioStore.get("appointmentEndTime");
+var locationSearchInput="//div[@data-testid='location-search']//input"
+var locationSearchBtn="//div[@data-testid='location-search']//button[1]"
+var specialitySearchInput="//div[@data-testid='speciality-search']//input"
+var speciality=process.env.specialityList.split(',')
+var locations=process.env.registrationLocations.split(',')
+var providers=process.env.providersList.split(',')
+var providerSearchInput="//div[@data-testid='provider-search']//input"
+var providerSearchBtn="//div[@data-testid='provider-search']//button[1]"
+var appointmentDate=gauge.dataStore.scenarioStore.get("startDate")
+var conflictMessage='You have an overlapping conflict'
+var saveAnyway='Save Anyway'
+
 step("View all appointments", async function () {
     var list=process.env.appointmentList
     await click(list);
 });
 
 step("Click Add New appointment", async function () {
-    await click("Add new appointment");
+    await click(addNewAppointment);
 });
 
 step("Select Patient id", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-    await write(patientIdentifierValue, into(textBox({ placeHolder: "Patient Name or ID" })));
-    var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
+    await write(patientIdentifierValue, into(textBox({ placeHolder: patientNameId })));
     await click(firstName);
 });
 
 step("Select patient", async function () {
-    var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-    var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
-    await write(firstName, into($("//input[@role='searchbox']")))
-    await waitFor(async () => (await $(`//a[text()='${patientName}']`).exists()));
+    await write(firstName, into($(searchbox)))
+    var patientNameElement=`//a[text()='${patientName}']`
+    await waitFor(async () => (await $(patientNameElement).exists()));
     await waitFor(200);
-    await evaluate($(`//a[text()='${patientName}']`), (el) => el.click());
+    await evaluate($(patientNameElement), (el) => el.click());
 });
 
-step("Select service <service>", async function (service) {
-    await dropDown(toRightOf("Service")).select(service);
+step("Select service <service>", async function (serviceName) {
+    await dropDown(toRightOf(service)).select(serviceName);
 });
 
 step("Search and select category", async function () {
-    await selectDropDown('appointment-category-search',process.env.category)
+    await selectDropDown(appointmentCategorySearch,process.env.category)
 });
 
 step("Search and select speciality", async function () {
-    await selectDropDown('speciality-search',process.env.speciality)
+    await selectDropDown(specialitySearch,process.env.speciality)
 });
 
 step("Search and select speciality as <speciality>", async function (speciality) {
-    await selectDropDown('speciality-search',speciality)
+    await selectDropDown(specialitySearch,speciality)
 });
 
 step("Search and select service", async function () {
-    await selectDropDown('service-search',process.env.service)
+    await selectDropDown(serviceSearch,process.env.service)
 });
 
 step("Search and select service as <service>", async function (service) {
-    await selectDropDown('service-search',service)
+    await selectDropDown(serviceSearch,service)
 });
 
 step("Search and select provider", async function () {
-    await selectDropDown('provider-search',process.env.provider)
+    await selectDropDown(providerSearch,process.env.provider)
 });
 
 step("Search and select provider as <provider>", async function (provider) {
-    await selectDropDown('provider-search',provider)
+    await selectDropDown(providerSearch,provider)
 });
 step("Search and select location", async function () {
-    await selectDropDown('location-search',process.env.location)
+    await selectDropDown(locationSearch,process.env.location)
 });
 
 async function selectDropDown(locator,value){
     var element=`//div[@data-testid='${locator}']//input`
     await write(value, into($(element)))
-    await waitFor(async () => (await $("//div[text()='" + value + "']").exists()));
+    var selectableElement="//div[text()='" + value + "']"
+    await waitFor(async () => (await $(selectableElement).exists()));
     await waitFor(200);
-    await evaluate($("//div[text()='" + value + "']"), (el) => el.click());
+    await evaluate($(selectableElement), (el) => el.click());
 }
 step("Search and select appointment location", async function () {
-    await click("Location");
+    await click(location);
     await click(process.env.appointmentLocation);
 });
 
 step("Select appointment date <date>", async function (date) {
-    //await timeField({ type: "date" }, below("Appointment date")).select(date.tomorrow());
-    await clear(textBox(below("Appointment date")))
-    await write(date,into(textBox(below("Appointment date"))))
+    await clear(textBox(below(appointmentDate)))
+    await write(date,into(textBox(below(appointmentDate))))
 });
 
-step("Select location <location>", async function (location) {
-    await dropDown("Location").select(location)
+step("Select location <location>", async function (locationName) {
+    await dropDown(location).select(locationName)
 });
 
 step("Enter appointment time into Start time", async function () {
-    var time= gauge.dataStore.scenarioStore.get("startTime")
     await write(time,into(textBox({placeholder:"hh:mm"})))});
 
 step("Close the appointment popup",async function(){
-    await click("Add new appointment")
-    await click("Summary")
-    await click("Yes")
-
-
+    await click(addNewAppointment)
+    await click(summary)
+    await click(yes)
 })
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
-    await click($(".fc-widget-content"), toRightOf(`${appointmentTime}`));
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click($(fcwidgetcontent), toRightOf(`${appointmentTime}`));
+    await taikoHelper.repeatUntilNotFound($(overlay))
     gauge.dataStore.scenarioStore.put("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
     gauge.dataStore.scenarioStore.put("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
     gauge.dataStore.scenarioStore.put("startTime", await textBox({ placeHolder: "hh:mm" }).value())
@@ -145,60 +208,57 @@ step("put <appointmentDate> as appointment date", async function (appointmentDat
 step("Compute end time", async function () {
     await waitFor(2000)
 });
-
 step("Click Save", async function () {
-    await click("Save")
-    taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click(save)
+    taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click Update", async function () {
-    await click("Update")
+    await click(update)
     await waitFor(2000)
-    await click("Yes, I confirm")
+    await click(yesIConfirm)
 });
 
 step("Check and Save", async function () {
-    await click("Check and Save");
+    await click(checkAndSave);
 });
 
 step("Goto tomorrow's date", async function () {
-    await click(button({ type: 'button' }, within($('[ng-click="goToNext()"]'))));
+    await click(button({ type: btn }, within($(goNext))));
 });
 
 step("Goto appointments's date", async function () {
-    var appointmentStartDate = gauge.dataStore.scenarioStore.get("appointmentStartDate")
-    await timeField(toRightOf("Week")).select(new Date(appointmentStartDate));
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await timeField(toRightOf(week)).select(new Date(appointmentStartDate));
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Goto Next week", async function () {
-    await click("Week");
+    await click(week);
     var month = date.getShortNameOfMonth(date.today())
     await click(button(), toRightOf(month));
 });
 
 step("Goto day view of the calendar", async function () {
-    await click("Day");
+    await click(day);
     var month = date.getShortNameOfMonth(date.today())
     await click(button(), toRightOf(month));
 });
 
-
 step("Click Close", async function () {
-    await click($('//div[@class="AddAppointment_close__2kahG"]'))
-    if(await text("Discar").exists())
+    await click($(closeBtn))
+    if(await text(discard).exists())
     {
-    await click('Discard')
+    await click(discard)
     }
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Goto List view", async function () {
-    await click(link("List view"));
+    await click(link(listView));
 });
 
 step("select the Regular appointment option", async function () {
-    await click('Regular Appointment')
+    await click(regularAppointment)
 });
 
 step("select appointment status as <status>",async function(status){
@@ -212,131 +272,128 @@ step("select the teleconsultation appointment option", async function () {
 });
 
 step("select the recurring appointment option", async function () {
-    await click("Recurring Appointment");
+    await click(recurringAppointment);
 });
 
 step("select the Start date as <appointmentDate>", async function (appointmentDate) {
-    await write(appointmentDate, below("Appointment start date"));
+    await write(appointmentDate, below(appointmentStartDate));
     gauge.dataStore.scenarioStore.put("appointmentStartDate", new Date())
 });
 
 step("select the End date as after <times> occurances", async function (times) {
-    await write(times,$('input#occurrences'))
+    await write(times,$(inputOccurences))
 });
 
 step("select Repeats every <numberOfDays> days", async function (numberOfDays) {
-    await write(numberOfDays, into(textBox(below("Repeats every"))));
+    await write(numberOfDays, into(textBox(below(repeatsEvery))));
 });
 
 step("Click Cancel all", async function () {
-    await scrollTo("Cancel All")
-    await click("Cancel All")
+    await scrollTo(cancelAll)
+    await click(cancelAll)
 });
 
 step("Click yes", async function () {
-    await waitFor(async () => (await $("button#yes").exists()));
-    await evaluate($("button#yes"), (el) => el.click())
+    await waitFor(async () => (await $(btnYes).exists()));
+    await evaluate($(btnYes), (el) => el.click())
     await waitFor(1000)
 });
 
 step("Click Cancel", async function () {
-    await scrollTo('Cancel')
-    await click('Cancel')
+    await scrollTo(cancel)
+    await click(cancel)
 });
 
 step("Cancel <type> appointment", async function (type) {
-    var btnstatus= await button("Cancel").isDisabled()
+    var btnstatus= await button(cancel).isDisabled()
     if(btnstatus)
     {
-        var patientid=gauge.dataStore.scenarioStore.get("patientIdentifier")
-        var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
-        await dropDown("Patient:").select(patientName+" ("+patientid+")")
-        await scrollTo(text("Cancel"))
-        await click($('//button[contains(text(),"Cancel")]'))
+        await dropDown(patientDropdown).select(patientName+" ("+patientid+")")
+        await scrollTo(text(cancel))
+        await click($(cancelBtn))
         await waitFor(1000)
         if("regular"==type)
         {
 
-            await evaluate($("button#yes"), (el) => el.click())  
+            await evaluate($(btnYes), (el) => el.click())  
         }
 
         else if("recurring"==type)
         {
-            await evaluate($("button#yes_all"), (el) => el.click())        
+            await evaluate($(btnYesAll), (el) => el.click())        
         }
     }
     else
     {
-        await scrollTo(text("Cancel"))
-        await click($('//button[contains(text(),"Cancel")]'))
+        await scrollTo(text(cancel))
+        await click($(cancelBtn))
         await waitFor(1000)
         if("regular"==type)
         {
-            await evaluate($("button#yes"), (el) => el.click())
+            await evaluate($(btnYes), (el) => el.click())
         }
         else if("recurring"==type)
         {
-            await evaluate($("button#yes_all"), (el) => el.click())
+            await evaluate($(btnYesAll), (el) => el.click())
         }
         
     }
 });
 
 step("Click Edit <type> appointment", async function (type) {
-    var btnstatus= await button("Edit").isDisabled()
+    var btnstatus= await button(edit).isDisabled()
     if(!btnstatus)
     {
-        await scrollTo(button("Edit"))
-        await click(button("Edit"))
+        await scrollTo(button(edit))
+        await click(button(edit))
     }
 
 });
 
 step("Update the time as <time>",async function(time){
     var value=time.split(" ")
-    await clear(textBox(below("Start time")))
-    await clear(textBox(below("End time")))
-    await write(value[0], into(textBox(below("Start time"))));
+    await clear(textBox(below(startTime)))
+    await clear(textBox(below(endTime)))
+    await write(value[0], into(textBox(below(startTime))));
 })
 
 step("Open admin tab of Appointments", async function () {
-    await click("Admin")
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click(admin)
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Select awaiting appointments", async function () {
-    await click("Awaiting Appointments")
+    await click(awaitingAppointments)
 });
 
 step("Create a service if it does not exist", async function () {
     if (await text(process.env.service).exists())
         return
-    await click("Add New Service")
+    await click(addNewService)
     await write(process.env.service, into(textBox({ placeHolder: "Enter a service name" })))
     await write("For test automation", into(textBox({ placeHolder: "Enter description" })))
-    await click("Save", { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await click(save, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Verify the appointment is present in waitlist", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-    assert.ok(await $("//A[text()='" +patientIdentifierValue+ "']").exists());
+    var patientIdElement="//A[text()='" +patientIdentifierValue+ "']"
+    assert.ok(await $(patientIdElement).exists());
 });
 
 step("Manage locations", async function () {
-    await click("Manage Locations")
+    await click(manageLocations)
 });
 
 step("Goto Today", async function () {
-    await click("Today")
+    await click(today)
 });
 
 step("Select List View in Appointments", async function () {
-    await click("List view")
+    await click(listView)
 });
 
 step("Get Apointmnet Date and Time", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
     let appointmentDate = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[3]").text();
     let appointmentStartTime = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[4]").text();
     let appointmentEndTime = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[5]").text();
@@ -346,35 +403,28 @@ step("Get Apointmnet Date and Time", async function () {
 });
 
 step("Verify the details in Appointments display control with status <status>", async function (status) {
-    let appointmentDate = gauge.dataStore.scenarioStore.get("appointmentDate");
-    let appointmentStartTime = gauge.dataStore.scenarioStore.get("appointmentStartTime");
-    let appointmentEndTime = gauge.dataStore.scenarioStore.get("appointmentEndTime");
     assert.ok(text(`${appointmentStartTime} - ${appointmentEndTime}`, toRightOf(appointmentDate, toLeftOf(status))).exists())
 });
 
 step("Verify the appointment locations",async function(){
- 
-    var locations=process.env.registrationLocations.split(',')
-
     for(let i=0;i<locations.length;i++)
     {
-        await write(locations[i], into($("//div[@data-testid='location-search']//input")))
-        assert.ok(await $("//div[text()='" + locations[i] + "']").exists());
-        await click($("//div[@data-testid='location-search']//button[1]"))
+        var location="//div[text()='" + locations[i] + "']"
+        await write(locations[i], into($(locationSearchInput)))
+        assert.ok(await $(location).exists());
+        await click($(locationSearchBtn))
     }
     
 })
 
 step("Verify the appointment specialitis list",async function(){
- 
-    var speciality=process.env.specialityList.split(',')
-
     for(let i=0;i<speciality.length;i++)
     {
         if(speciality[i]!='Active' && speciality[i]!='My Patients' && speciality[i]!='All') {
-            await write(speciality[i], into($("//div[@data-testid='speciality-search']//input")))
-            assert.ok(await $("//div[text()='" + speciality[i] + "']").exists());
-            await click($("//div[@data-testid='speciality-search']//input"))
+            var specialityElement="//div[text()='" + speciality[i] + "']"
+            await write(speciality[i], into($(specialitySearchInput)))
+            assert.ok(await $(specialityElement).exists());
+            await click($(specialitySearchInput))
         }
         
     }
@@ -382,14 +432,13 @@ step("Verify the appointment specialitis list",async function(){
 })
 
 step("Verify if all the providers are present",async function(){
- 
-    var providers=process.env.providersList.split(',')
 
     for(let i=0;i<providers.length;i++)
     {
-        await write(providers[i], into($("//div[@data-testid='provider-search']//input")))
-        assert.ok(await $("//div[text()='" + providers[i] + "']").exists());
-        await click($("//div[@data-testid='provider-search']//button[1]"))
+        var providerElement="//div[text()='" + providers[i] + "']"
+        await write(providers[i], into($(providerSearchInput)))
+        assert.ok(await $(providerElement).exists());
+        await click($(providerSearchBtn))
     }
     
 })
@@ -401,15 +450,14 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
  });
 
  step('Enter the appointment date',async function(){
-    var appointmentDate=gauge.dataStore.scenarioStore.get("startDate")
     await write(appointmentDate,into(textBox({placeholder:"mm/dd/yyyy"})))
  })
  step("Verify the conflict message",async function(){
-    assert.ok(await text("You have an overlapping conflict").exists())
+    assert.ok(await text(conflictMessage).exists())
  }) 
 
  step("Check and Save anyway",async function(){
-    await click("Save Anyway")
+    await click(saveAnyway)
  })
 
 
