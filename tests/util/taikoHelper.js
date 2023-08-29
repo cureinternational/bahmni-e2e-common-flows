@@ -81,7 +81,7 @@ function getDate(dateValue) {
 }
 
 async function selectEntriesTillIterationEnds(entrySequence) {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier" + (entrySequence));
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier" + (entrySequence));
     await write(patientIdentifierValue)
     await press('Enter', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await repeatUntilNotVisible($("#overlay"));

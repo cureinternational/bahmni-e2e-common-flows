@@ -24,11 +24,11 @@ const {
     evaluate
 } = require('taiko');
 var assert = require("assert");
-
+const gaugeHelper = require("../util/gaugeHelper");
+const taikoInteraction = require("../../../components/taikoInteraction");
+const taikoassert= require("../../../components/taikoassert");
 var tab='//li[contains(@class,"tab-item")]'
 var speciliatyList=process.env.specialityList.split(',')
-var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
 var myPatients='My Patients'
 
 
@@ -39,16 +39,16 @@ step("Verify the specialitis list", async function () {
    {
     var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`
     var speciality=(await $(tabItem).text()).trim()
-    assert.ok(speciliatyList.includes(speciality))
-   }
+    await taikoassert.assertArray(speciliatyList,speciality)
+}
 });
 
 step("Verify the patient visit is added in my patient queue and the <speciality> queue",async function(speciality){
-    await click(myPatients, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
     var fullName = firstName+' '+lastName
-    assert.ok(await text(fullName).exists())
-    waitFor(500)
-    await click(speciality, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    waitFor(500)
-    assert.ok(await text(fullName).exists())
+    await taikoInteraction.Click(myPatients,'text')
+    await taikoassert.assertExists(text(fullName))
+    await taikoInteraction.Click(speciality,'text')
+    await taikoassert.assertExists(text(fullName))
 })

@@ -34,8 +34,10 @@ const {
 var users = require("../util/users");
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
+const gaugeHelper=require("../util/gaugeHelper")
 const { faker } = require('@faker-js/faker/locale/en_IND');
 const alert=require("../../../components/taikoalert")
+const taikoInteraction=require("../../../components/taikoInteraction")
 var assert = require("assert");
 const { closeTab } = require('taiko');
 const { ClientRequest } = require('http');
@@ -45,10 +47,6 @@ var registration='Registration'
 var overlay='#overlay'
 var save='Save'
 var prePatientCheckbox='input#pre-registration-attribute'
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-var middleName = gauge.dataStore.scenarioStore.get("patientMiddleName")
-var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
 var patientGender = users.getRandomPatientGender();
 var years='Years'
 var isNewPatient='isNewPatient'
@@ -92,8 +90,7 @@ var visitAttributes='Visit Attributes'
 var closePopupText='Are you sure you want to close this visit?'
 var uploadPopup='[ng-click="launchPhotoUploadPopup()"]'
 var confirmPhoto='Confirm Photo'
-var kebele = gauge.dataStore.scenarioStore.get("kebele")
-var woreda =  gauge.dataStore.scenarioStore.get("woreda")
+
 var kebeleElement='Kebele'
 var worderElement='Woreda'
 var email='Email'
@@ -104,7 +101,6 @@ var relationShips='Relationships'
 var selectPerson='Select Person'
 var registerNewPerson='Register New Person'
 var register='Register'
-var relationName=gauge.dataStore.scenarioStore.get("relationName")
 
 step("Open <moduleName> module", async function (moduleName) {
     await waitFor(async () => (await link(registration).exists()),{timeout: process.env.actionTimeout, interval: 1000})
@@ -126,95 +122,100 @@ step("Click on <type> patient",async function(type){
 
 
 step("Enter patient random first name", async function () {
+    var firstName = gaugeHelper.get("patientFirstName")
     if (!firstName) {
         firstName = faker.name.firstName(patientGender).replace(" ", "");
-        gauge.dataStore.scenarioStore.put("patientFirstName", firstName)
+        gaugeHelper.save("patientFirstName", firstName)
     }
     gauge.message(`firstName ${firstName}`)
     await write(firstName, into(textBox({ "placeholder": "First Name" })));
 });
 
 step("Enter patient random middle name", async function () {
+    var middleName = gaugeHelper.get("patientMiddleName")
     if (!middleName) {
         middleName = faker.name.middleName(patientGender).replace(" ", "");
-        gauge.dataStore.scenarioStore.put("patientMiddleName", middleName)
+        gaugeHelper.save("patientMiddleName", middleName)
     }
     gauge.message(`middleName ${middleName}`)
     await write(middleName, into(textBox({ "placeholder": "Middle Name" })));
 });
 
 step("Enter patient random last name", async function () {
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
+    var middleName = gaugeHelper.get("patientMiddleName")
     if (!lastName) {
         lastName = faker.name.lastName(patientGender).replace(" ", "");
-        gauge.dataStore.scenarioStore.put("patientLastName", lastName)
+        gaugeHelper.save("patientLastName", lastName)
     }
     gauge.message(`lastName ${lastName}`)
-    gauge.dataStore.scenarioStore.put("patientFullName", `${firstName} ${middleName} ${lastName}`)
+    gaugeHelper.save("patientFullName", `${firstName} ${middleName} ${lastName}`)
     await write(lastName, into(textBox({ "placeholder": "Last Name" })));
 });
 
 step("Enter patient gender <gender>", async function (gender) {
-    if (gauge.dataStore.scenarioStore.get("isNewPatient"))
+    if (gaugeHelper.get("isNewPatient"))
         await dropDown("Gender *").select(gender);
-    gauge.dataStore.scenarioStore.put("patientGender", gender)
+    gaugeHelper.save("patientGender", gender)
 });
 
 step("Enter age of the patient <age>", async function (age) {
-    if (gauge.dataStore.scenarioStore.get(isNewPatient)) {
+    if (gaugeHelper.get(isNewPatient)) {
         await write(age, into(textBox(toRightOf(years))));
         await click(checkBox(toLeftOf(estimated)));
     }
-    gauge.dataStore.scenarioStore.put("patientAge", age)
+    gaugeHelper.save("patientAge", age)
     var birthDate = await timeField(toRightOf(dob)).value();
-    gauge.dataStore.scenarioStore.put("patientBirthYear", birthDate.split("-")[0])
+    gaugeHelper.save("patientBirthYear", birthDate.split("-")[0])
 });
 
 step("Enter patient mobile number <mobile>", async function (mobile) {
     if (await text(primaryContact).exists(500, 1000)) {
-        if (gauge.dataStore.scenarioStore.get(isNewPatient))
+        if (gaugeHelper.get(isNewPatient))
             await write(mobile, into(textBox(toRightOf(primaryContact))));
     }
     else if (await text(phoneNumber).exists(500, 1000)) {
-        if (gauge.dataStore.scenarioStore.get(isNewPatient))
+        if (gaugeHelper.get(isNewPatient))
             await write(mobile, into(textBox(toRightOf(phoneNumber))));
     }
-    gauge.dataStore.scenarioStore.put("patientMobileNumber", mobile)
+    gaugeHelper.save("patientMobileNumber", mobile)
 });
 
 step("Enter patient random gender", async function () {
-    if (gauge.dataStore.scenarioStore.get(isNewPatient))
+    if (gaugeHelper.get(isNewPatient))
         await dropDown("Gender *").select(users.getRandomPatientGender());
-    gauge.dataStore.scenarioStore.put("patientGender", users.getRandomPatientGender())
+    gaugeHelper.save("patientGender", users.getRandomPatientGender())
     gauge.message(`patientGender ${users.getRandomPatientGender()}`)
 });
 
 step("Enter random age of the patient", async function () {
     var age = faker.random.numeric(2);
-    if (gauge.dataStore.scenarioStore.get(isNewPatient)) {
+    if (gaugeHelper.get(isNewPatient)) {
         await write(age, into(textBox(toRightOf(years))));
         await click(checkBox(toLeftOf(estimated)));
     }
-    gauge.dataStore.scenarioStore.put("patientAge", age)
+    gaugeHelper.save("patientAge", age)
     var birthDate = await timeField(toRightOf(dob)).value();
-    gauge.dataStore.scenarioStore.put("patientBirthYear", birthDate.split("-")[0])
+    gaugeHelper.save("patientBirthYear", birthDate.split("-")[0])
     gauge.message(`age ${age}`)
 });
 
 step("Enter patient random mobile number", async function () {
     var mobile = faker.phone.number('+919#########')
     if (await text(primaryContact).exists(500, 1000)) {
-        if (gauge.dataStore.scenarioStore.get(isNewPatient))
+        if (gaugeHelper.get(isNewPatient))
             await write(mobile, into(textBox(toRightOf(primaryContact))));
     }
     else if (await text(phoneNumber).exists(500, 1000)) {
-        if (gauge.dataStore.scenarioStore.get(isNewPatient))
+        if (gaugeHelper.get(isNewPatient))
             await write(mobile, into(textBox(toRightOf(phoneNumber))));
     }
     else if (await text(mobilePhone).exists(500, 1000)) {
-        if (gauge.dataStore.scenarioStore.get(isNewPatient))
+        if (gaugeHelper.get(isNewPatient))
             await write(mobile, into(textBox(toRightOf(mobilePhone))));
     }
-    gauge.dataStore.scenarioStore.put("patientMobileNumber", mobile)
+    gaugeHelper.save("patientMobileNumber", mobile)
     gauge.message(`mobile ${mobile}`)
 });
 
@@ -222,7 +223,7 @@ step("Click create new patient", async function () {
     await waitFor(2000)
     await click(link(createNew), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
     await taikoHelper.repeatUntilNotFound($(overlay))
-    gauge.dataStore.scenarioStore.put(isNewPatient, true)
+    gaugeHelper.save(isNewPatient, true)
 });
 
 step("Save the patient data", async function () {
@@ -231,12 +232,13 @@ step("Save the patient data", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.repeatUntilFound($(patientIdValue))
     var patientIdentifier = await $(patientIdValue).text();
-    gauge.dataStore.scenarioStore.put("patientIdentifier", patientIdentifier);
+    gaugeHelper.save("patientIdentifier", patientIdentifier);
     console.log(`patient Identifier ${patientIdentifier}`)
     gauge.message(`patient Identifier ${patientIdentifier}`)
 });
 
 step("Select the newly created patient", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue)
     await press(enter, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
     await taikoHelper.repeatUntilNotFound($(overlay))
@@ -275,10 +277,11 @@ step("Login as user <user>", async function (user) {
     if (!textBox(toRightOf(userName)).exists(0, 0)) {
         await reload()
     }
-    await write(users.getUserNameFromEncoding(process.env[user]), into(textBox(toRightOf(userName))));
-    await write(users.getPasswordFromEncoding(process.env[user]), into(textBox(toRightOf(passWord))));
-    await dropDown(locationDropDown).select(process.env.loginLocation);
-    await click(button(login), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+
+    await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),"into",toRightOf(userName))
+    await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),"into",toRightOf(passWord))
+    await taikoInteraction.Dropdown(locationDropDown,process.env.loginLocation)
+    await taikoInteraction.Click(login,'button');
     await taikoHelper.repeatUntilNotFound(text(loginText))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
@@ -363,6 +366,7 @@ step("Click on active patients list", async function () {
 
 step("Open newly created patient details by search", async function () {
 
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     console.log(`patient Identifier ${patientIdentifierValue}`)
     gauge.message(`patient Identifier ${patientIdentifierValue}`)
 
@@ -375,12 +379,13 @@ if(await link(patientIdentifierValue).exists()){ await click(link(patientIdentif
 });
 
 step("Verify correct patient form is open", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     assert.ok(await text(patientIdentifierValue).exists());
 });
 
 step("Enter random village", async function () {
     var villageValue = faker.address.cityName();
-    if (gauge.dataStore.scenarioStore.get(isNewPatient))
+    if (gaugeHelper.get(isNewPatient))
         await write(villageValue, into(textBox(toRightOf(village))))
     gauge.message(`village ${villageValue}`)
 
@@ -396,19 +401,19 @@ step("Should fetch record with similar details", async function () {
 });
 
 step("Save the newly created patient data", async function () {
-    if (gauge.dataStore.scenarioStore.get(isNewPatient)) {
+    if (gaugeHelper.get(isNewPatient)) {
         await click(save, { waitForEvents: ['networkIdle'] });
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
     var patientIdentifier = await $(idElement).text();
-    gauge.dataStore.scenarioStore.put("patientIdentifier", patientIdentifier);
+    gaugeHelper.save("patientIdentifier", patientIdentifier);
 });
 
 step("Click create new patient if patient does not exist", async function () {
     if (await text(noResultsFound).exists()) {
         await waitFor(2000)
         await click(link(createNew), { waitForNavigation: true, waitForEvents: ['networkIdle'], navigationTimeout: process.env.actionTimeout })
-        gauge.dataStore.scenarioStore.put(isNewPatient, true)
+        gaugeHelper.save(isNewPatient, true)
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
     else
@@ -416,27 +421,27 @@ step("Click create new patient if patient does not exist", async function () {
 });
 
 step("Enter patient first name <firstName>", async function (firstName) {
-    if (gauge.dataStore.scenarioStore.get(isNewPatient)) {
+    if (gaugeHelper.get(isNewPatient)) {
         await write(firstName, into(textBox({ "placeholder": "First Name" })));
     }
     gauge.message(`firstName ${firstName}`)
-    gauge.dataStore.scenarioStore.put("patientFirstName", firstName)
+    gaugeHelper.save("patientFirstName", firstName)
 });
 
 step("Enter patient middle name <middleName>", async function (middleName) {
-    if (gauge.dataStore.scenarioStore.get(isNewPatient)) {
+    if (gaugeHelper.get(isNewPatient)) {
         await write(middleName, into(textBox({ "placeholder": "Middle Name" })));
     }
     gauge.message(`middleName ${middleName}`)
-    gauge.dataStore.scenarioStore.put("patientMiddleName", middleName)
+    gaugeHelper.save("patientMiddleName", middleName)
 });
 
 step("Enter patient last name <lastName>", async function (lastName) {
-    if (gauge.dataStore.scenarioStore.get(isNewPatient)) {
+    if (gaugeHelper.get(isNewPatient)) {
         await write(lastName, into(textBox({ "placeholder": "Last Name" })));
     }
     gauge.message(`lastName ${lastName}`)
-    gauge.dataStore.scenarioStore.put("patientLastName", lastName)
+    gaugeHelper.save("patientLastName", lastName)
 });
 
 step("Should display Bahmni record with firstName <firstName> lastName <lastName> gender <gender> age <age> with mobile number <mobileNumber>", async function (firstName, lastName, gender, age, mobileNumber) {
@@ -454,6 +459,8 @@ step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
 });
 
 step("Choose newly created patient", async function () {
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
     await write(firstName);
     await click(`${firstName} ${lastName}`, {
         waitForNavigation: true,
@@ -500,19 +507,19 @@ step("Upload patient image", async function () {
 
 step("Enter random kebele", async function () {
     await users.randomZipCodeStateAndDistrict();
+    var kebele = gaugeHelper.get('kebele')
     await write(kebele, into(textBox(toRightOf(kebeleElement))));
-    gauge.message(`kebele ${kebele}`)
 });
 
 step("Enter random Woreda", async function () {
+    var woreda =  gaugeHelper.get('woreda')
     await write(woreda, into(textBox(toRightOf(worderElement))));
-    gauge.message(`wordea ${woreda}`)
     await click(link(woreda))
 });
 
 step("Enter random email address", async function () {
     await write(emailAddress, into(textBox(toRightOf(email))));
-    gauge.message(`emailAddress ${emailAddress}`)
+    gaugeHelper.print("emailAddress", emailAddress)
 });
 
 step("Select registration location",async function(){
@@ -535,11 +542,11 @@ step("Create a new relation", async function () {
     await click(text(registerNewPerson))
     await waitFor(2000)
     var firstName = users.randomName(8)
-    gauge.message(`Relation firstName ${firstName}`)
+    gaugeHelper.print('Relation firstName', firstName)
     await write(firstName, into($("//input[@name='firstName']")))
     var lastName = users.randomName(8)
-    gauge.message(`Relation lastName ${lastName}`)
-    gauge.dataStore.scenarioStore.put("relationName", firstName+' '+lastName)
+    gaugeHelper.print('Relation lastName', lastName)
+    gaugeHelper.save("relationName", firstName+' '+lastName)
     await write(lastName, into($("//input[@name='lastName']")))
     await write('01/01/1970', into($('//input[@name="birthdate"]')))
     await dropDown(below(gender)).select('Male');
@@ -548,6 +555,7 @@ step("Create a new relation", async function () {
 })
 
 step('Click on the newly added relation',async function(){
+    var relationName=gaugeHelper.get("relationName")
     await click(text(relationName))
 })
 

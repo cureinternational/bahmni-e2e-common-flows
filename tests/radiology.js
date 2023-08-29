@@ -1,7 +1,7 @@
 const { write, toRightOf, into, textBox, press, goto, below, scrollTo, click, text, above, highlight, waitFor, $, evaluate } = require("taiko");
 var assert = require("assert")
 var users = require("./util/users");
-
+var gaugeHelper = require("./util/gaugeHelper");
 step("Enter Radiology username", async function () {
     await write(users.getUserNameFromEncoding(process.env.pacsUser), into(textBox(toRightOf("Username"))));
 });
@@ -15,7 +15,7 @@ step("Click Signin", async function () {
 });
 
 step("Enter patient id in radiology app", async function () {
-    var patientFirstName = gauge.dataStore.scenarioStore.get("patientFirstName");
+    var patientFirstName = gaugeHelper.get("patientFirstName");
     await highlight("Patient Name")
     await highlight(textBox(below("Patient Name")))
     await write(patientFirstName, into(textBox(below("Patient Name"))))
@@ -38,7 +38,7 @@ step("choose test <test>", async function (test) {
 });
 
 step("Find the patient on DCM4chee", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue, into(textBox(below("ID"))))
 });
 
@@ -47,14 +47,14 @@ step("Search on DCM4chee", async function () {
 });
 
 step("click on the patient details", async function () {
-    var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-    var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
 
     var name = `${firstName},${lastName}`
     var nameInTable = await $("//table[@class='content-table']//td[2]").text()
     assert.ok(name.toLowerCase() == nameInTable.toLowerCase())
     var ord = await $("//table[@class='content-table']//td[10]").text()
-    gauge.dataStore.scenarioStore.put("ORD", ord)
+    gaugeHelper.save("ORD", ord)
     gauge.message(ord)
 });
 

@@ -7,6 +7,7 @@ var path = require('path')
 const console = require("console");
 const pdf = require('pdf-parse');
 const axios = require('axios')
+const gaugeHelper=require("./util/gaugeHelper")
 
 step("Goto paymentlite", async function () {
 	await goto(process.env.paymentLiteurl + '/login', { waitForNavigation: true })
@@ -24,9 +25,9 @@ step("Open Customers", async function () {
 });
 
 step("Enter patient details in paymentLite", async function () {
-	var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-	var middleName = gauge.dataStore.scenarioStore.get("patientMiddleName")
-	var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+	var firstName = gaugeHelper.get("patientFirstName")
+	var middleName = gaugeHelper.get("patientMiddleName")
+	var lastName = gaugeHelper.get("patientLastName")
 
 	await write(`${firstName} ${middleName} ${lastName}`, into(textBox(below("Display Name"))))
 });
@@ -47,9 +48,9 @@ step("Click Items", async function () {
 });
 
 step("Add doctor with fees <fees>", async function (fees) {
-	var doctorFirstName = gauge.dataStore.scenarioStore.get("doctorFirstName");
-	var doctorMiddleName = gauge.dataStore.scenarioStore.get("doctorMiddleName");
-	var doctorLastName = gauge.dataStore.scenarioStore.get("doctorLastName");
+	var doctorFirstName = gaugeHelper.get("doctorFirstName");
+	var doctorMiddleName = gaugeHelper.get("doctorMiddleName");
+	var doctorLastName = gaugeHelper.get("doctorLastName");
 	if (! await link(`${doctorFirstName} ${doctorMiddleName} ${doctorLastName}`).exists(500, 1000)) {
 		await click(button("Add Item"));
 		await waitFor("New Item")
@@ -60,9 +61,9 @@ step("Add doctor with fees <fees>", async function (fees) {
 });
 
 step("Add a drug with price <price>", async function (price) {
-	var prescriptionCount = gauge.dataStore.scenarioStore.get("prescriptionsCount")
+	var prescriptionCount = gaugeHelper.get("prescriptionsCount")
 	for (var i = 0; i < prescriptionCount; i++) {
-		var prescriptionFile = gauge.dataStore.scenarioStore.get("prescriptions" + i)
+		var prescriptionFile = gaugeHelper.get("prescriptions" + i)
 		var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
 		var drugName = medicalPrescriptions.drug_name;
 		if (! await link(drugName).exists(500, 1000)) {
@@ -83,7 +84,7 @@ step("Click Invoices", async function () {
 step("Choose the patient", async function () {
 	await waitFor("New Customer")
 	await click("New Customer")
-	var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
+	var firstName = gaugeHelper.get("patientFirstName")
 
 	await scrollTo(firstName)
 	await waitFor(200)
@@ -92,7 +93,7 @@ step("Choose the patient", async function () {
 
 step("Choose the doctor in paymentlite", async function () {
 	await click(textBox(above("Add New Item"), below("Items")))
-	var doctorFirstName = gauge.dataStore.scenarioStore.get("doctorFirstName");
+	var doctorFirstName = gaugeHelper.get("doctorFirstName");
 	await write(doctorFirstName);
 	await waitFor(async () => (await $(`//span[starts-with(text(),'${doctorFirstName}')]`).isVisible()))
 	await waitFor(200)
@@ -105,10 +106,10 @@ step("Add a new Item", async function () {
 });
 
 step("Choose the prescibed medicines in paymentlite", async function () {
-	var prescriptionCount = gauge.dataStore.scenarioStore.get("prescriptionsCount")
+	var prescriptionCount = gaugeHelper.get("prescriptionsCount")
 	for (var i = 0; i < prescriptionCount; i++) {
 		await click(textBox(toLeftOf("1", toLeftOf("$ 0.00"))));
-		var prescriptionFile = gauge.dataStore.scenarioStore.get("prescriptions" + i)
+		var prescriptionFile = gaugeHelper.get("prescriptions" + i)
 		var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
 		var drugName = medicalPrescriptions.drug_name;
 		await scrollTo("Add New Item")
@@ -134,9 +135,9 @@ step("Click Payments", async function () {
 });
 
 step("Enter patient name for payment", async function () {
-	var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-	var middleName = gauge.dataStore.scenarioStore.get("patientMiddleName")
-	var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+	var firstName = gaugeHelper.get("patientFirstName")
+	var middleName = gaugeHelper.get("patientMiddleName")
+	var lastName = gaugeHelper.get("patientLastName")
 
 	await write(`${firstName} ${middleName} ${lastName}`, into(textBox(above("Amount"), below("Customer"))))
 	await waitFor(async () => (await $(`//span[text()='${firstName} ${middleName} ${lastName}']`).isVisible()))
@@ -167,7 +168,7 @@ step("Click Customers", async function () {
 });
 
 step("Select customer", async function () {
-	let fullName = gauge.dataStore.scenarioStore.get("patientFullName")
+	let fullName = gaugeHelper.get("patientFullName")
 	await click("Customers", { waitForNavigation: true })
 	let maxRetry = 5
 	while (maxRetry > 0) {
@@ -207,36 +208,36 @@ step("Goto the tab All", async function () {
 });
 
 step("Note the Date", async function () {
-	var fullName = gauge.dataStore.scenarioStore.get("patientFullName")
+	var fullName = gaugeHelper.get("patientFullName")
 	var invoiceDate = await evaluate($("//DIV[@title='" + fullName + "']/../preceding::TD[2]"), (element) => element.innerText)
-	gauge.dataStore.scenarioStore.put("invoiceDate", invoiceDate)
+	gaugeHelper.save("invoiceDate", invoiceDate)
 });
 
 step("Note the Invoice Number", async function () {
-	var fullName = gauge.dataStore.scenarioStore.get("patientFullName")
+	var fullName = gaugeHelper.get("patientFullName")
 	var invoiceNumber = await evaluate($("//DIV[@title='" + fullName + "']/../preceding::TD/A"), (element) => element.innerText)
-	gauge.dataStore.scenarioStore.put("invoiceNumber", invoiceNumber)
+	gaugeHelper.save("invoiceNumber", invoiceNumber)
 });
 
 step("Note the Amount", async function () {
-	var fullName = gauge.dataStore.scenarioStore.get("patientFullName")
+	var fullName = gaugeHelper.get("patientFullName")
 	var invoiceAmount = await evaluate($("//DIV[@title='" + fullName + "']/../following::TD[3]/SPAN"), (element) => element.innerText)
-	gauge.dataStore.scenarioStore.put("invoiceAmount", invoiceAmount)
+	gaugeHelper.save("invoiceAmount", invoiceAmount)
 });
 
 step("Associate the invoice to the payment", async function () {
-	var invoiceNumber = gauge.dataStore.scenarioStore.get("invoiceNumber")
+	var invoiceNumber = gaugeHelper.get("invoiceNumber")
 	await click($(".bg-multiselect-caret", toRightOf("Select Invoice")))
 	await click(invoiceNumber, { waitForNavigation: true })
 });
 
 step("open the invoice", async function () {
-	var invoiceNumber = gauge.dataStore.scenarioStore.get("invoiceNumber")
+	var invoiceNumber = gaugeHelper.get("invoiceNumber")
 	await click(link(invoiceNumber), { waitForNavigation: true })
 });
 
 step("verify the payment is complete", async function () {
-	var invoiceNumber = gauge.dataStore.scenarioStore.get("invoiceNumber")
+	var invoiceNumber = gaugeHelper.get("invoiceNumber")
 	assert.ok(await text("COMPLETED", below(invoiceNumber)).exists())
 });
 
@@ -283,18 +284,18 @@ step("Download the report", async function () {
 	await waitFor(() => fileExtension.exists(FilePath))
 	await waitFor(1000)
 	assert.ok(fileExtension.exists(FilePath))
-	gauge.dataStore.scenarioStore.put("pdfReportPath", FilePath)
+	gaugeHelper.save("pdfReportPath", FilePath)
 });
 
 step("Validate the downloaded report", async function () {
 	try {
-		var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-		var middleName = gauge.dataStore.scenarioStore.get("patientMiddleName")
-		var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
-		var invoiceNumber = gauge.dataStore.scenarioStore.get("invoiceNumber")
-		var invoiceAmount = gauge.dataStore.scenarioStore.get("invoiceAmount").replace(" ", "")
-		var invoiceDate = gauge.dataStore.scenarioStore.get("invoiceDate")
-		let dataBuffer = fs.readFileSync(gauge.dataStore.scenarioStore.get("pdfReportPath"));
+		var firstName = gaugeHelper.get("patientFirstName")
+		var middleName = gaugeHelper.get("patientMiddleName")
+		var lastName = gaugeHelper.get("patientLastName")
+		var invoiceNumber = gaugeHelper.get("invoiceNumber")
+		var invoiceAmount = gaugeHelper.get("invoiceAmount").replace(" ", "")
+		var invoiceDate = gaugeHelper.get("invoiceDate")
+		let dataBuffer = fs.readFileSync(gaugeHelper.get("pdfReportPath"));
 		gauge.message(`Invoice - ${invoiceNumber} Amount - ${invoiceAmount} Date - ${invoiceDate}`)
 		pdf(dataBuffer).then(function (data) {
 			var pdfText = data.text

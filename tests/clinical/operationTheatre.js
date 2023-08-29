@@ -21,6 +21,7 @@ const {
 
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
+const gaugeHelper = require("../util/gaugeHelper")
 var otScheduling = 'OT Scheduling'
 var newSurgicalBlock = 'New Surgical Block'
 var surgeon = 'Surgeon'
@@ -39,7 +40,6 @@ var reason='Reason'
 var enterReason='enter reason'
 var confirm='Confirm'
 let surgeonName = 'Surgeon - '+process.env.surgeon
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
 var overlay='#overlay'
 var cancelBlock='Cancel Block'
 var postPoneBlock='Postpone Block'
@@ -94,6 +94,7 @@ step("Add surgery details", async function() {
 });
 
 step("Cancel the surgery", async function() {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await highlight(button(cancel),toRightOf(patientIdentifierValue));
     await scrollTo(cancel)
 	await click(cancel,toRightOf(patientIdentifierValue));
@@ -138,6 +139,7 @@ step("Save OT data", async function() {
 });
 
 step("Enter Patient id / name", async function() {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue,into(textBox({placeHolder:"Enter Patient ID/ Name"})));
     await click(`( ${patientIdentifierValue} )`)
 });

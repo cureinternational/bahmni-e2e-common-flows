@@ -21,21 +21,19 @@ const {
 } = require('taiko');
 var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
+const gaugeHelper = require("./../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
 
 var expectedLocationsList=process.env.registrationLocations.split(",")
    var locationOption='//select[@id="location"]/option'
    var visitLocationOption='//select[@ng-model="selectedLocationUuid"]/option'
    var expectedLocationsList=process.env.registrationLocations.split(",")
-   var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
    var overlay='#overlay'
    var patientMovementDropdown='Patient Movement:'
    var admitPatient='Admit Patient'
    var admit='Admit'
    var continueText='Continue with current Visit'
    var yes='Yes'
-   var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-   var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
    var patientIdentifierElement='//input[@id="patientIdentifier"]'
    var availableBed='//ward-layout//descendant::li[@class="col available"]'
    var assign='Assign'
@@ -126,7 +124,8 @@ step("Admit the patient to ipd in <visitType> visit",async function(visitType){
 })
 
 step("Search and select patient",async function(){
-  
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
     var patientName = `${firstName} ${lastName}`
     await write(patientName, into($(patientIdentifierElement)))
     var patientNameElement=`//div[contains(text(),'${patientName}')]`
@@ -185,7 +184,7 @@ step("Verify the patient is not appearing",async function(){
 
 step("Verify the columns in the table <tableFile>",async function(tableFile){
     var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
-    gauge.dataStore.scenarioStore.put("tableFile", tableFile)
+    gaugeHelper.save("tableFile", tableFile)
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableHeaders = table.columns
     var tableElement=`//table[@class='${table.class}']`
@@ -200,7 +199,7 @@ step("Verify the columns in the table <tableFile>",async function(tableFile){
 
 step("Verify the sorting in the table <tableFile>",async function(tableFile){
     var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
-    gauge.dataStore.scenarioStore.put("tableFile", tableFile)
+    gaugeHelper.save("tableFile", tableFile)
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableElement=`//table[@class='${table.class}']`
     var sortByColumn=table.sortBy.column

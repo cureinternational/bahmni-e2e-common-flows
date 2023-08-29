@@ -21,12 +21,12 @@ const {
 } = require('taiko');
 var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
+const gaugeHelper = require("../util/gaugeHelper")
 var assert = require('assert');
 
 var radiology='Radiology'
 var laboratory='Laboratory'
-var drugName = gauge.dataStore.scenarioStore.get("Drug Name")
-var drugName='Drug Name'
+var drugNameElement='Drug Name'
 var rule='Rule'
 var dose='Dose'
 var units='Units'
@@ -66,7 +66,7 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
     var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionFile}.json`;
     var testPrescription = JSON.parse(fileExtension.parseContent(prescriptionFile))
     gauge.message(testPrescription)
-    gauge.dataStore.scenarioStore.put("LabTest", testPrescription.test)
+    gaugeHelper.save("LabTest", testPrescription.test)
     await taikoHelper.repeatUntilFound(text(testPrescription.test))
     console.log("test found.")
     await click(testPrescription.test, { force: true })
@@ -77,24 +77,25 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
 
 step("put medications <prescriptionNames>", async function (prescriptionNames) {
     var prescriptionFile = `./data/${prescriptionNames}.json`;
-    gauge.dataStore.scenarioStore.put("prescriptions", prescriptionFile)
+    gaugeHelper.save("prescriptions", prescriptionFile)
 })
 
 step("Doctor prescribes medicines <prescriptionNames>", async function (prescriptionNames) {
     var prescriptionsList = prescriptionNames.split(',')
     var prescriptionsCount = prescriptionsList.length
-    gauge.dataStore.scenarioStore.put("prescriptionsCount", prescriptionsCount)
+    gaugeHelper.save("prescriptionsCount", prescriptionsCount)
+    var drugName = gaugeHelper.get("Drug Name")
     for (var i = 0; i < prescriptionsCount; i++) {
         var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
-        gauge.dataStore.scenarioStore.put("prescriptions" + i, prescriptionFile)
+        gaugeHelper.save("prescriptions" + i, prescriptionFile)
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         gauge.message(medicalPrescriptions)
         if (medicalPrescriptions.drug_name != null) {
             if (drugName == null)
                 drugName = medicalPrescriptions.drug_name;
-            if (await textBox(toRightOf(drugName)).exists()) {
-                await write(drugName, into(textBox(toRightOf(drugName))));
-                await click(link(drugName, below(textBox(toRightOf(drugName)))));
+            if (await textBox(toRightOf(drugNameElement)).exists()) {
+                await write(drugName, into(textBox(toRightOf(drugNameElement))));
+                await click(link(drugName, below(textBox(toRightOf(drugNameElement)))));
                 if(medicalPrescriptions.rule!=undefined)
             {
                 await dropDown(toRightOf(rule)).select(medicalPrescriptions.rule);
@@ -123,11 +124,11 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
 );
 
 step("Doctor captures consultation notes <notes>", async function (notes) {
-    gauge.dataStore.scenarioStore.put("consultationNotes", notes)
+    gaugeHelper.save("consultationNotes", notes)
     await click(consultation, { force: true, waitForNavigation: true, waitForStart: 2000 });
     await waitFor(textBox({ placeholder: "Enter Notes here" }))
     await write(notes, into(textBox({ "placeholder": "Enter Notes here" })), { force: true })
-    gauge.dataStore.scenarioStore.put("consultationNotes", notes);
+    gaugeHelper.save("consultationNotes", notes);
 });
 
 step("Doctor clicks consultation", async function () {
@@ -172,9 +173,9 @@ step("Join teleconsultation", async function () {
 
 step("Doctor notes the diagnosis and condition <filePath>", async function (filePath) {
     var diagnosisFile = `./bahmni-e2e-common-flows/data/${filePath}.json`;
-    gauge.dataStore.scenarioStore.put("diagnosisFile", diagnosisFile)
+    gaugeHelper.save("diagnosisFile", diagnosisFile)
     var medicalDiagnosis = JSON.parse(fileExtension.parseContent(diagnosisFile))
-    gauge.dataStore.scenarioStore.put("medicalDiagnosis", medicalDiagnosis)
+    gaugeHelper.save("medicalDiagnosis", medicalDiagnosis)
     gauge.message(medicalDiagnosis)
     await click(diagnoses);
     await write(medicalDiagnosis.diagnosis.diagnosisName, into(textBox(below(diagnoses))));

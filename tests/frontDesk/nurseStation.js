@@ -26,6 +26,7 @@ const {
 	link
 } = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
+const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
 var toAdmit = "To Admit"
 var availableBed='//*[@class="col available" or @class="bed AVAILABLE"]'
@@ -37,7 +38,6 @@ var dischargePatient='Discharge Patient'
 var discharge='Discharge'
 var all='All'
 var admitted='Admitted'
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
 var enter= 'Enter'
 var dischargePopup='[ng-click="dischargeConfirmation()"]'
 var cancel='Cancel'
@@ -104,6 +104,7 @@ step("View Admitted patients", async function () {
 });
 
 step("Enter admitted patient details", async function () {
+	var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
 	await write(patientIdentifierValue, into(textBox(below(admitted))))
 	await press(enter, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
 	await taikoHelper.repeatUntilNotFound($(overlay))
@@ -133,7 +134,7 @@ step("Click Admit on popup", async function () {
 
 step("Enter Form Values <observationFormFile>", async function (observationFormFile) {
 	var observationFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${observationFormFile}.json`))
-	gauge.dataStore.scenarioStore.put(observationFormValues.ObservationFormName, observationFormValues)
+	gaugeHelper.save(observationFormValues.ObservationFormName, observationFormValues)
 	await taikoHelper.repeatUntilNotFound($(overlay))
 	if (!await link(observationFormValues.ObservationFormName).exists(500, 1000)) {
 		await click(addNewObsForm, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });

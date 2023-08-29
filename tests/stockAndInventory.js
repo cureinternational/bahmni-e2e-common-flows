@@ -1,5 +1,6 @@
 const { goto, $, below, write, textBox, into, click, toLeftOf, checkBox, reload, text, waitFor, highlight, screenshot } = require('taiko');
 var assert = require("assert")
+const gaugeHelper = require("./util/gaugeHelper")
 step("enter odoo username", async function () {
     await write(process.env.odooUsername, into(textBox(below("Email"))));
 });
@@ -21,8 +22,8 @@ step("View Quotations below direct sales", async function () {
 });
 
 step("select Customer", async function () {
-    let fullName = gauge.dataStore.scenarioStore.get("patientFullName")
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    let fullName = gaugeHelper.get("patientFullName")
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     let oddoCustomerName = `${fullName} [${patientIdentifierValue}]`;
     var maxRetry = 5
     while (maxRetry > 0) {

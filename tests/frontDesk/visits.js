@@ -20,6 +20,7 @@ const {
     evaluate
 } = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
+const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension")
 var assert = require('assert');
 
@@ -27,22 +28,14 @@ var startOpdVisit='Start OPD Visit'
 var submitBtn='.submit-btn-container'
 var startIpdVisit='Start IPD Visit'
 var overlay='#overlay'
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
 var search='Search'
 var enter= 'Enter'
 var idElement='input#patientIdentifier'
-var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
-var patientGender=gauge.dataStore.scenarioStore.get("patientGender")
 var dashboardLoader='.dashboard-section-loader'
-var prescriptionCount = gauge.dataStore.scenarioStore.get("prescriptionsCount")
 var treatments='#Treatments'
 var addToDrugChart='Add to Drug Chart'
-var vitalFormValues = gauge.dataStore.scenarioStore.get("Vitals")
 var vitalFlowSheet='#Vitals-Flow-Sheet'
-var medicalDiagnosis = gauge.dataStore.scenarioStore.get("medicalDiagnosis")
 var diagnosisElement='#Diagnosis'
-var historyAndExaminationDetails = gauge.dataStore.scenarioStore.get("historyAndExaminationDetails")
 var historyExaminationElement='#History-and-Examinations'
 var smokingHistory='Smoking History'
 var img="//a[@class='img-concept']/img"
@@ -52,12 +45,12 @@ var obsPlyBtn='.obs-play-btn'
 var videoDialog='.video-dialog'
 var clearFix=`//*[@class='ngdialog-close clearfix']`
 var backBtn='.back-btn'
-var consultationNote = gauge.dataStore.scenarioStore.get("consultationNotes")
+var consultationNote = gaugeHelper.get("consultationNotes")
 var opd='OPD'
 var visitElement='#Visits'
 var observationSection='#observation-section'
 var consultationNoteElement='consultation note'
-var labTest = gauge.dataStore.scenarioStore.get("LabTest")
+var labTest = gaugeHelper.get("LabTest")
 var labResults='#Lab-Results'
 var errorElement='//DIV[@class="message-container error-message-container"]'
 var formClose='.ngdialog-close'
@@ -76,11 +69,13 @@ step("Click Start OPD Visit", async function () {
 });
 
 step("Select the newly created patient with network idle", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue, into(textBox({ "placeholder": "Search Name/Patient Identifier  ..." })))
     await click(search, { waitForNavigation: true, waitForEvents: ['networkIdle'], navigationTimeout: process.env.mergeTimeout });
 });
 
 step("Select the newly created patient for IP", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue)
     await press(enter, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
 });
@@ -91,23 +86,30 @@ step("Select the newly created patient for IP Admission", async function () {
 });
 
 step("Select the newly created patient for IP Discharge", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue)
     await click(search, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
 });
 
 step("Search the newly created patient", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue, into($(idElement)))
     await click(search, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
 });
 
 step("verify name with id", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
+    var patientGender=gaugeHelper.get("patientGender")
     assert.ok(await (await text(`${firstName} ${lastName} (${patientIdentifierValue})`, toLeftOf(patientGender))).exists())
 });
 
 step("Verify medical prescription in patient clinical dashboard", async function () {
     await taikoHelper.repeatUntilNotFound($(dashboardLoader))
+    var prescriptionCount = gaugeHelper.get("prescriptionsCount")
     for (var i = 0; i < prescriptionCount; i++) {
-        var prescriptionFile = gauge.dataStore.scenarioStore.get("prescriptions" + i)
+        var prescriptionFile = gaugeHelper.get("prescriptions" + i)
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         assert.ok(await text(medicalPrescriptions.drug_name, within($(treatments))).exists())
         if(medicalPrescriptions.rule!=undefined)
@@ -126,6 +128,7 @@ step("Verify medical prescription in patient clinical dashboard", async function
 });
 
 step("Verify vitals", async function () {
+    var vitalFormValues = gaugeHelper.get("Vitals")
     for (var vitalFormValue of vitalFormValues.ObservationFormDetails) {
         if (vitalFormValue.type == 'Group') {
             for (var vitalFormGroup of vitalFormValue.value) {
@@ -139,10 +142,12 @@ step("Verify vitals", async function () {
 });
 
 step("Verify diagnosis in patient clinical dashboard", async function () {
+    var medicalDiagnosis = gaugeHelper.get("medicalDiagnosis")
     assert.ok(await text(medicalDiagnosis.diagnosis.diagnosisName, toLeftOf(medicalDiagnosis.diagnosis.certainty, toRightOf(medicalDiagnosis.diagnosis.order)), within($(diagnosisElement))).exists())
 });
 
 step("Verify condition in patient clinical dashboard", async function () {
+    var medicalDiagnosis = gaugeHelper.get("medicalDiagnosis")
     var medicalConditions = medicalDiagnosis.condition
     for (var condition of medicalConditions) {
         if (condition.status != "Inactive") {
@@ -153,6 +158,7 @@ step("Verify condition in patient clinical dashboard", async function () {
 
 
 step("Verify history & examination in patient clinical dashboard", async function () {
+    var historyAndExaminationDetails = gaugeHelper.get("historyAndExaminationDetails")
     assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($(historyExaminationElement))).exists())
     assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($(historyExaminationElement)), toRightOf(smokingHistory)).exists())
     assert.ok(await $(img).exists(), "Image not displayed on history & examination");
@@ -186,7 +192,7 @@ step("Verify no error displayed on page", async function () {
 
 step("Validate obs <form> on the patient clinical dashboard", async function (formPath) {
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
-    gauge.dataStore.scenarioStore.put(obsFormValues.ObservationClinicalFormName, obsFormValues)
+    gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
     await taikoHelper.repeatUntilNotFound($(overlay))
     var viewFormElement="//SPAN[normalize-space()='" + obsFormValues.ObservationClinicalFormName.trim() + "']/..//i[@class='fa fa-eye']"
     await evaluate($(viewFormElement), (el) => el.click())

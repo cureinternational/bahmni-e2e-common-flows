@@ -8,6 +8,7 @@ const path = require('path')
 const assert = require("assert")
 const fileExtension = require("./fileExtension")
 const { waitFor } = require("taiko");
+const gaugeHelper=require("./gaugeHelper")
 function getUserNameFromEncoding(encodedUser) {
     let user = new Buffer(encodedUser, 'base64');
     let decodedUser = user.toString('ascii');
@@ -51,12 +52,12 @@ function getRegID() {
     return "BAH-".concat(randomNumber(10000, 1000000));
 }
 function getRandomPatientGender() {
-    var patientGender = gauge.dataStore.scenarioStore.get("patientGender")
+    var patientGender = gaugeHelper.get("patientGender")
     if (!patientGender) {
         patientGender = faker.name.sexType()
         patientGender = patientGender.charAt(0).toUpperCase() + patientGender.slice(1);
     }
-    gauge.dataStore.scenarioStore.put("patientGender", patientGender);
+    gaugeHelper.save("patientGender", patientGender);
     return patientGender;
 }
 
@@ -95,9 +96,9 @@ async function randomZipCodeStateAndDistrict() {
     let rows = await csv().fromFile(path.resolve(__dirname, "../../data/", process.env.addresshierarchyPath));
     var randomRow = faker.datatype.number({ min: 1, max: 50 });
     var kebele= rows[randomRow]["kebele"]
-    gauge.dataStore.scenarioStore.put("kebele", kebele)
+    gaugeHelper.save('kebele', kebele)
     var woreda = rows[randomRow]["woreda"]
-    gauge.dataStore.scenarioStore.put("woreda", woreda)
+    gaugeHelper.save('woreda', woreda)
 }
 module.exports = {
     getRegID: getRegID,

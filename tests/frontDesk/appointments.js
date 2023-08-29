@@ -28,14 +28,13 @@ const {
 } = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
+const gaugeHelper = require("../util/gaugeHelper")
 var assert = require("assert");
 const { stat } = require('fs');
 
 var addNewAppointment = 'Add new appointment'
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
 var patientNameId='Patient Name or ID'
-var firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-var lastName = gauge.dataStore.scenarioStore.get("patientLastName")
+var lastName = gaugeHelper.get("patientLastName")
 var searchbox='//input[@role="searchbox"]'
 var service='Service'
 var appointmentCategorySearch='appointment-category-search'
@@ -43,7 +42,6 @@ var specialitySearch='speciality-search'
 var serviceSearch='service-search'
 var providerSearch='provider-search'
 var locationSearch='location-search'
-var time= gauge.dataStore.scenarioStore.get("startTime")
 var location = 'Location'
 var appointmentDateElement = 'Appointment date'
 var summary='Summary'
@@ -56,7 +54,6 @@ var yesIConfirm='Yes, I confirm'
 var checkAndSave='Check and Save'
 var btn='button'
 var goNext='[ng-click="goToNext()"]'
-var appointmentStartDate = gauge.dataStore.scenarioStore.get("appointmentStartDate")
 var week='Week'
 var day='Day'
 var closeBtn='//div[@class="AddAppointment_close__2kahG"]'
@@ -71,7 +68,6 @@ var cancelAll='Cancel All'
 var btnYes='button#yes'
 var btnYesAll='button#yes_all'
 var cancel='Cancel'
-var patientName=gauge.dataStore.scenarioStore.get("patientFullName")
 var cancelBtn='//button[contains(text(),"Cancel")]'
 var patientDropdown='Patient:'
 var edit='Edit'
@@ -81,13 +77,11 @@ var admin='Admin'
 var awaitingAppointments='Awaiting Appointments'
 var addNewService='Add New Service'
 var save='Save'
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
 var manageLocations='Manage Locations'
 var today='Today'
 var listView='List view'
-let appointmentDate = gauge.dataStore.scenarioStore.get("appointmentDate");
-let appointmentStartTime = gauge.dataStore.scenarioStore.get("appointmentStartTime");
-let appointmentEndTime = gauge.dataStore.scenarioStore.get("appointmentEndTime");
+let appointmentStartTime = gaugeHelper.get("appointmentStartTime");
+let appointmentEndTime = gaugeHelper.get("appointmentEndTime");
 var locationSearchInput="//div[@data-testid='location-search']//input"
 var locationSearchBtn="//div[@data-testid='location-search']//button[1]"
 var specialitySearchInput="//div[@data-testid='speciality-search']//input"
@@ -96,7 +90,6 @@ var locations=process.env.registrationLocations.split(',')
 var providers=process.env.providersList.split(',')
 var providerSearchInput="//div[@data-testid='provider-search']//input"
 var providerSearchBtn="//div[@data-testid='provider-search']//button[1]"
-var appointmentStartDate=gauge.dataStore.scenarioStore.get("startDate")
 var conflictMessage='You have an overlapping conflict'
 var saveAnyway='Save Anyway'
 
@@ -110,11 +103,16 @@ step("Click Add New appointment", async function () {
 });
 
 step("Select Patient id", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    var firstName = gaugeHelper.get("patientFirstName")
     await write(patientIdentifierValue, into(textBox({ placeHolder: patientNameId })));
     await click(firstName);
 });
 
 step("Select patient", async function () {
+    var firstName = gaugeHelper.get("patientFirstName")
+    var lastName = gaugeHelper.get("patientLastName")
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
     await write(firstName, into($(searchbox)))
     var patientNameElement=`//a[text()='${patientName}']`
@@ -181,6 +179,7 @@ step("Select location <location>", async function (locationName) {
 });
 
 step("Enter appointment time into Start time", async function () {
+    var time= gaugeHelper.get("startTime")
     await write(time,into(textBox({placeholder:"hh:mm"})))});
 
 step("Close the appointment popup",async function(){
@@ -192,15 +191,15 @@ step("Close the appointment popup",async function(){
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
     await click($(fcwidgetcontent), toRightOf(`${appointmentTime}`));
     await taikoHelper.repeatUntilNotFound($(overlay))
-    gauge.dataStore.scenarioStore.put("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
-    gauge.dataStore.scenarioStore.put("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
-    gauge.dataStore.scenarioStore.put("startTime", await textBox({ placeHolder: "hh:mm" }).value())
-    gauge.message(`Appointment start date ${gauge.dataStore.scenarioStore.get("startDate")}`)
-    gauge.message(`Appointment start time ${gauge.dataStore.scenarioStore.get("startTime")}`)   
+    gaugeHelper.save("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
+    gaugeHelper.save("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
+    gaugeHelper.save("startTime", await textBox({ placeHolder: "hh:mm" }).value())
+    gauge.message(`Appointment start date ${gaugeHelper.get("startDate")}`)
+    gauge.message(`Appointment start time ${gaugeHelper.get("startTime")}`)   
 });
 
 step("put <appointmentDate> as appointment date", async function (appointmentDate) {
-    gauge.dataStore.scenarioStore.put("appointmentStartDate", date.getDateFrommmddyyyy(appointmentDate))
+    gaugeHelper.save("appointmentStartDate", date.getDateFrommmddyyyy(appointmentDate))
 });
 
 
@@ -227,6 +226,7 @@ step("Goto tomorrow's date", async function () {
 });
 
 step("Goto appointments's date", async function () {
+    var appointmentStartDate = gaugeHelper.get("appointmentStartDate")
     await timeField(toRightOf(week)).select(new Date(appointmentStartDate));
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
@@ -275,8 +275,9 @@ step("select the recurring appointment option", async function () {
 });
 
 step("select the Start date as <appointmentDate>", async function (appointmentDate) {
+    var appointmentStartDate = gaugeHelper.get("appointmentStartDate")
     await write(appointmentDate, below(appointmentStartDate));
-    gauge.dataStore.scenarioStore.put("appointmentStartDate", new Date())
+    gaugeHelper.save("appointmentStartDate", new Date())
 });
 
 step("select the End date as after <times> occurances", async function (times) {
@@ -304,6 +305,8 @@ step("Click Cancel", async function () {
 });
 
 step("Cancel <type> appointment", async function (type) {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    var patientName=gaugeHelper.get("patientFullName")
     var btnstatus= await button(cancel).isDisabled()
     if(btnstatus)
     {
@@ -376,6 +379,7 @@ step("Create a service if it does not exist", async function () {
 });
 
 step("Verify the appointment is present in waitlist", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientIdElement="//A[text()='" +patientIdentifierValue+ "']"
     assert.ok(await $(patientIdElement).exists());
 });
@@ -393,15 +397,17 @@ step("Select List View in Appointments", async function () {
 });
 
 step("Get Apointmnet Date and Time", async function () {
-    let appointmentDate = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[3]").text();
-    let appointmentStartTime = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[4]").text();
-    let appointmentEndTime = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[5]").text();
-    gauge.dataStore.scenarioStore.put("appointmentDate", appointmentDate)
-    gauge.dataStore.scenarioStore.put("appointmentStartTime", appointmentStartTime)
-    gauge.dataStore.scenarioStore.put("appointmentEndTime", appointmentEndTime)
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    let appointmentDate = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[4]").text();
+    let appointmentStartTime = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[5]").text();
+    let appointmentEndTime = await $("//A[text()='" + patientIdentifierValue + "']/../../TD[6]").text();
+    gaugeHelper.save("appointmentDate", appointmentDate)
+    gaugeHelper.save("appointmentStartTime", appointmentStartTime)
+    gaugeHelper.save("appointmentEndTime", appointmentEndTime)
 });
 
 step("Verify the details in Appointments display control with status <status>", async function (status) {
+    let appointmentDate = gaugeHelper.get("appointmentDate");
     assert.ok(text(`${appointmentStartTime} - ${appointmentEndTime}`, toRightOf(appointmentDate, toLeftOf(status))).exists())
 });
 
@@ -449,6 +455,7 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
  });
 
  step('Enter the appointment date',async function(){
+    let appointmentDate = gaugeHelper.get("startDate");
     await write(appointmentDate,into(textBox({placeholder:"mm/dd/yyyy"})))
  })
  step("Verify the conflict message",async function(){

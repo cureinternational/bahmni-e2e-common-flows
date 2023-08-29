@@ -1,7 +1,7 @@
 const { $, goto, below, write, textBox, into, click, toLeftOf, dropDown, checkBox, reload, text, timeField, waitFor, highlight, screenshot, toRightOf, button, switchTo, within } = require('taiko');
 var assert = require("assert")
 var date = require("./util/date");
-
+const gaugeHelper=require("./util/gaugeHelper")
 step("Select start date, end date and <reportFormat> format for <reportName> and click on run button", async function (reportFormat, reportName) {
 	let startDate = date.today()
 	let endDate = date.today()
@@ -12,11 +12,11 @@ step("Select start date, end date and <reportFormat> format for <reportName> and
 });
 
 step("Validate the report generated.", async function () {
-	let patientIdentifier = gauge.dataStore.scenarioStore.get("patientIdentifier")
-	let firstName = gauge.dataStore.scenarioStore.get("patientFirstName")
-	let lastName = gauge.dataStore.scenarioStore.get("patientLastName")
-	let patientAge = gauge.dataStore.scenarioStore.get("patientAge")
-	let patientGender = (gauge.dataStore.scenarioStore.get("patientGender") == "Female") ? "F" : "M";
+	let patientIdentifier = gaugeHelper.get("patientIdentifier")
+	let firstName = gaugeHelper.get("patientFirstName")
+	let lastName = gaugeHelper.get("patientLastName")
+	let patientAge = gaugeHelper.get("patientAge")
+	let patientGender = (gaugeHelper.get("patientGender") == "Female") ? "F" : "M";
 	let startDate = date.getddmmmyyyyFormattedDate(date.today());
 	let endDate = date.getddmmmyyyyFormattedDate(date.today());
 	assert.ok(await text(patientIdentifier

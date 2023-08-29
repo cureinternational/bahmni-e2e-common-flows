@@ -39,6 +39,7 @@ var users = require("./util/users");
 const csvConfig = require("./util/csvConfig");
 var date = require("./util/date");
 var taikoitr=require("./../../components/taikoInteraction")
+const gaugeHelper=require("./util/gaugeHelper")
 
 
 
@@ -60,7 +61,7 @@ step("Open <submodule>", async function (submodule) {
 });
 
 step("Open patient2 details by search", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("merge_patientIdentifier2");
+    var patientIdentifierValue = gaugeHelper.get("merge_patientIdentifier2");
     gauge.message(patientIdentifierValue)
     taikowrite.writeText(patientIdentifierValue)
     taikointeractions.pressEnter()
@@ -70,7 +71,7 @@ step("Open patient2 details by search", async function () {
 
 step("Verify patient1 details are open", async function () {
     var patientIdentifier = await $('#patientIdentifierValue').text();
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("merge_patientIdentifier1");
+    var patientIdentifierValue = gaugeHelper.get("merge_patientIdentifier1");
     assert.ok(patientIdentifier == patientIdentifierValue)
 });
 
@@ -84,7 +85,7 @@ step("Create a form", async function () {
 
 step("Enter form name", async function () {
     var formName = users.randomName(10)
-    gauge.dataStore.scenarioStore.put("FormName", formName)
+    gaugeHelper.save("FormName", formName)
     taikowrite.writeIntoTextAreaBelow("Form Name")    
 });
 
@@ -93,7 +94,7 @@ step("start creating a form", async function () {
 });
 
 step("put formname <formName>", async function (formName) {
-    gauge.dataStore.scenarioStore.put("FormName", formName)
+    gaugeHelper.save("FormName", formName)
 });
 
 step("edit form <formName>", async function (formName) {
@@ -140,8 +141,8 @@ step("Add a new concept", async function () {
 step("enter a concept name", async function () {
     var drugName = users.randomName(10)
     await write(drugName, into(textBox(above("Synonyms"), below("English"))));
-    gauge.message(drugName)
-    gauge.dataStore.scenarioStore.put("Drug Concept", drugName)
+    gaugeHelper.print("drugName",drugName)
+    gaugeHelper.save("Drug Concept", drugName)
 });
 
 step("enter a description", async function () {
@@ -168,9 +169,9 @@ step("Create a drug with more details", async function () {
     await click("Add Concept Drug");
     var drugName = users.randomName(10)
     await write(drugName, into(textBox(toRightOf("Name"), above("Concept"))));
-    gauge.message(`Drug Name - ${drugName}`);
-    gauge.dataStore.scenarioStore.put("Drug Name", drugName)
-    var drugConcept = gauge.dataStore.scenarioStore.get("Drug Concept")
+    gauge.print('Drug Name', drugName);
+    gaugeHelper.save("Drug Name", drugName)
+    var drugConcept = gaugeHelper.get("Drug Concept")
     await write(drugConcept, into(textBox({ placeHolder: "Enter concept name or id" })));
     await write(dosageForm, into(textBox(toRightOf("Dosage Form"), above("Strength"))));
     await click("Save Concept Drug");
@@ -257,7 +258,7 @@ step("Open Audit Log module", async function () {
 });
 
 step("Enter patientId", async function () {
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue, into(textBox(toRightOf("Patient ID "))));
 
 });
@@ -269,11 +270,11 @@ step("Click on Filter", async function () {
 
 
 step("Verify Event <message> in Audit log for the <user>", async function (strMessage, strUser) {
-    var labReportFile = gauge.dataStore.scenarioStore.get("labReportFile")
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
+    var labReportFile = gaugeHelper.get("labReportFile")
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var username = users.getUserNameFromEncoding(process.env[strUser]);
     var todayDate = date.getDateInLongFromat(date.today())
-    var labTest = gauge.dataStore.scenarioStore.get("LabTest")
+    var labTest = gaugeHelper.get("LabTest")
     strMessage = strMessage.replace('<user>', username)
         .replace('<patient>', patientIdentifierValue)
         .replace('<labReportFile>', labReportFile)

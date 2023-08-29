@@ -49,8 +49,6 @@
 # Start an OPD Visit
 * Click Start OPD Visit
 * Verify no error displayed on page
-* wait for overlay and Saved to disappear
-* Verify no error displayed on page
 * Click back button
 * Click back button
 

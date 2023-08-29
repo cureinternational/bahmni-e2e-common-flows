@@ -23,17 +23,12 @@ var fileExtension = require("../util/fileExtension");
 var date = require("../util/date");
 var users = require("../util/users")
 const taikoHelper = require("../util/taikoHelper");
+const gaugeHelper=require("../util/gaugeHelper")
 const { link } = require('fs');
 const path = require('path');
 
-var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier");
-var patientFirstName = gauge.dataStore.scenarioStore.get("patientFirstName");
-var patientMiddleName = gauge.dataStore.scenarioStore.get("patientMiddleName");
-var patientLastName = gauge.dataStore.scenarioStore.get("patientLastName");
 var search='Search'
 var foundElement='Found 1 patient'
-var labTest = gauge.dataStore.scenarioStore.get("LabTest")
-var labReportFile = gauge.dataStore.scenarioStore.get("labReportFile")
 var pendingLabOrder='Pending Lab Orders'
 var test='Test'
 var uploadReport='Upload Report'
@@ -50,16 +45,21 @@ step("start patient search", async function () {
 });
 
 step("enter the patient name in lablite", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await write(patientIdentifierValue, { "placeholder": "Search for a patient by name or identifier number" });
     await click(button(search))
 });
 
 step("Select the patient in lablite search result", async function () {
+    var patientFirstName = gaugeHelper.get("patientFirstName");
+    var patientMiddleName = gaugeHelper.get("patientMiddleName");
+    var patientLastName = gaugeHelper.get("patientLastName");
     assert.ok(await text(foundElement).exists())
     await click(`${patientFirstName} ${patientMiddleName} ${patientLastName}`)
 });
 
 step("Verify test prescribed is displayed on Pending Lab Orders table", async function () {
+    var labTest = gaugeHelper.get("LabTest")
     await highlight(text(labTest, below(pendingLabOrder), below(test), above(uploadReport)))
     assert.ok(await text(labTest, below(pendingLabOrder), below(test), above(uploadReport)).exists())
 });
@@ -69,12 +69,13 @@ step("Open upload report side panel", async function () {
 });
 
 step("Select prescribed test in Pending Lab Orders table", async function () {
+    var labTest = gaugeHelper.get("LabTest")
     await checkBox(below(pendingLabOrder), above(uploadReport), toLeftOf(labTest)).check();
 });
 
 step("Select Lab Report in side panel", async function () {
     var labReportFile = "labReport1.jpg";
-    gauge.dataStore.scenarioStore.put("labReportFile", labReportFile)
+    gaugeHelper.save("labReportFile", labReportFile)
     await attach(path.join('./bahmni-e2e-common-flows/data/reports/' + labReportFile), fileField(above(text("Report Date"))), { waitForEvents: ['DOMContentLoaded'] });
 });
 
@@ -88,6 +89,8 @@ step("Select Doctor in side panel", async function () {
 });
 
 step("Upload and verify the reports table", async function () {
+    var labTest = gaugeHelper.get("LabTest")
+    var labReportFile = gaugeHelper.get("labReportFile")
     await click(button(saveAndUpload));
     await taikoHelper.repeatUntilNotFound($(reportSuccessMessageElement));
     await highlight(text(labTest, below(reportsTable), below(test), toLeftOf(labReportFile)))
@@ -95,6 +98,7 @@ step("Upload and verify the reports table", async function () {
 });
 
 step("Verify the uploaded report", async function () {
+    var labReportFile = gaugeHelper.get("labReportFile")
     await click(labReportFile);
     var file='//DIV[contains(@class,"is-visible")]//IMG/../../..//h3[text()="' + labReportFile +' "]'
     await highlight($(file))
@@ -109,5 +113,6 @@ step("Click Home button on lab-lite", async function() {
 });
 
 step("Verify order is removed from Pending lab orders table", async function() {
+    var labTest = gaugeHelper.get("LabTest")
     assert.ok(!await text(labTest,above(uploadReport)).exists(500,1000));
 });

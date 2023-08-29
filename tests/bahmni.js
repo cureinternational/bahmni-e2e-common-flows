@@ -15,26 +15,26 @@ const {
 var taikoHelper = require("./util/taikoHelper");
 var users = require("./util/users")
 const csvConfig = require("./util/csvConfig");
-
+const gaugeHelper = require("./util/gaugeHelper")
 
 step("put first name <firstName> middle name <middleName> lastname <lastName>", async function (firstName, middleName, lastName) {
-    gauge.dataStore.scenarioStore.put("patientFirstName", firstName);
-    gauge.dataStore.scenarioStore.put("patientMiddleName", middleName);
-    gauge.dataStore.scenarioStore.put("patientLastName", lastName);
+    gaugeHelper.save("patientFirstName", firstName);
+    gaugeHelper.save("patientMiddleName", middleName);
+    gaugeHelper.save("patientLastName", lastName);
 });
 
 step("put randomly generated names for patient", async function () {
     var firstName = users.randomName(8)
     gauge.message(`firstName ${firstName}`)
-    gauge.dataStore.scenarioStore.put("patientFirstName", firstName)
+    gaugeHelper.save("patientFirstName", firstName)
 
     var middleName = users.randomName(8)
     gauge.message(`middleName ${middleName}`)
-    gauge.dataStore.scenarioStore.put("patientMiddleName", middleName);
+    gaugeHelper.save("patientMiddleName", middleName);
 
     var lastName = users.randomName(8)
     gauge.message(`firstName ${lastName}`)
-    gauge.dataStore.scenarioStore.put("patientLastName", lastName);
+    gaugeHelper.save("patientLastName", lastName);
 });
 
 step("Goto Clinical application", async function () {
@@ -85,21 +85,21 @@ step("Wait for message <message> to disappear", async function (message) {
 });
 
 step("put doctor first name <doctorFirstName> middle name <doctorMiddleName> lastname <doctorLastName>", async function (doctorFirstName, doctorMiddleName, doctorLastName) {
-    gauge.dataStore.scenarioStore.put("doctorFirstName", doctorFirstName);
-    gauge.dataStore.scenarioStore.put("doctorMiddleName", doctorMiddleName);
-    gauge.dataStore.scenarioStore.put("doctorLastName", doctorLastName);
+    gaugeHelper.save("doctorFirstName", doctorFirstName);
+    gaugeHelper.save("doctorMiddleName", doctorMiddleName);
+    gaugeHelper.save("doctorLastName", doctorLastName);
 });
 
 step("Choose a random uploaded patient identifier", async function () {
-    //var recordLength=gauge.dataStore.scenarioStore.get("fileDataLength")-1;
+    //var recordLength=gaugeHelper.get("fileDataLength")-1;
     let recordSeq = 0;
     const recordAsJson = (await csvConfig.getCSVasJson("patient"))[recordSeq];
 
     // await taikoHelper.selectEntriesTillIterationEnds(recordSeq);
-    var patientIdentifierValue = gauge.dataStore.scenarioStore.get("patientIdentifier" + (recordSeq));
-    gauge.dataStore.scenarioStore.put("patientIdentifier", patientIdentifierValue);
-    gauge.dataStore.scenarioStore.put("patientFirstName",gauge.dataStore.scenarioStore.get("patientFirstName" + (recordSeq)));
-    gauge.dataStore.scenarioStore.put("patientMiddleName",gauge.dataStore.scenarioStore.get("patientMiddleName" + (recordSeq)));
-    gauge.dataStore.scenarioStore.put("patientLastName",gauge.dataStore.scenarioStore.get("patientLastName" + (recordSeq)));
-    gauge.dataStore.scenarioStore.put("patientFullName",gauge.dataStore.scenarioStore.get("patientFullName" + (recordSeq)));
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier" + (recordSeq));
+    gaugeHelper.save("patientIdentifier", patientIdentifierValue);
+    gaugeHelper.save("patientFirstName",gaugeHelper.get("patientFirstName" + (recordSeq)));
+    gaugeHelper.save("patientMiddleName",gaugeHelper.get("patientMiddleName" + (recordSeq)));
+    gaugeHelper.save("patientLastName",gaugeHelper.get("patientLastName" + (recordSeq)));
+    gaugeHelper.save("patientFullName",gaugeHelper.get("patientFullName" + (recordSeq)));
 });

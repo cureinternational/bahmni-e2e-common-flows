@@ -31,28 +31,28 @@ async function updateCSV(profile) {
     let lastName = users.randomName(10);
     switch (profile) {
       case "Patient":
-        gauge.dataStore.scenarioStore.put("patientIdentifier" + i, regID);
-        gauge.dataStore.scenarioStore.put("patientIdentifier" + i, regID);
-        gauge.dataStore.scenarioStore.put("patientFirstName" + i, firstName)
-        gauge.dataStore.scenarioStore.put("patientMiddleName" + i, middleName)
-        gauge.dataStore.scenarioStore.put("patientLastName" + i, lastName)
-        gauge.dataStore.scenarioStore.put("patientFullName" + i, `${firstName} ${middleName} ${lastName}`)
+        gaugeHelper.save("patientIdentifier" + i, regID);
+        gaugeHelper.save("patientIdentifier" + i, regID);
+        gaugeHelper.save("patientFirstName" + i, firstName)
+        gaugeHelper.save("patientMiddleName" + i, middleName)
+        gaugeHelper.save("patientLastName" + i, lastName)
+        gaugeHelper.save("patientFullName" + i, `${firstName} ${middleName} ${lastName}`)
         await modifyCsvContent(file, i, 'Registration Number', regID);
         await modifyCsvContent(file, i, 'First Name', firstName);
         await modifyCsvContent(file, i, 'Middle Name', middleName);
         await modifyCsvContent(file, i, 'Last Name', lastName);
         break;
       case "Encounter":
-        await modifyCsvContent(file, i, 'Registration Number', gauge.dataStore.scenarioStore.get("patientIdentifier" + i));
-        await modifyCsvContent(file, i, 'First Name', gauge.dataStore.scenarioStore.get("patientFirstName" + i));
-        await modifyCsvContent(file, i, 'Middle Name', gauge.dataStore.scenarioStore.get("patientMiddleName" + i));
-        await modifyCsvContent(file, i, 'Last Name', gauge.dataStore.scenarioStore.get("patientLastName" + i));
+        await modifyCsvContent(file, i, 'Registration Number', gaugeHelper.get("patientIdentifier" + i));
+        await modifyCsvContent(file, i, 'First Name', gaugeHelper.get("patientFirstName" + i));
+        await modifyCsvContent(file, i, 'Middle Name', gaugeHelper.get("patientMiddleName" + i));
+        await modifyCsvContent(file, i, 'Last Name', gaugeHelper.get("patientLastName" + i));
         break;
       default:
         gauge.message("No matched Profile Found");
     }
   }
-  gauge.dataStore.scenarioStore.put("fileDataLength", fs.readFileSync(file, "utf-8").split("\n").length);
+  gaugeHelper.save("fileDataLength", fs.readFileSync(file, "utf-8").split("\n").length);
   return file;
 };
 
