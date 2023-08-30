@@ -27,7 +27,7 @@ const {
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 const taikoInteraction = require("../../../components/taikoInteraction");
-const taikoassert= require("../../../components/taikoassert");
+const taikoassert= require("../../../components/taikoAssert");
 const taikoElement= require("../../../components/taikoElement");
 const fileExtension = require("../util/fileExtension")
 const path = require('path');

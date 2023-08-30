@@ -22,6 +22,10 @@ const {
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
+const taikoInteraction = require("../../../components/taikoInteraction");
+const taikoassert= require("../../../components/taikoAssert");
+const taikoElement= require("../../../components/taikoElement");
+
 var otScheduling = 'OT Scheduling'
 var newSurgicalBlock = 'New Surgical Block'
 var surgeon = 'Surgeon'
@@ -52,22 +56,19 @@ var edit='Edit'
 
 
 step("Click OT Scheduling", async function() {
-	await click(otScheduling)
+    await taikoInteraction.Click(otScheduling,'text')
 });
 
 step("Create a new surgical block", async function() {
-    await scrollTo(newSurgicalBlock)
-    await highlight(newSurgicalBlock)
-	await click(newSurgicalBlock,{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
+    await taikoInteraction.Click(newSurgicalBlock,'text')
 });
 
 step("Select the surgeon", async function() {
-    await highlight(dropDown(toRightOf(surgeon)))
-	await dropDown(toRightOf(surgeon)).select(process.env.surgeon);
+    await taikoInteraction.Dropdown(surgeon,process.env.surgeon)
 });
 
 step("Select the theatre location", async function() {
-	await click(locationName,toRightOf(location));
+    await taikoInteraction.Click(locationName,'text',toRightOf(location))
 });
 
 step("Select tomorrow as the theatre booking date", async function() {
@@ -75,81 +76,73 @@ step("Select tomorrow as the theatre booking date", async function() {
     startDate.setHours(11)
     startDate.setMinutes(0)
     var endDate = date.addMinutes(startDate,300)
-	await timeField(toRightOf(startDateTime)).select(startDate);
-    await timeField(toRightOf(endDateTime).select(endDate));
-    
+    await taikoInteraction.Timefield(startDateTime,startDate)
+    await taikoInteraction.Timefield(endDateTime,endDate)
 });
 
 
 step("Enter procedure details", async function() {
-    await write(procedure,into(textBox(above(estTime))));
+    await taikoInteraction.Write(procedure,'into',above(estTime))
 });
 
 step("Enter estimated time", async function() {
-    await write("15", $(estimatedTime))
+    await taikoInteraction.Write("15",'into',estimatedTime)
 });
 
 step("Add surgery details", async function() {
-	await click(add);
+    await taikoInteraction.Click(add,'text')
 });
 
 step("Cancel the surgery", async function() {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await highlight(button(cancel),toRightOf(patientIdentifierValue));
-    await scrollTo(cancel)
-	await click(cancel,toRightOf(patientIdentifierValue));
-    await waitFor(patientIdentifierValue)
-    await highlight(cancelSurgery)
-    await scrollTo(cancelSurgery)
-    await click(cancelSurgery);
+    await taikoInteraction.Click(cancel,'text',toRightOf(patientIdentifierValue))
+    await taikoElement.waitToPresent(text(patientIdentifierValue))
+    await taikoInteraction.Click(cancelSurgery,'text')
 });
 
 step("Give reason", async function() {
-	await write(reason,into(textBox({placeHolder:enterReason})));
+    await taikoInteraction.Write(reason,'into',{placeHolder:enterReason})
 });
 
 step("Confirm cancellation", async function () {
-	await click(confirm);
+    await taikoInteraction.Click(confirm,'text')
 });
 
 step("Add surgery", async function() {
-    await click(addSurgery);
+    await taikoInteraction.Click(addSurgery,'text')
 });
 
 step("Click doctor's OT schedule", async function() {
-    await scrollTo(surgeonName)
+    await taikoInteraction.Click(surgeonName,'text')
 	await click(surgeonName)
 });
 
 step("Cancel surgeon's scheduled block", async function() {
-    await scrollTo(cancelBlock)
-	await click(cancelBlock)
-    await waitFor("This change will affect all surgeries of the block")
-    await scrollTo(cancelBlock,toRightOf(postPoneBlock))
-    await click(cancelBlock,toRightOf(postPoneBlock))
+    await taikoInteraction.Click(cancelBlock,'text')
+    await taikoElement.waitToPresent(text("This change will affect all surgeries of the block"))
+    await taikoInteraction.Click(cancelBlock,'text',toRightOf(postPoneBlock))
 });
 
 step("Enter reason for surgical block cancellation", async function() {
-	await write(reason,into(textBox({placeHolder:enterReason})));
+    await taikoInteraction.Write(reason,'into',{placeHolder:enterReason})
 });
 
 step("Save OT data", async function() {
-    await click(save,{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
+    await taikoInteraction.Click(save,'text')
 	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Enter Patient id / name", async function() {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue,into(textBox({placeHolder:"Enter Patient ID/ Name"})));
-    await click(`( ${patientIdentifierValue} )`)
+    await taikoInteraction.Write(patientIdentifierValue,"into",{placeHolder:"Enter Patient ID/ Name"});
+    await taikoInteraction.Click(patientIdentifierValue,'text')
 });
 
 step("Goto operation day", async function () {
-    await click(button(toRightOf(today),toLeftOf(week)))
+    await taikoInteraction.Click(toRightOf(today),'button')
+    //await click(button(toRightOf(today),toLeftOf(week)))
 });
 
 step("Edit doctor's OT schedule", async function() {
-    await highlight(button(edit))
-    await scrollTo(edit)
-    await click(button(edit))
+    await taikoInteraction.Click(edit,'button')
 });

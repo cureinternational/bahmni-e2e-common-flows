@@ -23,6 +23,8 @@ var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var assert = require('assert');
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
 
 var radiology='Radiology'
 var laboratory='Laboratory'
@@ -53,13 +55,11 @@ var order='Order'
 var certainty='Certainty'
 
 step("click radiology",async function(){
-
-    await click(radiology)
+    await taikoInteraction.Click(radiology,'text')
 })
 
 step("click laboratory",async function(){
-
-    await click(laboratory)
+    await taikoInteraction.Click(laboratory,'text')
 })
 
 step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile) {
@@ -69,9 +69,8 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
     gaugeHelper.save("LabTest", testPrescription.test)
     await taikoHelper.repeatUntilFound(text(testPrescription.test))
     console.log("test found.")
-    await click(testPrescription.test, { force: true })
+    await taikoInteraction.Click(testPrescription.test, 'text')
     console.log("Selected test. " +testPrescription.test)
-    await waitFor(100)
 });
 
 
@@ -93,28 +92,28 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
         if (medicalPrescriptions.drug_name != null) {
             if (drugName == null)
                 drugName = medicalPrescriptions.drug_name;
-            if (await textBox(toRightOf(drugNameElement)).exists()) {
-                await write(drugName, into(textBox(toRightOf(drugNameElement))));
-                await click(link(drugName, below(textBox(toRightOf(drugNameElement)))));
+            if (await taikoElement.isPresent(toRightOf(drugNameElement))) {
+                await taikoInteraction.Write(drugName,'into',toRightOf(drugNameElement))
+                await taikoInteraction.Click(drugName, 'link',below(textBox(toRightOf(drugNameElement))))
                 if(medicalPrescriptions.rule!=undefined)
             {
-                await dropDown(toRightOf(rule)).select(medicalPrescriptions.rule);
+                await taikoInteraction.Dropdown(toRightOf(rule),medicalPrescriptions.rule)
             }
-                await write(medicalPrescriptions.dose, into(textBox(toRightOf(dose))));
-                await dropDown(toRightOf(units)).select(medicalPrescriptions.units);
-                await dropDown(toRightOf(frequency)).select(medicalPrescriptions.frequency)
-                await write(medicalPrescriptions.duration, into(textBox(toRightOf(duration))));
-                await write(medicalPrescriptions.notes, into(textBox(toRightOf(additonalInstructions))));
+                await taikoInteraction.Write(medicalPrescriptions.dose,'into',toRightOf(dose))
+                await taikoInteraction.Dropdown(toRightOf(units),medicalPrescriptions.units)
+                await taikoInteraction.Dropdown(toRightOf(frequency),medicalPrescriptions.frequency)
+                await taikoInteraction.Write(medicalPrescriptions.duration,'into',toRightOf(duration))
+                await taikoInteraction.Write(medicalPrescriptions.notes,'into',toRightOf(additonalInstructions))
             }
-            await click(add);
+            await taikoInteraction.Click(add,'text')
             if(medicalPrescriptions.rule!=undefined)
             {
-             assert.ok(text(medicalPrescriptions.perDay).exists())
-             assert.ok(text(medicalPrescriptions.total).exists())
+             await taikoElement.isPresent(text(medicalPrescriptions.perDay))
+             await taikoElement.isPresent(text(medicalPrescriptions.total))
             }
            if(medicalPrescriptions.isIPD=='true')
            {
-            await click(button(ipd),toRightOf(medicalPrescriptions.drug_name))
+            await taikoInteraction.Click(ipd,'button',toRightOf(medicalPrescriptions.drug_name))
            }
 
         }
@@ -125,50 +124,47 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
 
 step("Doctor captures consultation notes <notes>", async function (notes) {
     gaugeHelper.save("consultationNotes", notes)
-    await click(consultation, { force: true, waitForNavigation: true, waitForStart: 2000 });
-    await waitFor(textBox({ placeholder: "Enter Notes here" }))
-    await write(notes, into(textBox({ "placeholder": "Enter Notes here" })), { force: true })
+    await taikoInteraction.Click(consultation,'text')
+    await taikoElement.waitToPresent(textBox({ placeholder: "Enter Notes here" }))
+    await taikoInteraction.Write(notes,'into',{ "placeholder": "Enter Notes here" })
     gaugeHelper.save("consultationNotes", notes);
 });
 
 step("Doctor clicks consultation", async function () {
-    await click(consultation, { force: true, waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(consultation,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Choose Disposition", async function () {
-    await click(disposition, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(disposition,'text')
 });
 
 step("Doctor advises admitting the patient", async function () {
-    await waitFor(async () => (await dropDown(dispositionType).exists()))
-    await dropDown(dispositionType).select(admitPatient)
-    await write(admissionNotes, into(textBox(below(dispositionNotes))))
+    await taikoElement.waitToPresent(dropDown(dispositionType))
+    await taikoInteraction.Dropdown(dispositionType,admitPatient)
+    await taikoInteraction.Write(admissionNotes,'into',below(dispositionNotes))
 });
 
 step("Doctor advises discharging the patient", async function () {
-    await waitFor(async () => (await dropDown(dispositionType).exists()))
-    await dropDown(dispositionType).select(dischargePatient)
-    await write(dispositionNotes, into(textBox(below(dispositionNotes))))
+    await taikoElement.waitToPresent(dropDown(dispositionType))
+    await taikoInteraction.Dropdown(dispositionType,dischargePatient)
+    await taikoInteraction.Write(dispositionNotes,'into',below(dispositionNotes))
 });
 
 step("Open <tabName> Tab", async function (tabName) {
-    await click(link(tabName), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout, force: true });
+    await taikoInteraction.Click(tabName,'link')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Save visit data", async function () {
-    await click(save, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(save,'text')
 });
 
 step("Join teleconsultation", async function () {
-    await scrollTo(joinTeleconsultation)
-    await click(joinTeleconsultation);
+    await taikoInteraction.Click(joinTeleconsultation,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await scrollTo(button(joinTeleconsultation), toRightOf(scheduled))
-    await click(button(joinTeleconsultation, toRightOf(scheduled)), { waitForNavigation: false, navigationTimeout: 3000 })
-    await highlight(teleConsulation)
-    await click(($(closeConsultation)));
+    await taikoInteraction.Click(joinTeleconsultation,'button',toRightOf(scheduled))
+    await taikoInteraction.Click(closeConsultation,'xpath')
 });
 
 step("Doctor notes the diagnosis and condition <filePath>", async function (filePath) {
@@ -177,10 +173,11 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
     var medicalDiagnosis = JSON.parse(fileExtension.parseContent(diagnosisFile))
     gaugeHelper.save("medicalDiagnosis", medicalDiagnosis)
     gauge.message(medicalDiagnosis)
-    await click(diagnoses);
-    await write(medicalDiagnosis.diagnosis.diagnosisName, into(textBox(below(diagnoses))));
-    await waitFor(() => $("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]").isVisible())
-    await click($("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]"))
-    await click(medicalDiagnosis.diagnosis.order, below(order));
-    await click(medicalDiagnosis.diagnosis.certainty, below(certainty));
+    await taikoInteraction.Click(diagnoses,'text')
+    await taikoInteraction.Write(medicalDiagnosis.diagnosis.diagnosisName,'into',below(diagnoses))
+    var name=$("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]")
+    await taikoElement.waitToPresent(name)
+    await taikoInteraction.Click(name,'xpath')
+    await taikoInteraction.Click(medicalDiagnosis.diagnosis.order,'text',below(order))
+    await taikoInteraction.Click(medicalDiagnosis.diagnosis.certainty,'text',below(certainty))
 });

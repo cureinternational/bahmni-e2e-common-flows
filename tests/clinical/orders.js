@@ -25,22 +25,25 @@ const {
 } = require('taiko');
 var assert = require("assert");
 var fileExtension = require("../util/fileExtension");
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
+const taikoassert = require('../../../components/taikoassert');
 
 var orderCompleted='Order is Completed'
 
 step("Click the order <order>", async function (order) {
     var orderFile = `./bahmni-e2e-common-flows/data/${order}.json`;
     var radiologyOrder = JSON.parse(fileExtension.parseContent(orderFile))
-    await click(text(radiologyOrder.test))
+    await taikoInteraction.Click(radiologyOrder.test,'text')
  });
 
  step("Select the Radiologist",async function(){
     var radiologist=process.env.radiologist
-    await waitFor(async () => (await text(orderCompleted).exists()))
-    await dropDown(below(orderCompleted)).select(radiologist)
+    await taikoElement.waitToPresent(orderCompleted)
+    await taikoInteraction.Dropdown(below(orderCompleted),radiologist)
  })
 
  step("Verify the Radiologist Name",async function(){  
     var radiologist=process.env.radiologist
-    assert.ok(await text(radiologist).exists())
+    await taikoassert.assertExists(text(radiologist))
  })

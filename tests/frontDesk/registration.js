@@ -41,6 +41,9 @@ const taikoInteraction=require("../../../components/taikoInteraction")
 var assert = require("assert");
 const { closeTab } = require('taiko');
 const { ClientRequest } = require('http');
+const taikoElement = require('../../../components/taikoElement');
+const taikobrowserActions = require('../../../components/taikobrowserActions');
+const taikoAssert = require('../../../components/taikoAssert');
 var update='Update'
 var phoneNumberValue='//input[@name="mobilePhone"]'
 var registration='Registration'
@@ -103,9 +106,7 @@ var registerNewPerson='Register New Person'
 var register='Register'
 
 step("Open <moduleName> module", async function (moduleName) {
-    await waitFor(async () => (await link(registration).exists()),{timeout: process.env.actionTimeout, interval: 1000})
-    await scrollTo(moduleName)
-    await click(moduleName, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(moduleName,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
@@ -113,10 +114,9 @@ step("Click on <type> patient",async function(type){
     if("cure"==type)
     {
         await taikoHelper.repeatUntilNotFound($(overlay))
-        await waitFor(async () => (button(save)).exists())
-        await waitFor(3000)
+        await taikoElement.waitToPresent(button(save))
         await taikoHelper.repeatUntilNotFound($(overlay))
-        await click($(prePatientCheckbox))
+        await taikoInteraction.Click(prePatientCheckbox,'xpath')
     }
 })
 
@@ -128,7 +128,7 @@ step("Enter patient random first name", async function () {
         gaugeHelper.save("patientFirstName", firstName)
     }
     gauge.message(`firstName ${firstName}`)
-    await write(firstName, into(textBox({ "placeholder": "First Name" })));
+    await taikoInteraction.Write(firstName,'into',{ "placeholder": "First Name" })
 });
 
 step("Enter patient random middle name", async function () {
@@ -138,7 +138,7 @@ step("Enter patient random middle name", async function () {
         gaugeHelper.save("patientMiddleName", middleName)
     }
     gauge.message(`middleName ${middleName}`)
-    await write(middleName, into(textBox({ "placeholder": "Middle Name" })));
+    await taikoInteraction.Write(middleName,'into',{ "placeholder": "Middle Name" })
 });
 
 step("Enter patient random last name", async function () {
@@ -151,19 +151,20 @@ step("Enter patient random last name", async function () {
     }
     gauge.message(`lastName ${lastName}`)
     gaugeHelper.save("patientFullName", `${firstName} ${middleName} ${lastName}`)
-    await write(lastName, into(textBox({ "placeholder": "Last Name" })));
+    await taikoInteraction.Write(lastName,'into',{ "placeholder": "Last Name" })
 });
 
 step("Enter patient gender <gender>", async function (gender) {
     if (gaugeHelper.get("isNewPatient"))
-        await dropDown("Gender *").select(gender);
+        await taikoInteraction.Dropdown("Gender *",gender)
     gaugeHelper.save("patientGender", gender)
 });
 
 step("Enter age of the patient <age>", async function (age) {
-    if (gaugeHelper.get(isNewPatient)) {
-        await write(age, into(textBox(toRightOf(years))));
-        await click(checkBox(toLeftOf(estimated)));
+    if (gaugeHelper.get(isNewPatient)) 
+    {
+        await taikoInteraction.Write(age,'into',toRightOf(years))
+        await taikoInteraction.Click(estimated,'checkbox')
     }
     gaugeHelper.save("patientAge", age)
     var birthDate = await timeField(toRightOf(dob)).value();
@@ -171,20 +172,21 @@ step("Enter age of the patient <age>", async function (age) {
 });
 
 step("Enter patient mobile number <mobile>", async function (mobile) {
-    if (await text(primaryContact).exists(500, 1000)) {
+    if (await taikoElement.isPresent(text(primaryContact))) 
+    {
         if (gaugeHelper.get(isNewPatient))
-            await write(mobile, into(textBox(toRightOf(primaryContact))));
+            await taikoInteraction.Write(mobile,'into',toRightOf(primaryContact))
     }
-    else if (await text(phoneNumber).exists(500, 1000)) {
+    else if (await taikoElement.isPresent(text(phoneNumber))) {
         if (gaugeHelper.get(isNewPatient))
-            await write(mobile, into(textBox(toRightOf(phoneNumber))));
+            await taikoInteraction.Write(mobile,'into',toRightOf(phoneNumber))
     }
     gaugeHelper.save("patientMobileNumber", mobile)
 });
 
 step("Enter patient random gender", async function () {
     if (gaugeHelper.get(isNewPatient))
-        await dropDown("Gender *").select(users.getRandomPatientGender());
+        await taikoInteraction.Dropdown("Gender *",users.getRandomPatientGender())
     gaugeHelper.save("patientGender", users.getRandomPatientGender())
     gauge.message(`patientGender ${users.getRandomPatientGender()}`)
 });
@@ -192,8 +194,8 @@ step("Enter patient random gender", async function () {
 step("Enter random age of the patient", async function () {
     var age = faker.random.numeric(2);
     if (gaugeHelper.get(isNewPatient)) {
-        await write(age, into(textBox(toRightOf(years))));
-        await click(checkBox(toLeftOf(estimated)));
+        await taikoInteraction.Write(age,'into',toRightOf(years))
+        await taikoInteraction.Click(estimated,'checkbox')
     }
     gaugeHelper.save("patientAge", age)
     var birthDate = await timeField(toRightOf(dob)).value();
@@ -203,32 +205,31 @@ step("Enter random age of the patient", async function () {
 
 step("Enter patient random mobile number", async function () {
     var mobile = faker.phone.number('+919#########')
-    if (await text(primaryContact).exists(500, 1000)) {
+    if (await taikoElement.isPresent(text(primaryContact))) {
         if (gaugeHelper.get(isNewPatient))
-            await write(mobile, into(textBox(toRightOf(primaryContact))));
+            await taikoInteraction.Write(mobile,'into',toRightOf(primaryContact))
     }
-    else if (await text(phoneNumber).exists(500, 1000)) {
+    else if (await taikoElement.isPresent(text(phoneNumber))) {
         if (gaugeHelper.get(isNewPatient))
-            await write(mobile, into(textBox(toRightOf(phoneNumber))));
+        await taikoInteraction.Write(mobile,'into',toRightOf(phoneNumber))
     }
-    else if (await text(mobilePhone).exists(500, 1000)) {
+    else if (await taikoElement.isPresent(text(mobilePhone))) {
         if (gaugeHelper.get(isNewPatient))
-            await write(mobile, into(textBox(toRightOf(mobilePhone))));
+        await taikoInteraction.Write(mobile,'into',toRightOf(mobilePhone))
     }
     gaugeHelper.save("patientMobileNumber", mobile)
     gauge.message(`mobile ${mobile}`)
 });
 
 step("Click create new patient", async function () {
-    await waitFor(2000)
-    await click(link(createNew), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoInteraction.Click(createNew,'link')
     await taikoHelper.repeatUntilNotFound($(overlay))
     gaugeHelper.save(isNewPatient, true)
 });
 
 step("Save the patient data", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await click(save, { navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(save,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.repeatUntilFound($(patientIdValue))
     var patientIdentifier = await $(patientIdValue).text();
@@ -239,22 +240,21 @@ step("Save the patient data", async function () {
 
 step("Select the newly created patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue)
-    await press(enter, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Write(patientIdentifierValue,'into',below(registration))
+    await taikoInteraction.pressEnter()
     await taikoHelper.repeatUntilNotFound($(overlay))
 })
 
 step(["Log out if still logged in", "Receptionist logs out"], async function () {
-    while (await $(backBtn).exists(0, 0)) {
+    while (await taikoElement.isPresent($(backBtn))) {
         await taikoHelper.repeatUntilNotFound($(overlay))
-        await click($(backBtn), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+        await taikoInteraction.Click(backBtn,'xpath')
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
 
     try {
-        await highlight($(userInfo))
-        await click($(userInfo))
-        await click(logout, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+        await taikoInteraction.Click(userInfo,'xpath')
+        await taikoInteraction.Click(logout,'text')
         await taikoHelper.repeatUntilNotFound($(overlay))
     } catch (e) {
         gauge.message(e.message)
@@ -262,19 +262,19 @@ step(["Log out if still logged in", "Receptionist logs out"], async function () 
 })
 
 step("Login as user <user> with location <location>", async function (user, location) {
-    if (!textBox(toRightOf(userName)).exists(0, 0)) {
+    if (!await taikoElement.isPresent(textBox(toRightOf(userName)))) {
         await reload()
     }
-    await write(users.getUserNameFromEncoding(process.env[user]), into(textBox(toRightOf(userName))));
-    await write(users.getPasswordFromEncoding(process.env[user]), into(textBox(toRightOf(passWord))));
-    await dropDown(locationDropDown).select(location);
-    await click(button(login), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),'into',toRightOf(userName))
+    await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),'into',toRightOf(passWord))
+    await taikoInteraction.Dropdown(locationDropDown,location)
+    await taikoInteraction.Click(login,'button')
     await taikoHelper.repeatUntilNotFound(text(loginText))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Login as user <user>", async function (user) {
-    if (!textBox(toRightOf(userName)).exists(0, 0)) {
+    if (!await taikoElement.isPresent(textBox(toRightOf(userName)))) {
         await reload()
     }
 
@@ -289,15 +289,16 @@ step("Login as user <user>", async function (user) {
 step("Check login <location>", async function (location) {
     try {
         await taikoHelper.repeatUntilNotFound($(overlay))
-        if (await await button($(userInfo)).exists()) {
-            await click(button($(userInfo)))
-            await click(logout, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+        await taikoElement.isPresent($(userInfo))
+        if (await taikoElement.isPresent($(userInfo))) {
+            await taikoInteraction.Click(userInfo,'xpath')
+            await taikoInteraction.Click(logout,'text')
             await taikoHelper.repeatUntilNotFound($(overlay))
         }
-        await write(users.getUserNameFromEncoding(process.env.receptionist), into(textBox({ placeholder: "Enter your username" })));
-        await write(users.getPasswordFromEncoding(process.env.receptionist), into(textBox({ placeholder: "Enter your password" })));
-        await dropDown(locationDropDown).select(location);
-        await click(button(login), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+        await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),"into",{ placeholder: "Enter your username" })
+        await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),"into",{ placeholder: "Enter your password" })
+        await taikoInteraction.Dropdown(locationDropDown,location)
+        await taikoInteraction.Click(login,'button');
         await taikoHelper.repeatUntilNotFound(text(loginText))
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
@@ -306,61 +307,55 @@ step("Check login <location>", async function (location) {
 
 
 step("Enter registration fees <arg0>", async function (arg0) {
-    if (await $(fee).exists(500, 2000)) {
-        await write("100", into(textBox(toRightOf(registrationFee))));
+    await taikoElement.isPresent($(fee))
+    if (await taikoElement.isPresent($(fee))) {
+        await taikoInteraction.Write('100','into',toRightOf(registrationFee))
     }
 });
 
 step("Click back button", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await waitFor(async () => (await $(backBtn).exists()),{timeout: process.env.actionTimeout, interval: 1000})
-    await click($(backBtn), { force: true, waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoElement.waitToPresent($(backBtn))
+    await taikoInteraction.Click(backBtn,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click back button next to Create new", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await highlight($(backBtn), toLeftOf(link(createNew)));
-    await click($(backBtn), toLeftOf(link(createNew)));
+    await taikoInteraction.Click(backBtn,'xpath',toLeftOf(link(createNew)))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Enter visit details", async function () {
-    await scrollTo(button(enterVisitDetails))
-    await highlight(button(enterVisitDetails))
-    await click(button(enterVisitDetails), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoInteraction.Click(enterVisitDetails,'button')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Close visit", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await waitFor(async () => (await text(closeVisit).exists()),{timeout: 5000, interval: 1000})
-    await scrollTo(button(closeVisit))
-    await highlight(button(closeVisit))
-    await click(button(closeVisit), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(2000)
+    await taikoElement.waitToPresent(text(closeVisit))
+    await taikoInteraction.Click(closeVisit,'button')
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await waitFor(2000)
-    await switchTo(/OPD/)
+    await taikobrowserActions.switchTab(/OPD/)
 });
 
 
 step("Click on home page and goto registration module", async function () {
-    await click($(backBtn), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(backBtn,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await click(registration, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoInteraction.Click(registration,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click on home page", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await click($(homeBtn), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(homeBtn,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click on active patients list", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await goto(activePatientList)
+    await taikobrowserActions.navigateTo(activePatientList)
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
@@ -369,30 +364,32 @@ step("Open newly created patient details by search", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     console.log(`patient Identifier ${patientIdentifierValue}`)
     gauge.message(`patient Identifier ${patientIdentifierValue}`)
-
-    await write(patientIdentifierValue, into($(inputRegistrationNumber)))
-    await press(enter, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Write(patientIdentifierValue,'default')
+    await taikoInteraction.pressEnter()
     await taikoHelper.repeatUntilNotFound($(overlay))
-
-if(await link(patientIdentifierValue).exists()){ await click(link(patientIdentifierValue), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })}       
-
+    await taikoElement.isPresent(link(patientIdentifierValue))
+if(await taikoElement.isPresent(link(patientIdentifierValue)))
+{ 
+    await taikoInteraction.Click(patientIdentifierValue,'link')
+}       
 });
 
 step("Verify correct patient form is open", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    assert.ok(await text(patientIdentifierValue).exists());
+    await taikoAssert.assertExists(text(patientIdentifierValue))
 });
 
 step("Enter random village", async function () {
     var villageValue = faker.address.cityName();
     if (gaugeHelper.get(isNewPatient))
-        await write(villageValue, into(textBox(toRightOf(village))))
+        await taikoInteraction.Write(villageValue,'into',toRightOf(village))
     gauge.message(`village ${villageValue}`)
 
 });
 
-step("Check if patient <firstName> <middleName> <lastName> with mobile <mobileNumber> exists", async function (firstName, middleName, lastName, arg2) {
-    await write(`${firstName} ${middleName} ${lastName}`, into(textBox({ "placeholder": "Enter Name" })));
+step("Check if patient <firstName> <middleName> <lastName> with mobile <mobileNumber> exists", async function (firstName, middleName, lastName, arg2)
+{
+    await taikoInteraction.Write(`${firstName} ${middleName} ${lastName}`,'into',{ "placeholder": "Enter Name" })
     await press(enter);
 });
 
@@ -402,7 +399,7 @@ step("Should fetch record with similar details", async function () {
 
 step("Save the newly created patient data", async function () {
     if (gaugeHelper.get(isNewPatient)) {
-        await click(save, { waitForEvents: ['networkIdle'] });
+        await taikoInteraction.Click(save,'text')
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
     var patientIdentifier = await $(idElement).text();
@@ -410,19 +407,18 @@ step("Save the newly created patient data", async function () {
 });
 
 step("Click create new patient if patient does not exist", async function () {
-    if (await text(noResultsFound).exists()) {
-        await waitFor(2000)
-        await click(link(createNew), { waitForNavigation: true, waitForEvents: ['networkIdle'], navigationTimeout: process.env.actionTimeout })
+    if (await taikoElement.isPresent(text(noResultsFound))) {
+        await taikoInteraction.Click(createNew,'link')
         gaugeHelper.save(isNewPatient, true)
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
     else
-        await click(link(below(id)))
+        await taikoInteraction.Click(id,'link')
 });
 
 step("Enter patient first name <firstName>", async function (firstName) {
     if (gaugeHelper.get(isNewPatient)) {
-        await write(firstName, into(textBox({ "placeholder": "First Name" })));
+        await taikoInteraction.Write(firstName,'into',{ "placeholder": "First Name" })
     }
     gauge.message(`firstName ${firstName}`)
     gaugeHelper.save("patientFirstName", firstName)
@@ -430,7 +426,7 @@ step("Enter patient first name <firstName>", async function (firstName) {
 
 step("Enter patient middle name <middleName>", async function (middleName) {
     if (gaugeHelper.get(isNewPatient)) {
-        await write(middleName, into(textBox({ "placeholder": "Middle Name" })));
+        await taikoInteraction.Write(middleName,'into',{ "placeholder": "Middle Name" })
     }
     gauge.message(`middleName ${middleName}`)
     gaugeHelper.save("patientMiddleName", middleName)
@@ -438,20 +434,10 @@ step("Enter patient middle name <middleName>", async function (middleName) {
 
 step("Enter patient last name <lastName>", async function (lastName) {
     if (gaugeHelper.get(isNewPatient)) {
-        await write(lastName, into(textBox({ "placeholder": "Last Name" })));
+        await taikoInteraction.Write(lastName,'into',{ "placeholder": "Last Name" })
     }
     gauge.message(`lastName ${lastName}`)
     gaugeHelper.save("patientLastName", lastName)
-});
-
-step("Should display Bahmni record with firstName <firstName> lastName <lastName> gender <gender> age <age> with mobile number <mobileNumber>", async function (firstName, lastName, gender, age, mobileNumber) {
-    assert.ok(async () => (await $(bahmni).exists()))
-    assert.ok(await (await text(`${firstName} ${lastName}`, below(bahmni), toRightOf(name))).exists())
-    assert.ok(await (await text(gender, below(bahmni), toRightOf(gender))).exists())
-    var _yearOfBirth = date.getDateYearsAgo(age)
-    var yearOfBirth = _yearOfBirth.getFullYear();
-    assert.ok(await (await text(yearOfBirth.toString(), below(bahmni), toRightOf(yob))).exists())
-    assert.ok(await (await text(mobileNumber, below(bahmni), toRightOf(phone))).exists())
 });
 
 step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
@@ -461,25 +447,21 @@ step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
 step("Choose newly created patient", async function () {
     var firstName = gaugeHelper.get("patientFirstName")
     var lastName = gaugeHelper.get("patientLastName")
-    await write(firstName);
-    await click(`${firstName} ${lastName}`, {
-        waitForNavigation: true,
-        navigationTimeout: process.env.actionTimeout
-    })
+    await taikoInteraction.Write(firstName,'into',{ "placeholder": "Enter Name" })
+    await taikoInteraction.Click(`${firstName} ${lastName}`,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("wait for create new button", async function () {
-    await waitFor(link(createNew))
+    await taikoElement.waitToPresent(link(createNew))
 });
 
 step("Open Patient ADT page",async function(){
     await taikoHelper.repeatUntilFound(link(patientADTpage))
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await click(patientADTpage, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(4000)
+    await taikoInteraction.Click(patientADTpage,'text')
     await reload()
-    await switchTo(/ADT/)
+    await taikobrowserActions.switchTab(/ADT/)
 }
 )
 
@@ -487,85 +469,83 @@ step("Open Visit attributes",async function()
 {
     await taikoHelper.repeatUntilFound(link(visitAttributes))
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await click(visitAttributes, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-    await waitFor(4000)
+    await taikoInteraction.Click(visitAttributes,'text')
     await reload()
-    await switchTo(/Patient Registration/)
+    await taikobrowserActions.switchTab(/Patient Registration/)
 })
 
 step("Confirm if you want to close the visit", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await confirm(closePopupText, async () => await accept())
+    await taikobrowserActions.acceptAlert(closePopupText)
 });
 
 
 step("Upload patient image", async function () {
-    await click($(uploadPopup))
-    await attach(await users.downloadAndReturnImage(), fileField({ "class": "fileUpload" }));
-    await click(button(confirmPhoto))
+    await taikoInteraction.Click(uploadPopup,'xpath')
+    await taikoInteraction.Attach(await users.downloadAndReturnImage(), fileField({ "class": "fileUpload" }));
+    await taikoInteraction.Click(confirmPhoto,'button')
 });
 
 step("Enter random kebele", async function () {
     await users.randomZipCodeStateAndDistrict();
     var kebele = gaugeHelper.get('kebele')
-    await write(kebele, into(textBox(toRightOf(kebeleElement))));
+    await taikoInteraction.Write(kebele,'into',toRightOf(kebeleElement))
 });
 
 step("Enter random Woreda", async function () {
     var woreda =  gaugeHelper.get('woreda')
-    await write(woreda, into(textBox(toRightOf(worderElement))));
-    await click(link(woreda))
+    await taikoInteraction.Write(woreda,'into',toRightOf(worderElement))
+    await taikoInteraction.Click(woreda,'link')
 });
 
 step("Enter random email address", async function () {
-    await write(emailAddress, into(textBox(toRightOf(email))));
+    await taikoInteraction.Write(emailAddress,'into',toRightOf(email))
     gaugeHelper.print("emailAddress", emailAddress)
 });
 
 step("Select registration location",async function(){
-    await dropDown(toRightOf(registratioDropDown)).select(location);
+    await taikoInteraction.Dropdown(toRightOf(registratioDropDown),location)
 })
 
 step("click on Relationships", async function () {
-await click(text(relationShips))
+    await taikoInteraction.Click(relationShips,'text')
 })
 
 step("Select the RelationType as <type>", async function (type) {
-    await dropDown(below(relationShips)).select(type);
+    await taikoInteraction.Dropdown(below(relationShips),type)
 })
 
 step("Click on select person", async function () {
-    await click(text(selectPerson))
+    await taikoInteraction.Click(selectPerson,'text')
 })
 
 step("Create a new relation", async function () {
-    await click(text(registerNewPerson))
-    await waitFor(2000)
+    await taikoInteraction.Click(registerNewPerson,'text')
     var firstName = users.randomName(8)
     gaugeHelper.print('Relation firstName', firstName)
-    await write(firstName, into($("//input[@name='firstName']")))
+    await taikoInteraction.Write(firstName,'default',"//input[@name='firstName']")
     var lastName = users.randomName(8)
     gaugeHelper.print('Relation lastName', lastName)
     gaugeHelper.save("relationName", firstName+' '+lastName)
-    await write(lastName, into($("//input[@name='lastName']")))
-    await write('01/01/1970', into($('//input[@name="birthdate"]')))
-    await dropDown(below(gender)).select('Male');
-    await write(firstName, into(textBox(below("First name"))))
-    await click(text(register))
+    await taikoInteraction.Write(lastName,'default',"//input[@name='lastName']")
+    await taikoInteraction.Write('01/01/1970','default','//input[@name="birthdate"]')
+    await taikoInteraction.Dropdown(below(gender),'Male')
+    await taikoInteraction.Write(firstName,'into',below("First name"))
+    await taikoInteraction.Click(register,'text')
 })
 
 step('Click on the newly added relation',async function(){
     var relationName=gaugeHelper.get("relationName")
-    await click(text(relationName))
+    await taikoInteraction.Click(relationName,'text')
 })
 
 step('Add the phone number',async function(){
     await waitFor(2000)
     var phoneNumber=faker.phone.number('+919#########')
-    await write(phoneNumber,into($(phoneNumberValue)))
+    await taikoInteraction.Write(phoneNumber,'default',phoneNumberValue)
 })
 
 step('Update the relation',async function(){
-    await click(text(update))
+    await taikoInteraction.Click(update,'text')
 })
 

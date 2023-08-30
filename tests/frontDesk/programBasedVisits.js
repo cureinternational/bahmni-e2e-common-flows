@@ -22,7 +22,9 @@ const {
 var date = require("../util/date");
 var fileExtension = require("../util/fileExtension");
 var path = require("path")
-const taikoHelper = require("../util/taikoHelper")
+const taikoHelper = require("../util/taikoHelper");
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
 var startOpdVisit='Start OPD Visit'
 var submitBtn=".submit-btn-container"
 var startSpecialOpdVisit='Start Special OPD Visit'
@@ -43,52 +45,48 @@ var dashboardLink='#dashboard-link'
 var all='All'
 
 step("Click Start Special OPD Visit", async function() {
-    await scrollTo(startOpdVisit)
-    await click(button(toRightOf(startOpdVisit), within($(submitBtn))));
-    await click(startSpecialOpdVisit,{waitForNavigation:true,navigationTimeout:process.env.actionTimeout});
+    await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
+    await taikoInteraction.Click(startSpecialOpdVisit,'button',within($(submitBtn)))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Begin new program enrollment", async function() {
-    await waitFor(newProgramEnrollment,below(dob))
-    await highlight(newProgramEnrollment,below(dob))
-    await scrollTo(newProgramEnrollment,below(dob))
-    await click(newProgramEnrollment,below(dob))
+    await taikoElement.waitToPresent(newProgramEnrollment)
+    await taikoInteraction.Click(newProgramEnrollment,'text',below(dob))
 });
 
 step("Create a program <program>", async function(programName) {
-    await waitFor(programDropdown)
-    await highlight(dropDown(toRightOf(program)))
-    await dropDown(toRightOf(program)).select(programName)
+    await taikoElement.waitToPresent(programDropdown)
+    await taikoInteraction.Dropdown(toRightOf(program),programName)
 });
 
 step("Select program starting <numberOfYearsAgo_startDate> years ago with treatment start <numberOfYearsAgo_treatmentDate> years ago", async function(numberOfYearsAgo_startDate, numberOfYearsAgo_treatmentDate) {
     var startDateValue = date.getDateYearsAgo(numberOfYearsAgo_startDate);
-    await timeField({type:"date"},toRightOf(startDate)).select(startDateValue);
-
+    await taikoInteraction.Timefield({type:"date"},startDateValue)
     var treatmentDateValue = date.getDateYearsAgo(numberOfYearsAgo_treatmentDate);
-    await timeField({type:"date"},toRightOf(treatmentDate)).select(treatmentDateValue);
+    await taikoInteraction.Timefield({type:"date"},treatmentDateValue)
+   // await timeField({type:"date"},toRightOf(treatmentDate)).select(treatmentDateValue);
 });
 
 step("Select other details id <id>, dr incharge <doctor> and treatment stage <stage>", async function (id, doctor, stage) {
-    await write(id, into(textBox(toRightOf(idNumber))))
-    await write(doctor, into(textBox(toRightOf(doctorInCharge))))
-    await dropDown(toRightOf(patientStage)).select(stage)
+    await taikoInteraction.Write(id,'into',toRightOf(idNumber))
+    await taikoInteraction.Write(doctor,'into',toRightOf(doctorInCharge))
+    await taikoInteraction.Dropdown(toRightOf(patientStage),stage)
 });
 
 step("Enroll in program", async function() {
-    await click(button(enroll),{waitForNavigation:true,navigationTimeout:process.env.actionTimeout})
+    await taikoInteraction.Click(enroll,'button')
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await waitFor(async () => !(await text(saved,within(messageText)).exists()));
+    await taikoElement.waitToPresent(saved)
 });
 
 step("Open the program dashboard <program>", async function(program) {
-    await waitFor(text(`${program} Dashboard`,within($(dashboardLink))))
-    await click(text(`${program} Dashboard`,within($(dashboardLink))),{waitForNavigation:true,navigationTimeout:480000});
+    await taikoElement.waitToPresent(text(`${program} Dashboard`))
+    await taikoInteraction.Click(`${program} Dashboard`,'text',within($(dashboardLink)))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Goto All sections", async function () {
     await taikoHelper.repeatUntilFound(link(all))
-    await click(link(all),{force:true,waitForNavigation:true,navigationTimeout:process.env.actionTimeout})    
+    await taikoInteraction.Click(all,'link')
 });

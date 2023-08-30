@@ -28,6 +28,8 @@ const {
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
 var toAdmit = "To Admit"
 var availableBed='//*[@class="col available" or @class="bed AVAILABLE"]'
 var assign='Assign'
@@ -48,114 +50,105 @@ var generalWard='General Ward'
 var generalWardRoom='General Ward room'
 
 step("Doctor opens admission tab", async function () {
-	await taikoHelper.repeatUntilNotFound($("#overlay"))
-	await click(toAdmit, { force: true, waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+	await taikoHelper.repeatUntilNotFound(overlay)
+	await taikoInteraction.Click(toAdmit,'text')
 });
 
 step("Enter adt notes <notes>", async function (notes) {
+	await taikoInteraction.Write(notes,'into',below("Adt Notes"))
 	await write(notes, into(textBox(below("Adt Notes"))))
 });
 
 step("Select bed for admission <ward>", async function (ward) {
 	await taikoHelper.repeatUntilFound(text(ward))
-	await click(ward)
+	await taikoInteraction.Click(ward,'text')
 });
 
 step("Allocate available bed", async function () {
 	await click($(availableBed))
+	await taikoInteraction.Click(availableBed,'xpath')
 });
 
 step("Click Assign", async function () {
-	await click(assign, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-	
+	await taikoInteraction.Click(assign,'text')
 	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Admit the patient", async function () {
-	await click(admit, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+	await taikoInteraction.Click(admit,'text')
 	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Discharge the patient", async function () {
 	await taikoHelper.repeatUntilNotFound($(overlay))
-	await waitFor(3000)
-	await waitFor(async () => (await dropDown(patientMovementDropdown).exists()))
-	await dropDown(patientMovementDropdown).select(dischargePatient)
-	await waitFor(1000)
-	await click(discharge, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
-	await waitFor(1000)
-
+	await taikoElement.waitToPresent(patientMovementDropdown)
+	await taikoInteraction.Dropdown(patientMovementDropdown,dischargePatient)
+	await taikoInteraction.Click(discharge,'text')
 });
 
 step("Select Patient Movement <movement>",async function(movement)
  {
-	await waitFor(async () => (await dropDown(patientMovementDropdown).exists()))
-	await click(dropDown(patientMovementDropdown))
-	await dropDown(patientMovementDropdown).select(movement)
+	await taikoElement.waitToPresent(patientMovementDropdown)
+	await taikoInteraction.Dropdown(patientMovementDropdown,movement)
 });
 
 step("Goto All section", async function () {
-	await waitFor(all)
-	await click(all, { force: true })
+	await taikoElement.waitToPresent(all)
+	await taikoInteraction.Click(all,'text')
 });
 
 step("View Admitted patients", async function () {
-	await click(admitted)
+	await taikoInteraction.Click(admitted,'text')
 });
 
 step("Enter admitted patient details", async function () {
 	var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-	await write(patientIdentifierValue, into(textBox(below(admitted))))
-	await press(enter, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+	await taikoInteraction.Write(patientIdentifierValue,'into',below(admitted))
+	await taikoInteraction.pressEnter()
 	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click Admit", async function () {
-	await click(admit);
+	await taikoInteraction.Click(admit,'text')
 });
 
 step("Click Discharge", async function () {
-	await click(discharge)
+	await taikoInteraction.Click(discharge,'text')
 });
 
 step("Click Discharge on popup", async function () {
-	await waitFor(async () => !(await $(overlay).exists()));
-	await click(text(discharge, within($(dischargePopup))));
+	await taikoElement.waitNotToPresent($(overlay))
+	await taikoInteraction.Click(discharge,'text',within($(dischargePopup)))
 });
 
 step("Click Admit on popup", async function () {
-	await waitFor(async () => !(await $(overlay).exists()));
-	try {
-		await highlight(cancel)
-		await scrollTo(cancel)
-		await click(admit)
-	} catch (e) { }
+	await taikoElement.waitNotToPresent($(overlay))
+	await taikoInteraction.Click(cancel,'text')
+	await taikoInteraction.Click(admit,'text')
 });
 
 step("Enter Form Values <observationFormFile>", async function (observationFormFile) {
 	var observationFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${observationFormFile}.json`))
 	gaugeHelper.save(observationFormValues.ObservationFormName, observationFormValues)
 	await taikoHelper.repeatUntilNotFound($(overlay))
-	if (!await link(observationFormValues.ObservationFormName).exists(500, 1000)) {
-		await click(addNewObsForm, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
-		await scrollTo(button(observationFormValues.ObservationFormName))
-		await click(button(observationFormValues.ObservationFormName));
+	if (!await taikoElement.isPresent(link(observationFormValues.ObservationFormName))) {
+		await taikoInteraction.Click(addNewObsForm,'text')
+		await taikoInteraction.Click(observationFormValues.ObservationFormName,'button')
 	} else {
-		await scrollTo(button(observationFormValues.ObservationFormName))
-		await click(link(observationFormValues.ObservationFormName));
+		await taikoInteraction.Click(observationFormValues.ObservationFormName,'link')
 	}
 	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoHelper.executeConfigurations(observationFormValues.ObservationFormDetails, observationFormValues.ObservationFormName)
-	await click(save, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+	await taikoInteraction.Click(save,'text')
 	await taikoHelper.repeatUntilNotFound($(overlay))
 })
 
 step("Click History and Examination", async function () {
-	await click(link(historyAndExamination), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+	await taikoInteraction.Click(historyAndExamination,'link')
 	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Select the general ward", async function () {
-	await click(generalWard);
-	await click(generalWardRoom);
+	await taikoInteraction.Click(generalWard,'text')
+	await taikoInteraction.Click(generalWardRoom,'text')
 });

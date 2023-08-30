@@ -26,7 +26,7 @@ const {
 var assert = require("assert");
 const gaugeHelper = require("../util/gaugeHelper");
 const taikoInteraction = require("../../../components/taikoInteraction");
-const taikoassert= require("../../../components/taikoassert");
+const taikoassert= require("../../../components/taikoAssert");
 var tab='//li[contains(@class,"tab-item")]'
 var speciliatyList=process.env.specialityList.split(',')
 var myPatients='My Patients'

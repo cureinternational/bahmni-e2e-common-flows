@@ -23,6 +23,9 @@ const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension")
 var assert = require('assert');
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
+const taikoAssert = require('../../../components/taikoAssert');
 
 var startOpdVisit='Start OPD Visit'
 var submitBtn='.submit-btn-container'
@@ -56,45 +59,44 @@ var errorElement='//DIV[@class="message-container error-message-container"]'
 var formClose='.ngdialog-close'
 
 step("Click Start IPD Visit", async function () {
-    await scrollTo(startOpdVisit)
-    await click(button(toRightOf(startOpdVisit), within($(submitBtn))));
-    await click(startIpdVisit, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
+    await taikoInteraction.Click(startIpdVisit,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click Start OPD Visit", async function () {
-    await scrollTo(`Start ${process.env.default_visit_type} visit`)
-    await click(`Start ${process.env.default_visit_type} visit`, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(`Start ${process.env.default_visit_type} visit`,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Select the newly created patient with network idle", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue, into(textBox({ "placeholder": "Search Name/Patient Identifier  ..." })))
-    await click(search, { waitForNavigation: true, waitForEvents: ['networkIdle'], navigationTimeout: process.env.mergeTimeout });
+    await taikoInteraction.Write(patientIdentifierValue,'into',{ "placeholder": "Search Name/Patient Identifier  ..." })
+    await taikoInteraction.Click(search,'text')
 });
 
 step("Select the newly created patient for IP", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue)
-    await press(enter, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
+    await taikoInteraction.Write(patientIdentifierValue,'into',below(startIpdVisit))
+    await taikoInteraction.pressEnter()
 });
 
 step("Select the newly created patient for IP Admission", async function () {
-    await write(patientIdentifierValue)
-    await press(enter, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    await taikoInteraction.Write(patientIdentifierValue,'into',below(startIpdVisit))
+    await taikoInteraction.pressEnter()
 });
 
 step("Select the newly created patient for IP Discharge", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue)
-    await click(search, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
+    await taikoInteraction.Write(patientIdentifierValue,'into',below(startIpdVisit))
+    await taikoInteraction.Click(search,'text')
 });
 
 step("Search the newly created patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue, into($(idElement)))
-    await click(search, { waitForNavigation: true, navigationTimeout: process.env.mergeTimeout });
+    await taikoInteraction.Write(patientIdentifierValue,'default',idElement)
+    await taikoInteraction.Click(search,'text')
 });
 
 step("verify name with id", async function () {
@@ -162,19 +164,15 @@ step("Verify history & examination in patient clinical dashboard", async functio
     assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($(historyExaminationElement))).exists())
     assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($(historyExaminationElement)), toRightOf(smokingHistory)).exists())
     assert.ok(await $(img).exists(), "Image not displayed on history & examination");
-    await scrollTo($(img));
-    await click($(img));
-    await waitFor(2000)
-    await waitFor(async () => await $(slideElement).exists())
-    assert.ok(await $(slideElement).exists(), "Image not opened.");
-    await evaluate($(closeBtn), (el) => el.click())
-    await waitFor(10000)
-    assert.ok(await $(obsPlyBtn).exists(), "Play button is not available");
-    await scrollTo($(obsPlyBtn));
-     await click($(obsPlyBtn));
-    assert.ok(await $(videoDialog).exists(), "Video is not opened.");
-    await evaluate($(clearFix), (el) => el.click())
-    await click($(backBtn), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(img,'xpath')
+    await taikoElement.waitToPresent(slideElement)
+    await taikoAssert.assertExists(slideElement)
+    await taikoInteraction.EvaluateClick(closeBtn,'xpath')
+    await taikoAssert.assertExists($(obsPlyBtn))
+    await taikoInteraction.Click(obsPlyBtn,'xpath')
+    await taikoAssert.assertExists($(videoDialog))
+    await taikoInteraction.EvaluateClick($(clearFix),'xpath')
+    await taikoInteraction.Click(backBtn,'xpath')
 });
 
 step("Verify consultation notes in patient clinical dashboard", async function () {
@@ -187,7 +185,7 @@ step("Validate the lab tests are available in patient clinical dashboard", async
 });
 
 step("Verify no error displayed on page", async function () {
-    assert.equal(await $(errorElement).exists(500, 1000), false, "Error displayed on page.")
+    await taikoAssert.assertExists($(errorElement))
 });
 
 step("Validate obs <form> on the patient clinical dashboard", async function (formPath) {
@@ -195,8 +193,8 @@ step("Validate obs <form> on the patient clinical dashboard", async function (fo
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
     await taikoHelper.repeatUntilNotFound($(overlay))
     var viewFormElement="//SPAN[normalize-space()='" + obsFormValues.ObservationClinicalFormName.trim() + "']/..//i[@class='fa fa-eye']"
-    await evaluate($(viewFormElement), (el) => el.click())
+    await taikoInteraction.EvaluateClick($(viewFormElement))
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.validateFormFromFile(obsFormValues.ObservationFormDetails, obsFormValues.ObservationClinicalFormName)
-    await click($(formClose))
+    await taikoInteraction.Click(formClose,'xpath')
 });

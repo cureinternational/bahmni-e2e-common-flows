@@ -31,6 +31,9 @@ const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var assert = require("assert");
 const { stat } = require('fs');
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
+const taikoassert = require('../../../components/taikoAssert');
 
 var addNewAppointment = 'Add new appointment'
 var patientNameId='Patient Name or ID'
@@ -95,18 +98,18 @@ var saveAnyway='Save Anyway'
 
 step("View all appointments", async function () {
     var list=process.env.appointmentList
-    await click(list);
+    await taikoInteraction.Click(list,'text')
 });
 
 step("Click Add New appointment", async function () {
-    await click(addNewAppointment);
+    await taikoInteraction.Click(addNewAppointment,'text')
 });
 
 step("Select Patient id", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var firstName = gaugeHelper.get("patientFirstName")
-    await write(patientIdentifierValue, into(textBox({ placeHolder: patientNameId })));
-    await click(firstName);
+    await taikoInteraction.Write(patientIdentifierValue,"into",{ placeHolder: patientNameId })
+    await taikoInteraction.Click(firstName,'text')
 });
 
 step("Select patient", async function () {
@@ -114,15 +117,14 @@ step("Select patient", async function () {
     var lastName = gaugeHelper.get("patientLastName")
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
-    await write(firstName, into($(searchbox)))
     var patientNameElement=`//a[text()='${patientName}']`
-    await waitFor(async () => (await $(patientNameElement).exists()));
-    await waitFor(200);
-    await evaluate($(patientNameElement), (el) => el.click());
+    await taikoInteraction.Write(firstName,"into",searchbox)
+    await taikoElement.waitToPresent(patientNameElement)
+    await taikoInteraction.EvaluateClick(patientNameElement)
 });
 
 step("Select service <service>", async function (serviceName) {
-    await dropDown(toRightOf(service)).select(serviceName);
+    await taikoInteraction.Dropdown(toRightOf(service),serviceName)
 });
 
 step("Search and select category", async function () {
@@ -158,38 +160,38 @@ step("Search and select location", async function () {
 
 async function selectDropDown(locator,value){
     var element=`//div[@data-testid='${locator}']//input`
-    await write(value, into($(element)))
+    await taikoInteraction.Write(value,"into",$(element))
     var selectableElement="//div[text()='" + value + "']"
-    await waitFor(async () => (await $(selectableElement).exists()));
-    await waitFor(200);
-    await evaluate($(selectableElement), (el) => el.click());
+    await taikoElement.waitToPresent($(selectableElement))
+    await taikoInteraction.EvaluateClick($(selectableElement))
 }
 step("Search and select appointment location", async function () {
-    await click(location);
-    await click(process.env.appointmentLocation);
+    await taikoInteraction.Click(location,'text')
+    await taikoInteraction.Click(process.env.appointmentLocation,'text')
 });
 
 step("Select appointment date <date>", async function (date) {
-    await clear(textBox(below(appointmentDateElement)))
-    await write(date,into(textBox(below(appointmentDateElement))))
+    await taikoInteraction.Clear(appointmentDateElement,'below')
+    //await clear(textBox(below(appointmentDateElement)))
+    await taikoInteraction.Write(date,"into",below(appointmentDateElement))
 });
 
 step("Select location <location>", async function (locationName) {
-    await dropDown(location).select(locationName)
+    await taikoInteraction.Dropdown(location,locationName)
 });
 
 step("Enter appointment time into Start time", async function () {
     var time= gaugeHelper.get("startTime")
-    await write(time,into(textBox({placeholder:"hh:mm"})))});
-
+    await taikoInteraction.Write(time,"into",{placeholder:"hh:mm"}) 
+});
 step("Close the appointment popup",async function(){
-    await click(addNewAppointment)
-    await click(summary)
-    await click(yes)
+    await taikoInteraction.Click(addNewAppointment,'text')
+    await taikoInteraction.Click(summary,'text')
+    await taikoInteraction.Click(yes,'text')
 })
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
-    await click($(fcwidgetcontent), toRightOf(`${appointmentTime}`));
+    await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`))
     await taikoHelper.repeatUntilNotFound($(overlay))
     gaugeHelper.save("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
     gaugeHelper.save("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
@@ -207,62 +209,61 @@ step("Compute end time", async function () {
     await waitFor(2000)
 });
 step("Click Save", async function () {
-    await click(save)
+    await taikoInteraction.Click(save,'text')
     taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click Update", async function () {
-    await click(update)
-    await waitFor(2000)
-    await click(yesIConfirm)
+    await taikoInteraction.Click(update,'text')
+    await taikoInteraction.Click(yesIConfirm,'text')
 });
 
 step("Check and Save", async function () {
-    await click(checkAndSave);
+    await taikoInteraction.Click(checkAndSave,'text')
 });
 
 step("Goto tomorrow's date", async function () {
-    await click(button({ type: btn }, within($(goNext))));
+    await taikoInteraction.Click({ type: btn },'button',within($(goNext)))
 });
 
 step("Goto appointments's date", async function () {
     var appointmentStartDate = gaugeHelper.get("appointmentStartDate")
-    await timeField(toRightOf(week)).select(new Date(appointmentStartDate));
+    await taikoInteraction.Timefield(toRightOf(week),new Date(appointmentStartDate))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Goto Next week", async function () {
-    await click(week);
+    await taikoInteraction.Click(week,'text')
     var month = date.getShortNameOfMonth(date.today())
     await click(button(), toRightOf(month));
 });
 
 step("Goto day view of the calendar", async function () {
-    await click(day);
+    await taikoInteraction.Click(day,'text')
     var month = date.getShortNameOfMonth(date.today())
     await click(button(), toRightOf(month));
 });
 
 step("Click Close", async function () {
-    await click($(closeBtn))
-    if(await text(discard).exists())
+    await taikoInteraction.Click(closeBtn,'xpath')
+    if(await taikoElement.isPresent(text(discard)))
     {
-    await click(discard)
+    await taikoInteraction.Click(discard,'text')
     }
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Goto List view", async function () {
-    await click(link(listView));
+    await taikoInteraction.Click(listView,'link')
 });
 
 step("select the Regular appointment option", async function () {
-    await click(regularAppointment)
+    await taikoInteraction.Click(regularAppointment,'text')
 });
 
 step("select appointment status as <status>",async function(status){
     var appointMentStatus=`//span[text()="${status}"]`
-    await click($(appointMentStatus))
+    await taikoInteraction.Click(appointMentStatus,'xpath')
 })
 
 step("select the teleconsultation appointment option", async function () {
@@ -271,129 +272,122 @@ step("select the teleconsultation appointment option", async function () {
 });
 
 step("select the recurring appointment option", async function () {
-    await click(recurringAppointment);
+    await taikoInteraction.Click(recurringAppointment,'text')
 });
 
 step("select the Start date as <appointmentDate>", async function (appointmentDate) {
     var appointmentStartDate = gaugeHelper.get("appointmentStartDate")
-    await write(appointmentDate, below(appointmentStartDate));
+    await taikoInteraction.Write(appointmentDate,"into",below(appointmentStartDate))
     gaugeHelper.save("appointmentStartDate", new Date())
 });
 
 step("select the End date as after <times> occurances", async function (times) {
     await write(times,$(inputOccurences))
+    await taikoInteraction.Write(times,"xpath",inputOccurences)
 });
 
 step("select Repeats every <numberOfDays> days", async function (numberOfDays) {
-    await write(numberOfDays, into(textBox(below(repeatsEvery))));
+    await taikoInteraction.Write(numberOfDays,"into",below(repeatsEvery))
 });
 
 step("Click Cancel all", async function () {
-    await scrollTo(cancelAll)
-    await click(cancelAll)
+    await taikoInteraction.Click(cancelAll,'text')
 });
 
 step("Click yes", async function () {
-    await waitFor(async () => (await $(btnYes).exists()));
-    await evaluate($(btnYes), (el) => el.click())
-    await waitFor(1000)
+    await taikoElement.waitToPresent($(btnYes))
+    await taikoInteraction.EvaluateClick($(btnYes))
 });
 
 step("Click Cancel", async function () {
-    await scrollTo(cancel)
-    await click(cancel)
+    await taikoInteraction.Click(cancel,'text')
 });
 
 step("Cancel <type> appointment", async function (type) {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName=gaugeHelper.get("patientFullName")
-    var btnstatus= await button(cancel).isDisabled()
+    var btnstatus=taikoElement.elementDisabled(cancel,'button')
+
     if(btnstatus)
     {
-        await dropDown(patientDropdown).select(patientName+" ("+patientIdentifierValue+")")
-        await scrollTo(text(cancel))
-        await click($(cancelBtn))
-        await waitFor(1000)
+        await taikoInteraction.Dropdown(patientDropdown,patientName+" ("+patientIdentifierValue+")")
+        await taikoInteraction.Click(cancelBtn,'xpath')
         if("regular"==type)
         {
-
-            await evaluate($(btnYes), (el) => el.click())  
+            await taikoInteraction.EvaluateClick($(btnYes))
         }
 
         else if("recurring"==type)
         {
-            await evaluate($(btnYesAll), (el) => el.click())        
+            await taikoInteraction.EvaluateClick($(btnYesAll))    
         }
     }
     else
     {
-        await scrollTo(text(cancel))
-        await click($(cancelBtn))
-        await waitFor(1000)
+        await taikoInteraction.Click(cancelBtn,'xpath')
         if("regular"==type)
         {
-            await evaluate($(btnYes), (el) => el.click())
+            await taikoInteraction.EvaluateClick($(btnYes))
         }
         else if("recurring"==type)
         {
-            await evaluate($(btnYesAll), (el) => el.click())
+            await taikoInteraction.EvaluateClick($(btnYesAll))    
         }
         
     }
 });
 
 step("Click Edit <type> appointment", async function (type) {
-    var btnstatus= await button(edit).isDisabled()
+    var btnstatus= await taikoElement.elementDisabled(edit,'button')
     if(!btnstatus)
     {
-        await scrollTo(button(edit))
-        await click(button(edit))
+        await taikoInteraction.Click(edit,'button')
     }
 
 });
 
 step("Update the time as <time>",async function(time){
     var value=time.split(" ")
-    await clear(textBox(below(startTime)))
-    await clear(textBox(below(endTime)))
-    await write(value[0], into(textBox(below(startTime))));
+    await taikoInteraction.Clear(startTime,'below')
+    await taikoInteraction.Clear(endTime,'below')
+    await taikoInteraction.Write(value[0],'into',below(startTime))
 })
 
 step("Open admin tab of Appointments", async function () {
-    await click(admin)
+    await taikoInteraction.Click(admin,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Select awaiting appointments", async function () {
-    await click(awaitingAppointments)
+    await taikoInteraction.Click(awaitingAppointments,'text')
 });
 
 step("Create a service if it does not exist", async function () {
-    if (await text(process.env.service).exists())
+    if (await taikoElement.isPresent(text(process.env.service)))
         return
-    await click(addNewService)
-    await write(process.env.service, into(textBox({ placeHolder: "Enter a service name" })))
-    await write("For test automation", into(textBox({ placeHolder: "Enter description" })))
-    await click(save, { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoInteraction.Click(addNewService,'text')
+    await taikoInteraction.Write(process.env.service,"into",{ placeHolder: "Enter a service name" })
+    await taikoInteraction.Write("For test automation","into",{ placeHolder: "Enter description" })
+    await taikoInteraction.Click(save,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Verify the appointment is present in waitlist", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientIdElement="//A[text()='" +patientIdentifierValue+ "']"
-    assert.ok(await $(patientIdElement).exists());
+    await taikoassert.assertExists($(patientIdElement))
 });
 
 step("Manage locations", async function () {
-    await click(manageLocations)
+    await taikoInteraction.Click(manageLocations,'text')
 });
 
 step("Goto Today", async function () {
-    await click(today)
+    await taikoInteraction.Click(today,'text')
 });
 
 step("Select List View in Appointments", async function () {
-    await click(listView)
+    await taikoInteraction.Click(listView,'text')
 });
 
 step("Get Apointmnet Date and Time", async function () {
@@ -417,7 +411,7 @@ step("Verify the appointment locations",async function(){
         var location="//div[text()='" + locations[i] + "']"
         await write(locations[i], into($(locationSearchInput)))
         assert.ok(await $(location).exists());
-        await click($(locationSearchBtn))
+        await taikoInteraction.Click(locationSearchBtn,'xpath')
     }
     
 })
@@ -429,7 +423,7 @@ step("Verify the appointment specialitis list",async function(){
             var specialityElement="//div[text()='" + speciality[i] + "']"
             await write(speciality[i], into($(specialitySearchInput)))
             assert.ok(await $(specialityElement).exists());
-            await click($(specialitySearchInput))
+            await taikoInteraction.Click(specialitySearchBtn,'xpath')
         }
         
     }
@@ -443,7 +437,7 @@ step("Verify if all the providers are present",async function(){
         var providerElement="//div[text()='" + providers[i] + "']"
         await write(providers[i], into($(providerSearchInput)))
         assert.ok(await $(providerElement).exists());
-        await click($(providerSearchBtn))
+        await taikoInteraction.Click(providerSearchBtn,'xpath')
     }
     
 })
@@ -456,14 +450,14 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
 
  step('Enter the appointment date',async function(){
     let appointmentDate = gaugeHelper.get("startDate");
-    await write(appointmentDate,into(textBox({placeholder:"mm/dd/yyyy"})))
+    await taikoInteraction.Write(appointmentDate,"into",{placeholder:"mm/dd/yyyy"})
  })
  step("Verify the conflict message",async function(){
-    assert.ok(await text(conflictMessage).exists())
+    await taikoassert.assertExists(text(conflictMessage))
  }) 
 
  step("Check and Save anyway",async function(){
-    await click(saveAnyway)
+    await taikoInteraction.Click(saveAnyway,'text')
  })
 
 

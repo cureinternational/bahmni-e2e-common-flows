@@ -23,6 +23,10 @@ var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
 const gaugeHelper = require("./../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
+const taikoassert = require('../../../components/taikoAssert');
+const taikoElement = require('../../../components/taikoElement');
+const taikoAssert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction');
 
 var expectedLocationsList=process.env.registrationLocations.split(",")
    var locationOption='//select[@id="location"]/option'
@@ -49,7 +53,7 @@ step("Verify the login locations in login page",async function(){
         actualLocationsList.push(await $(element).text())
     }
     expectedLocationsList.forEach((location)=>{
-        assert.ok(actualLocationsList.includes(location))
+        taikoassert.assertArrayPresence(actualLocationsList,location)
     })
     
 })
@@ -63,7 +67,7 @@ step("Verify the visit locations",async function(){
         actualLocationsList.push(cleanValue)
     }
     expectedLocationsList.forEach((location)=>{
-        assert.ok(actualLocationsList.includes(location))
+        taikoassert.assertArrayPresence(actualLocationsList,location)
     })
 })
 
@@ -76,49 +80,47 @@ step("Verify the appointments in grid view",async function(){
 
 async function verifyGrid(gridName){
  var table=`//h3[text()='${gridName}']//parent::div//table`
- assert.ok(await $(`${table}`).exists())
+ await taikoElement.isPresent($(`${table}`))
+ taikoassert.assertExists($(`${table}`))
 }
 
 step("Click on <wardType>",async function(wardType){
 
     var ward=`//span[contains(text(),'${wardType}')]`
-    await scrollTo($(`${ward}`))
-    await click($(`${ward}`))
+    await taikoInteraction.Click(`${ward}`,'xpath')
 })
 
 step("Enter the patient id in search box",async function(){
-    await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    await taikoInteraction.Write(patientIdentifierValue,'into',{ "placeholder": "Search..." })
 })
 
 step("Verify the patient presence in the <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    if(!await textBox({ "placeholder": "Search..." }).exists())
+    if(!await taikoElement.isPresent(textBox({ "placeholder": "Search..." })))
     {
-    await scrollTo($(`${ward}`))
-    await click($(`${ward}`))
+    await taikoInteraction.Click(`${ward}`,'xpath')
     }
     await taikoHelper.repeatUntilNotFound($("#overlay"))
-    await write(patientIdentifierValue,into(textBox({ "placeholder": "Search..." })))
-    assert.ok(text(patientIdentifierValue).exists())
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    await taikoInteraction.Write(patientIdentifierValue,'into',{ "placeholder": "Search..." })
+    await taikoElement.isPresent(text(patientIdentifierValue))
 })
 
 step("Admit the patient to ipd in <visitType> visit",async function(visitType){
 
     taikoHelper.repeatUntilNotFound($(overlay))
-    await waitFor(() => dropDown(patientMovementDropdown).exists(), 8000)
-    await waitFor(4000)
-    await dropDown(patientMovementDropdown).select(admitPatient);
-    await waitFor(1000)
-    await click(admit)
-    await waitFor(1000)
+    await taikoElement.waitToPresent(dropDown(patientMovementDropdown))
+    await taikoInteraction.Dropdown(patientMovementDropdown,admitPatient)
+    await taikoInteraction.Click(admit,'text')
     if(visitType=='OPD')
     {
-        await click(continueText)
+        await taikoInteraction.Click(continueText,'text')
     }
     else
     {
-        await click(yes)
+        await taikoInteraction.Click(yes,'text')
 
     }
 })
@@ -127,24 +129,22 @@ step("Search and select patient",async function(){
     var firstName = gaugeHelper.get("patientFirstName")
     var lastName = gaugeHelper.get("patientLastName")
     var patientName = `${firstName} ${lastName}`
-    await write(patientName, into($(patientIdentifierElement)))
+    await taikoInteraction.Write(patientName,'xpath',$(patientIdentifierElement))
     var patientNameElement=`//div[contains(text(),'${patientName}')]`
-    await waitFor(async () => (await $(patientNameElement).exists()));
-    await waitFor(200);
-    await evaluate($(patientNameElement), (el) => el.click());
+    await taikoElement.waitToPresent($(patientNameElement))
+    await taikoInteraction.EvaluateClick(patientNameElement)
 })
 step("Select a bed from <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
-    await scrollTo($(`${ward}`))
-    await click($(`${ward}`))
-    await click($(availableBed))
-    await waitFor(1000)
-    await click(assign)
+    await taikoInteraction.Click(`${ward}`,'xpath')
+    await taikoInteraction.Click(availableBed,'xpath')
+    await taikoInteraction.Click(assign,'text')
 })
 
 step("Select the patient",async function(){
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await click(link(`${patientIdentifierValue}`))
+    await taikoInteraction.Click(patientIdentifierValue,'link')
 })
 
 step("Click on IPD", async function(){
