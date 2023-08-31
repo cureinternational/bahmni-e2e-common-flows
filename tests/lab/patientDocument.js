@@ -4,7 +4,7 @@ const path = require('path');
 const taikoHelper = require("../util/taikoHelper")
 var assert = require("assert")
 
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='SAVE'
 var img='//select/../img'
 var imgElement='//div[@class="image-container"]//img'

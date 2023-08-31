@@ -42,11 +42,18 @@ async function repeatUntilFound(element) {
     } while (!isFound)
 }
 
+async function repeatUntilNotFound(element) {
+    var isFound = true;
+    do {
+        isFound = await !element.exists(500, 1000)
+    } while (isFound)
+}
+
 async function repeatUntilNotVisible(element) {
     var isFound = true;
     do {
         try {
-            if (await element.exists()) {
+            if (await element.exists(500,1000)) {
                 isFound = await element.isVisible()
             }
             else {
@@ -84,7 +91,7 @@ async function selectEntriesTillIterationEnds(entrySequence) {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier" + (entrySequence));
     await write(patientIdentifierValue)
     await press('Enter', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
-    await repeatUntilNotVisible($("#overlay"));
+    await taikoHelper.repeatUntilNotFound($(overlay))
 }
 
 
@@ -187,7 +194,7 @@ module.exports = {
     selectEntriesTillIterationEnds: selectEntriesTillIterationEnds,
     verifyConfigurations: verifyConfigurations,
     executeConfigurations: executeConfigurations,
-    repeatUntilNotFound: repeatUntilNotVisible,
+    repeatUntilNotFound: repeatUntilNotFound,
     repeatUntilFound: repeatUntilFound,
     repeatUntilEnabled: repeatUntilEnabled,
     validateFormFromFile: validateFormFromFile

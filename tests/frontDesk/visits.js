@@ -30,7 +30,7 @@ const taikoAssert = require('../../../components/taikoAssert');
 var startOpdVisit='Start OPD Visit'
 var submitBtn='.submit-btn-container'
 var startIpdVisit='Start IPD Visit'
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var search='Search'
 var enter= 'Enter'
 var idElement='input#patientIdentifier'
@@ -185,7 +185,7 @@ step("Validate the lab tests are available in patient clinical dashboard", async
 });
 
 step("Verify no error displayed on page", async function () {
-    await taikoAssert.assertExists($(errorElement))
+    await taikoAssert.assertNotExists($(errorElement))
 });
 
 step("Validate obs <form> on the patient clinical dashboard", async function (formPath) {

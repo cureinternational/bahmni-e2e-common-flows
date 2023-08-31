@@ -40,6 +40,7 @@ const csvConfig = require("./util/csvConfig");
 var date = require("./util/date");
 var taikoitr=require("./../../components/taikoInteraction")
 const gaugeHelper=require("./util/gaugeHelper")
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 
 
 
@@ -65,7 +66,7 @@ step("Open patient2 details by search", async function () {
     gauge.message(patientIdentifierValue)
     taikowrite.writeText(patientIdentifierValue)
     taikointeractions.pressEnter()
-    taikoHelper.repeatUntilNotFound($("#overlay"))
+    taikoHelper.repeatUntilNotFound($(overlay))
     taikoclick.clickLink(patientIdentifierValue)
 });
 

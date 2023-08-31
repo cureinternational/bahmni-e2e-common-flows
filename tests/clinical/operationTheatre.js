@@ -44,7 +44,7 @@ var reason='Reason'
 var enterReason='enter reason'
 var confirm='Confirm'
 let surgeonName = 'Surgeon - '+process.env.surgeon
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var cancelBlock='Cancel Block'
 var postPoneBlock='Postpone Block'
 var reason='reason'

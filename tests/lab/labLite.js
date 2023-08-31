@@ -26,6 +26,7 @@ const taikoHelper = require("../util/taikoHelper");
 const gaugeHelper=require("../util/gaugeHelper")
 const { link } = require('fs');
 const path = require('path');
+const taikoInteraction = require('../../../components/taikoInteraction');
 
 var search='Search'
 var foundElement='Found 1 patient'
@@ -46,7 +47,8 @@ step("start patient search", async function () {
 
 step("enter the patient name in lablite", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await write(patientIdentifierValue, { "placeholder": "Search for a patient by name or identifier number" });
+    await taikoInteraction.Write(patientIdentifierValue,'xpath', { "placeholder": "Search for a patient by name or identifier number" });
+    await taikoInteraction.Click(search,'button')
     await click(button(search))
 });
 

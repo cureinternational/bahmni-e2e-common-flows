@@ -50,7 +50,7 @@ var appointmentDateElement = 'Appointment date'
 var summary='Summary'
 var yes='Yes'
 var fcwidgetcontent='.fc-widget-content'
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='Save'
 var update='Update'
 var yesIConfirm='Yes, I confirm'
@@ -118,7 +118,7 @@ step("Select patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
     var patientNameElement=`//a[text()='${patientName}']`
-    await taikoInteraction.Write(firstName,"into",searchbox)
+    await taikoInteraction.Write(firstName,"xpath",searchbox)
     await taikoElement.waitToPresent(patientNameElement)
     await taikoInteraction.EvaluateClick(patientNameElement)
 });
@@ -160,7 +160,7 @@ step("Search and select location", async function () {
 
 async function selectDropDown(locator,value){
     var element=`//div[@data-testid='${locator}']//input`
-    await taikoInteraction.Write(value,"into",$(element))
+    await taikoInteraction.Write(value,"xpath",element)
     var selectableElement="//div[text()='" + value + "']"
     await taikoElement.waitToPresent($(selectableElement))
     await taikoInteraction.EvaluateClick($(selectableElement))
@@ -423,7 +423,7 @@ step("Verify the appointment specialitis list",async function(){
             var specialityElement="//div[text()='" + speciality[i] + "']"
             await write(speciality[i], into($(specialitySearchInput)))
             assert.ok(await $(specialityElement).exists());
-            await taikoInteraction.Click(specialitySearchBtn,'xpath')
+            await taikoInteraction.Click(specialitySearchInput,'xpath')
         }
         
     }

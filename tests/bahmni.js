@@ -13,9 +13,11 @@ const {
     reload,
 } = require('taiko');
 var taikoHelper = require("./util/taikoHelper");
+const taikobrowserActions=require("../../components/taikobrowserActions")
 var users = require("./util/users")
 const csvConfig = require("./util/csvConfig");
 const gaugeHelper = require("./util/gaugeHelper")
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 
 step("put first name <firstName> middle name <middleName> lastname <lastName>", async function (firstName, middleName, lastName) {
     gaugeHelper.save("patientFirstName", firstName);
@@ -39,12 +41,12 @@ step("put randomly generated names for patient", async function () {
 
 step("Goto Clinical application", async function () {
     try {
-        await goto(process.env.bahmniHome, { waitForNavigation: true, navigationTimeout: process.env.loginTimeout });
-        await taikoHelper.repeatUntilNotFound($("#overlay"))
+        await taikobrowserActions.navigateTo(process.env.bahmniHome);
+        await taikoHelper.repeatUntilNotFound($(overlay))
     } catch (e) {
         await reload();
-        await goto(process.env.bahmniHome, { waitForNavigation: true, navigationTimeout: process.env.loginTimeout });
-        await taikoHelper.repeatUntilNotFound($("#overlay"))
+        await taikobrowserActions.navigateTo(process.env.bahmniHome);
+        await taikoHelper.repeatUntilNotFound($(overlay))
     }
 });
 
@@ -63,16 +65,15 @@ step("Check if <appName> app is opened", async function (appName) {
     gauge.message("App name exists")
     await highlight(appName)
     await click(appName.toUpperCase(), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("wait for overlay to disappear", async function () {
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
-    //await waitFor(async () => !(await $("#overlay").exists()))
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("wait for overlay and Saved to disappear", async function () {
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
     await waitFor(async () => !(await text("Saved", within('.message-text')).exists()));
 });
 

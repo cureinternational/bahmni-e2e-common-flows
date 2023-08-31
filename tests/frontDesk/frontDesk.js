@@ -32,7 +32,7 @@ var expectedLocationsList=process.env.registrationLocations.split(",")
    var locationOption='//select[@id="location"]/option'
    var visitLocationOption='//select[@ng-model="selectedLocationUuid"]/option'
    var expectedLocationsList=process.env.registrationLocations.split(",")
-   var overlay='#overlay'
+   var overlay='//div[@id="overlay" and @style="display: block;"]'
    var patientMovementDropdown='Patient Movement:'
    var admitPatient='Admit Patient'
    var admit='Admit'
@@ -80,8 +80,7 @@ step("Verify the appointments in grid view",async function(){
 
 async function verifyGrid(gridName){
  var table=`//h3[text()='${gridName}']//parent::div//table`
- await taikoElement.isPresent($(`${table}`))
- taikoassert.assertExists($(`${table}`))
+ await taikoassert.assertExists($(`${table}`))
 }
 
 step("Click on <wardType>",async function(wardType){
@@ -97,12 +96,12 @@ step("Enter the patient id in search box",async function(){
 
 step("Verify the patient presence in the <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
     if(!await taikoElement.isPresent(textBox({ "placeholder": "Search..." })))
     {
     await taikoInteraction.Click(`${ward}`,'xpath')
     }
-    await taikoHelper.repeatUntilNotFound($("#overlay"))
+    await taikoHelper.repeatUntilNotFound($(overlay))
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Write(patientIdentifierValue,'into',{ "placeholder": "Search..." })
     await taikoElement.isPresent(text(patientIdentifierValue))
@@ -129,7 +128,7 @@ step("Search and select patient",async function(){
     var firstName = gaugeHelper.get("patientFirstName")
     var lastName = gaugeHelper.get("patientLastName")
     var patientName = `${firstName} ${lastName}`
-    await taikoInteraction.Write(patientName,'xpath',$(patientIdentifierElement))
+    await taikoInteraction.Write(patientName,'xpath',patientIdentifierElement)
     var patientNameElement=`//div[contains(text(),'${patientName}')]`
     await taikoElement.waitToPresent($(patientNameElement))
     await taikoInteraction.EvaluateClick(patientNameElement)

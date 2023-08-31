@@ -49,8 +49,8 @@
 # Start an OPD Visit
 * Click Start OPD Visit
 * Verify no error displayed on page
-* Click back button
-* Click back button
+* Click on active patients list
+* Click on home page
 
 # Start a <visit> Visit
 * Click Start OPD Visit

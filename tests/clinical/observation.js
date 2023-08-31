@@ -34,7 +34,7 @@ const path = require('path');
 var assert = require("assert");
 const { subscribe } = require('diagnostics_channel');
 
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var vitals='Vitals'
 var vital='Vital'
 var pulse='Pulse (beats/min)'

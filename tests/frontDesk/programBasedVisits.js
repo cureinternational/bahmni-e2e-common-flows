@@ -28,7 +28,7 @@ const taikoElement = require('../../../components/taikoElement');
 var startOpdVisit='Start OPD Visit'
 var submitBtn=".submit-btn-container"
 var startSpecialOpdVisit='Start Special OPD Visit'
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var newProgramEnrollment='New Program Enrollment'
 var dob='Date of birth'
 var programDropdown='Program :'

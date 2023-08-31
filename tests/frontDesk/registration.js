@@ -47,7 +47,7 @@ const taikoAssert = require('../../../components/taikoAssert');
 var update='Update'
 var phoneNumberValue='//input[@name="mobilePhone"]'
 var registration='Registration'
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='Save'
 var prePatientCheckbox='input#pre-registration-attribute'
 var patientGender = users.getRandomPatientGender();
@@ -76,7 +76,7 @@ var createNew='Create New'
 var enterVisitDetails='Enter Visit page Details'
 var closeVisit='Close Visit'
 var registration='Registration'
-var homeBtn='//i[@class="fa fa-home"]'
+var homeBtn='//a[@class="back-btn"]/i[@class="fa fa-home"]'
 var activePatientList=process.env.bahmniActivePatientList
 var inputRegistrationNumber='input#registrationNumber'
 var village='Village'
@@ -107,7 +107,6 @@ var register='Register'
 
 step("Open <moduleName> module", async function (moduleName) {
     await taikoInteraction.Click(moduleName,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click on <type> patient",async function(type){
@@ -188,7 +187,6 @@ step("Enter patient random gender", async function () {
     if (gaugeHelper.get(isNewPatient))
         await taikoInteraction.Dropdown("Gender *",users.getRandomPatientGender())
     gaugeHelper.save("patientGender", users.getRandomPatientGender())
-    gauge.message(`patientGender ${users.getRandomPatientGender()}`)
 });
 
 step("Enter random age of the patient", async function () {
@@ -282,8 +280,6 @@ step("Login as user <user>", async function (user) {
     await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),"into",toRightOf(passWord))
     await taikoInteraction.Dropdown(locationDropDown,process.env.loginLocation)
     await taikoInteraction.Click(login,'button');
-    await taikoHelper.repeatUntilNotFound(text(loginText))
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Check login <location>", async function (location) {
@@ -364,7 +360,7 @@ step("Open newly created patient details by search", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     console.log(`patient Identifier ${patientIdentifierValue}`)
     gauge.message(`patient Identifier ${patientIdentifierValue}`)
-    await taikoInteraction.Write(patientIdentifierValue,'default')
+    await taikoInteraction.Write(patientIdentifierValue,'xpath',inputRegistrationNumber)
     await taikoInteraction.pressEnter()
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoElement.isPresent(link(patientIdentifierValue))

@@ -33,7 +33,7 @@ const taikoElement = require('../../../components/taikoElement');
 var toAdmit = "To Admit"
 var availableBed='//*[@class="col available" or @class="bed AVAILABLE"]'
 var assign='Assign'
-var overlay='#overlay'
+var overlay='//div[@id="overlay" and @style="display: block;"]'
 var admit='Admit'
 var patientMovementDropdown='Patient Movement:'
 var dischargePatient='Discharge Patient'
@@ -117,12 +117,12 @@ step("Click Discharge", async function () {
 });
 
 step("Click Discharge on popup", async function () {
-	await taikoElement.waitNotToPresent($(overlay))
+	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoInteraction.Click(discharge,'text',within($(dischargePopup)))
 });
 
 step("Click Admit on popup", async function () {
-	await taikoElement.waitNotToPresent($(overlay))
+	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoInteraction.Click(cancel,'text')
 	await taikoInteraction.Click(admit,'text')
 });
