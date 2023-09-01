@@ -81,20 +81,15 @@ step("Admit the patient", async function () {
 
 step("Discharge the patient", async function () {
 	await taikoHelper.repeatUntilNotFound($(overlay))
-	await taikoElement.waitToPresent(patientMovementDropdown)
+	await taikoElement.waitToPresent(dropDown(patientMovementDropdown))
 	await taikoInteraction.Dropdown(patientMovementDropdown,dischargePatient)
 	await taikoInteraction.Click(discharge,'text')
 });
 
 step("Select Patient Movement <movement>",async function(movement)
  {
-	await taikoElement.waitToPresent(patientMovementDropdown)
+	await taikoElement.waitToPresent(dropDown(patientMovementDropdown))
 	await taikoInteraction.Dropdown(patientMovementDropdown,movement)
-});
-
-step("Goto All section", async function () {
-	await taikoElement.waitToPresent(all)
-	await taikoInteraction.Click(all,'text')
 });
 
 step("View Admitted patients", async function () {

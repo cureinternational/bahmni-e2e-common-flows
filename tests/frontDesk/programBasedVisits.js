@@ -89,4 +89,5 @@ step("Open the program dashboard <program>", async function(program) {
 step("Goto All sections", async function () {
     await taikoHelper.repeatUntilFound(link(all))
     await taikoInteraction.Click(all,'link')
+    await taikoHelper.repeatUntilFound(link(all))
 });

@@ -43,8 +43,8 @@
 
 # Open clinical tab with all section
 * Open "Clinical" module
-* Goto All section
-* Select the newly created patient
+* Goto All sections
+* Select the newly created patient from all section
 
 # Start an OPD Visit
 * Click Start OPD Visit
@@ -76,10 +76,11 @@
 * Open "Registration" module
 * Open newly created patient details by search
 * Enter visit details
-* Open Patient ADT page
-* Open Visit attributes
+* Open Nutritional page
 * Confirm if you want to close the visit
 * Close visit
+* Click on active patients list
+* Click on home page
 
 
 # Receptionist creates the <type> patient

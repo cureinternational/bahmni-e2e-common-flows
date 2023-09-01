@@ -27,7 +27,7 @@ var assert = require("assert");
 var fileExtension = require("../util/fileExtension");
 const taikoInteraction = require('../../../components/taikoInteraction');
 const taikoElement = require('../../../components/taikoElement');
-const taikoassert = require('../../../components/taikoassert');
+const taikoassert = require('../../../components/taikoAssert');
 
 var orderCompleted='Order is Completed'
 
@@ -39,7 +39,7 @@ step("Click the order <order>", async function (order) {
 
  step("Select the Radiologist",async function(){
     var radiologist=process.env.radiologist
-    await taikoElement.waitToPresent(orderCompleted)
+    await taikoElement.waitToPresent(text(orderCompleted))
     await taikoInteraction.Dropdown(below(orderCompleted),radiologist)
  })
 

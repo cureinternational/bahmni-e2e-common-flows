@@ -1,6 +1,7 @@
 const { goto, $, below, write, textBox, into, click, toLeftOf, checkBox, reload, text, waitFor, highlight, screenshot } = require('taiko');
 var assert = require("assert")
 const gaugeHelper = require("./util/gaugeHelper")
+const taikobrowserActions = require("../../components/taikobrowserActions")
 step("enter odoo username", async function () {
     await write(process.env.odooUsername, into(textBox(below("Email"))));
 });
@@ -37,7 +38,7 @@ step("select Customer", async function () {
             assert.ok(maxRetry > 0, "Quotation not found in Odoo for patient - " + oddoCustomerName)
             console.log("Waiting for 5 seconds and reload the Quotations page to wait for Patient - " + oddoCustomerName + ". Remaining attempts " + maxRetry)
             await waitFor(4000);
-            await reload({ waitForNavigation: true });
+            await taikobrowserActions.reloadTab()
         }
     }
 });

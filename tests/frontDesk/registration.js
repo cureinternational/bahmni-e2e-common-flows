@@ -29,7 +29,8 @@ const {
     switchTo,
     title,
     closeBrowser,
-    doubleClick
+    doubleClick,
+    openTab
 } = require('taiko');
 var users = require("../util/users");
 var date = require("../util/date");
@@ -76,9 +77,10 @@ var createNew='Create New'
 var enterVisitDetails='Enter Visit page Details'
 var closeVisit='Close Visit'
 var registration='Registration'
-var homeBtn='//a[@class="back-btn"]/i[@class="fa fa-home"]'
-var activePatientList=process.env.bahmniActivePatientList
+var homeBtn='//a[contains(@class,"back-btn")]/i[@class="fa fa-home"]'
+var activePatientList='(//a[contains(@class,"back-btn")]/i[@class="fa fa-users"])[2]'
 var inputRegistrationNumber='input#registrationNumber'
+var inputPatientIdentifier='input#patientIdentifier'
 var village='Village'
 var idElement='#patientIdentifierValue'
 var noResultsFound='No results found'
@@ -89,6 +91,7 @@ var gender='Gender'
 var phone='Phone'
 var yob='Year Of Birth'
 var patientADTpage='Patient ADT Page'
+var nutrionalPage='Nutritional Values'
 var visitAttributes='Visit Attributes'
 var closePopupText='Are you sure you want to close this visit?'
 var uploadPopup='[ng-click="launchPhotoUploadPopup()"]'
@@ -186,7 +189,6 @@ step("Enter patient mobile number <mobile>", async function (mobile) {
 step("Enter patient random gender", async function () {
     if (gaugeHelper.get(isNewPatient))
         await taikoInteraction.Dropdown("Gender *",users.getRandomPatientGender())
-    gaugeHelper.save("patientGender", users.getRandomPatientGender())
 });
 
 step("Enter random age of the patient", async function () {
@@ -232,13 +234,19 @@ step("Save the patient data", async function () {
     await taikoHelper.repeatUntilFound($(patientIdValue))
     var patientIdentifier = await $(patientIdValue).text();
     gaugeHelper.save("patientIdentifier", patientIdentifier);
-    console.log(`patient Identifier ${patientIdentifier}`)
     gauge.message(`patient Identifier ${patientIdentifier}`)
 });
 
 step("Select the newly created patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Write(patientIdentifierValue,'into',below(registration))
+    await taikoInteraction.pressEnter()
+    await taikoHelper.repeatUntilNotFound($(overlay))
+})
+
+step("Select the newly created patient from all section", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    await taikoInteraction.Write(patientIdentifierValue,'xpath',inputPatientIdentifier)
     await taikoInteraction.pressEnter()
     await taikoHelper.repeatUntilNotFound($(overlay))
 })
@@ -332,7 +340,7 @@ step("Close visit", async function () {
     await taikoElement.waitToPresent(text(closeVisit))
     await taikoInteraction.Click(closeVisit,'button')
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikobrowserActions.switchTab(/OPD/)
+    await taikobrowserActions.switchTab(/default/)
 });
 
 
@@ -351,14 +359,13 @@ step("Click on home page", async function () {
 
 step("Click on active patients list", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikobrowserActions.navigateTo(activePatientList)
+    await taikoInteraction.Click(activePatientList,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Open newly created patient details by search", async function () {
 
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    console.log(`patient Identifier ${patientIdentifierValue}`)
     gauge.message(`patient Identifier ${patientIdentifierValue}`)
     await taikoInteraction.Write(patientIdentifierValue,'xpath',inputRegistrationNumber)
     await taikoInteraction.pressEnter()
@@ -443,7 +450,7 @@ step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
 step("Choose newly created patient", async function () {
     var firstName = gaugeHelper.get("patientFirstName")
     var lastName = gaugeHelper.get("patientLastName")
-    await taikoInteraction.Write(firstName,'into',{ "placeholder": "Enter Name" })
+    await taikoInteraction.Write(firstName,'xpath',inputPatientIdentifier)
     await taikoInteraction.Click(`${firstName} ${lastName}`,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
@@ -456,7 +463,9 @@ step("Open Patient ADT page",async function(){
     await taikoHelper.repeatUntilFound(link(patientADTpage))
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Click(patientADTpage,'text')
-    await reload()
+    await taikoElement.waitToPresent(button(save))
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikobrowserActions.switchTab(/adt/)
     await taikobrowserActions.switchTab(/ADT/)
 }
 )
@@ -466,7 +475,17 @@ step("Open Visit attributes",async function()
     await taikoHelper.repeatUntilFound(link(visitAttributes))
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Click(visitAttributes,'text')
-    await reload()
+    await taikoElement.waitToPresent(button(save))
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikobrowserActions.switchTab(/registration/)
+    await taikobrowserActions.switchTab(/Patient Registration/)
+})
+step("Open Nutritional page",async function(){
+    await taikoHelper.repeatUntilFound(link(nutrionalPage))
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoInteraction.Click(nutrionalPage,'text')
+    await taikoElement.waitToPresent(button(save))
+    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikobrowserActions.switchTab(/Patient Registration/)
 })
 

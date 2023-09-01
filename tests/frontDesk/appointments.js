@@ -119,8 +119,8 @@ step("Select patient", async function () {
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
     var patientNameElement=`//a[text()='${patientName}']`
     await taikoInteraction.Write(firstName,"xpath",searchbox)
-    await taikoElement.waitToPresent(patientNameElement)
-    await taikoInteraction.EvaluateClick(patientNameElement)
+    await taikoElement.waitToPresent($(patientNameElement))
+    await taikoInteraction.EvaluateClick($(patientNameElement))
 });
 
 step("Select service <service>", async function (serviceName) {
@@ -183,6 +183,7 @@ step("Select location <location>", async function (locationName) {
 step("Enter appointment time into Start time", async function () {
     var time= gaugeHelper.get("startTime")
     await taikoInteraction.Write(time,"into",{placeholder:"hh:mm"}) 
+    await taikoInteraction.Dropdown(below('Start Time'),gaugeHelper.get("AM"))
 });
 step("Close the appointment popup",async function(){
     await taikoInteraction.Click(addNewAppointment,'text')
@@ -196,8 +197,10 @@ step("Open calender at time <appointmentTime>", async function (appointmentTime)
     gaugeHelper.save("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
     gaugeHelper.save("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
     gaugeHelper.save("startTime", await textBox({ placeHolder: "hh:mm" }).value())
+    gaugeHelper.save("AM", await dropDown(below('Start Time')).value())
     gauge.message(`Appointment start date ${gaugeHelper.get("startDate")}`)
-    gauge.message(`Appointment start time ${gaugeHelper.get("startTime")}`)   
+    gauge.message(`Appointment start time ${gaugeHelper.get("startTime")}`) 
+    gauge.message(`Appointment AM/PM ${gaugeHelper.get("AM")}`)  
 });
 
 step("put <appointmentDate> as appointment date", async function (appointmentDate) {
@@ -282,7 +285,6 @@ step("select the Start date as <appointmentDate>", async function (appointmentDa
 });
 
 step("select the End date as after <times> occurances", async function (times) {
-    await write(times,$(inputOccurences))
     await taikoInteraction.Write(times,"xpath",inputOccurences)
 });
 
@@ -306,7 +308,7 @@ step("Click Cancel", async function () {
 step("Cancel <type> appointment", async function (type) {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName=gaugeHelper.get("patientFullName")
-    var btnstatus=taikoElement.elementDisabled(cancel,'button')
+    var btnstatus=taikoElement.elementDisabled(button(cancel))
 
     if(btnstatus)
     {
@@ -338,8 +340,8 @@ step("Cancel <type> appointment", async function (type) {
 });
 
 step("Click Edit <type> appointment", async function (type) {
-    var btnstatus= await taikoElement.elementDisabled(edit,'button')
-    if(!btnstatus)
+    var btnstatus= await taikoElement.elementDisabled(button(edit))
+    if(btnstatus)
     {
         await taikoInteraction.Click(edit,'button')
     }

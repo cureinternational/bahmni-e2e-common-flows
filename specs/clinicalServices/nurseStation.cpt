@@ -10,7 +10,7 @@
 * Click Assign
 
 # Doctor at ADT gives discharge disposition
-* Goto All section
+* Goto All sections
 * Select the newly created patient for IP Discharge
 * wait for overlay to disappear
 * Select Patient Movement "Discharge Patient"
@@ -19,7 +19,7 @@
 
 # Admit a patient to general ward bed
 * Open "Bed Management" module
-* Goto All section
+* Goto All sections
 * Search the newly created patient
 * wait for overlay to disappear
 * Select the general ward

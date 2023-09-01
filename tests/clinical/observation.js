@@ -113,7 +113,7 @@ step("Click patient name", async function () {
     var firstName = gaugeHelper.get("patientFirstName")
     var patientElement=$(`//div[@class='fc-title' and contains(text(),'${firstName}')]`)
     await taikoInteraction.EvaluateClick(patientElement)
-    var btnstatus= await taikoElement.elementDisabled(cancel,'button')
+    var btnstatus= await taikoElement.elementDisabled(button(cancel))
     if(btnstatus)
     {
         var patientid=gaugeHelper.get("patientIdentifier")
@@ -124,7 +124,7 @@ step("Click patient name", async function () {
 
 step("Should not find the patient's name", async function () {
     var fullName = gaugeHelper.get("patientFullName")
-    await taikoElement.isPresent(text(fullName))
+    await taikoElement.isNotPresent(text(fullName))
 });
 
 

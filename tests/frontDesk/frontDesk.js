@@ -72,6 +72,7 @@ step("Verify the visit locations",async function(){
 })
 
 step("Verify the appointments in grid view",async function(){
+    await taikoHelper.repeatUntilNotFound($(overlay))
     await verifyGrid('Specialities')
     await verifyGrid('Providers')
     await verifyGrid('Services')

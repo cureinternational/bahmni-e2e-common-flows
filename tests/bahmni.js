@@ -14,9 +14,11 @@ const {
 } = require('taiko');
 var taikoHelper = require("./util/taikoHelper");
 const taikobrowserActions=require("../../components/taikobrowserActions")
+const taikoElement=require("../../components/taikoElement")
 var users = require("./util/users")
 const csvConfig = require("./util/csvConfig");
-const gaugeHelper = require("./util/gaugeHelper")
+const gaugeHelper = require("./util/gaugeHelper");
+const taikoInteraction = require('../../components/taikoInteraction');
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 
 step("put first name <firstName> middle name <middleName> lastname <lastName>", async function (firstName, middleName, lastName) {
@@ -44,7 +46,7 @@ step("Goto Clinical application", async function () {
         await taikobrowserActions.navigateTo(process.env.bahmniHome);
         await taikoHelper.repeatUntilNotFound($(overlay))
     } catch (e) {
-        await reload();
+        await taikobrowserActions.reloadTab()
         await taikobrowserActions.navigateTo(process.env.bahmniHome);
         await taikoHelper.repeatUntilNotFound($(overlay))
     }
@@ -60,11 +62,10 @@ step("Open <appName> app", async function (appName) {
 });
 
 step("Check if <appName> app is opened", async function (appName) {
-    if (!await text(appName).exists(0, 0))
+    if (!await taikoElement.isPresent(appName))
         return
     gauge.message("App name exists")
-    await highlight(appName)
-    await click(appName.toUpperCase(), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
+    await taikoInteraction.Click(appName.toUpperCase())
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 

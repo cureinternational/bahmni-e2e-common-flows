@@ -95,7 +95,7 @@ step("Select the newly created patient for IP Discharge", async function () {
 
 step("Search the newly created patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await taikoInteraction.Write(patientIdentifierValue,'default',idElement)
+    await taikoInteraction.Write(patientIdentifierValue,'xpath',idElement)
     await taikoInteraction.Click(search,'text')
 });
 
