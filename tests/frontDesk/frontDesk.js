@@ -44,6 +44,10 @@ var expectedLocationsList=process.env.registrationLocations.split(",")
    var ipd='IPD'
    var eq5d='EQ-5D'
    var noResultsFound='No results found'
+   var implicitTimeOut=parseInt(process.env.implicitTimeOut)
+   var yesBtn='button#modal-revise-button1'
+   var continueBtn='button#modal-revise-button3'
+
    
 step("Verify the login locations in login page",async function(){
     var actualLocationsList=[]
@@ -80,8 +84,10 @@ step("Verify the appointments in grid view",async function(){
 })
 
 async function verifyGrid(gridName){
- var table=`//h3[text()='${gridName}']//parent::div//table`
- await taikoassert.assertExists($(`${table}`))
+ var table=`//h3[text()="${gridName}"]//parent::div//table`
+ await taikoHelper.repeatUntilNotFound($(overlay))
+ await taikoElement.waitToPresent($(table))
+ await taikoassert.assertExists($(table))
 }
 
 step("Click on <wardType>",async function(wardType){
@@ -98,13 +104,13 @@ step("Enter the patient id in search box",async function(){
 step("Verify the patient presence in the <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
     await taikoHelper.repeatUntilNotFound($(overlay))
-    if(!await taikoElement.isPresent(textBox({ "placeholder": "Search..." })))
+    if(!await taikoElement.isPresent($('//input[@ng-model="searchText"]')))
     {
     await taikoInteraction.Click(`${ward}`,'xpath')
     }
     await taikoHelper.repeatUntilNotFound($(overlay))
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await taikoInteraction.Write(patientIdentifierValue,'into',{ "placeholder": "Search..." })
+    await taikoInteraction.Write(patientIdentifierValue,'xpath','//input[@ng-model="searchText"]')
     await taikoElement.isPresent(text(patientIdentifierValue))
 })
 
@@ -112,27 +118,29 @@ step("Admit the patient to ipd in <visitType> visit",async function(visitType){
 
     taikoHelper.repeatUntilNotFound($(overlay))
     await taikoElement.waitToPresent(dropDown(patientMovementDropdown))
+    await taikoHelper.wait(2000)
     await taikoInteraction.Dropdown(patientMovementDropdown,admitPatient)
+    await taikoHelper.wait(2000)
     await taikoInteraction.Click(admit,'text')
     if(visitType=='OPD')
     {
-        await taikoInteraction.Click(continueText,'text')
+        await taikoInteraction.EvaluateClick($(continueBtn))
     }
     else
     {
-        await taikoInteraction.Click(yes,'text')
-
+        await taikoInteraction.EvaluateClick($(yesBtn))
     }
 })
 
 step("Search and select patient",async function(){
+    await taikoHelper.repeatUntilNotFound($(overlay))
     var firstName = gaugeHelper.get("patientFirstName")
     var lastName = gaugeHelper.get("patientLastName")
     var patientName = `${firstName} ${lastName}`
     await taikoInteraction.Write(patientName,'xpath',patientIdentifierElement)
-    var patientNameElement=`//div[contains(text(),'${patientName}')]`
+    var patientNameElement=`//div[contains(text(),"${patientName}")]`
     await taikoElement.waitToPresent($(patientNameElement))
-    await taikoInteraction.EvaluateClick(patientNameElement)
+    await taikoInteraction.EvaluateClick($(patientNameElement))
 })
 step("Select a bed from <wardType>",async function(wardType){
     var ward=`//span[contains(text(),'${wardType}')]`
@@ -149,10 +157,8 @@ step("Select the patient",async function(){
 
 step("Click on IPD", async function(){
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await waitFor(3000)
-    await waitFor(async () => (await text(ipd).exists()),{interval: 1000})
-    await click(text(ipd))
-    await waitFor(async () => (await text(eq5d).exists()))
+    await taikoInteraction.Click(ipd,'text')
+    await taikoElement.waitToPresent(text('Diagnosis'))
 })
 
 step("Verify the ipd dashboard",async function(){
@@ -169,11 +175,12 @@ step("Verify the ipd dashboard",async function(){
 })
 
 async function verifyDisplayControl(controlName){
-    assert.ok(await text(controlName).exists())
+    await taikoAssert.assertExists(text(controlName))
    }
    
 step('Close the ADT page',async function(){
     await switchTo(/ADT/)
+    await switchTo(/adt/)
     await closeTab(/ADT/)
     await waitFor(2000)})
 

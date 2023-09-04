@@ -55,6 +55,8 @@ beforeScenario(async (context) => {
 afterScenario(async (context) => {
     try {
         await waitFor(2000)
+
+        console.log('< '+'='.repeat(30)+' >')
         await closeBrowser();
     }
     catch (e) {

@@ -96,7 +96,7 @@ var visitAttributes='Visit Attributes'
 var closePopupText='Are you sure you want to close this visit?'
 var uploadPopup='[ng-click="launchPhotoUploadPopup()"]'
 var confirmPhoto='Confirm Photo'
-
+var patientID='Patient ID'
 var kebeleElement='Kebele'
 var worderElement='Woreda'
 var email='Email'
@@ -107,6 +107,7 @@ var relationShips='Relationships'
 var selectPerson='Select Person'
 var registerNewPerson='Register New Person'
 var register='Register'
+var implicitTimeOut=parseInt(process.env.implicitTimeOut)
 
 step("Open <moduleName> module", async function (moduleName) {
     await taikoInteraction.Click(moduleName,'text')
@@ -205,15 +206,7 @@ step("Enter random age of the patient", async function () {
 
 step("Enter patient random mobile number", async function () {
     var mobile = faker.phone.number('+919#########')
-    if (await taikoElement.isPresent(text(primaryContact))) {
-        if (gaugeHelper.get(isNewPatient))
-            await taikoInteraction.Write(mobile,'into',toRightOf(primaryContact))
-    }
-    else if (await taikoElement.isPresent(text(phoneNumber))) {
-        if (gaugeHelper.get(isNewPatient))
-        await taikoInteraction.Write(mobile,'into',toRightOf(phoneNumber))
-    }
-    else if (await taikoElement.isPresent(text(mobilePhone))) {
+    if(await taikoElement.isPresent(text(mobilePhone))) {
         if (gaugeHelper.get(isNewPatient))
         await taikoInteraction.Write(mobile,'into',toRightOf(mobilePhone))
     }
@@ -252,13 +245,11 @@ step("Select the newly created patient from all section", async function () {
 })
 
 step(["Log out if still logged in", "Receptionist logs out"], async function () {
-    while (await taikoElement.isPresent($(backBtn))) {
-        await taikoHelper.repeatUntilNotFound($(overlay))
-        await taikoInteraction.Click(backBtn,'xpath')
-        await taikoHelper.repeatUntilNotFound($(overlay))
-    }
-
     try {
+        if(!taikoElement.isPresent(text('Registration')))
+        {
+            taikoInteraction.Click(homeBtn,'xpath')
+        }
         await taikoInteraction.Click(userInfo,'xpath')
         await taikoInteraction.Click(logout,'text')
         await taikoHelper.repeatUntilNotFound($(overlay))
@@ -277,13 +268,9 @@ step("Login as user <user> with location <location>", async function (user, loca
     await taikoInteraction.Click(login,'button')
     await taikoHelper.repeatUntilNotFound(text(loginText))
     await taikoHelper.repeatUntilNotFound($(overlay))
-});
+})
 
 step("Login as user <user>", async function (user) {
-    if (!await taikoElement.isPresent(textBox(toRightOf(userName)))) {
-        await reload()
-    }
-
     await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),"into",toRightOf(userName))
     await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),"into",toRightOf(passWord))
     await taikoInteraction.Dropdown(locationDropDown,process.env.loginLocation)
@@ -337,9 +324,9 @@ step("Enter visit details", async function () {
 
 step("Close visit", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.waitToPresent(text(closeVisit))
-    await taikoInteraction.Click(closeVisit,'button')
-    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(implicitTimeOut)
+    await taikoInteraction.AlertClick(closeVisit,'button',closePopupText)
+    await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/default/)
 });
 
@@ -353,12 +340,14 @@ step("Click on home page and goto registration module", async function () {
 
 step("Click on home page", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.Click(homeBtn,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click on active patients list", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.Click(activePatientList,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
@@ -460,11 +449,11 @@ step("wait for create new button", async function () {
 });
 
 step("Open Patient ADT page",async function(){
-    await taikoHelper.repeatUntilFound(link(patientADTpage))
     await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoElement.waitToPresent(link(patientADTpage))
+    await taikoHelper.wait(2000)
     await taikoInteraction.Click(patientADTpage,'text')
-    await taikoElement.waitToPresent(button(save))
-    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(3000)
     await taikobrowserActions.switchTab(/adt/)
     await taikobrowserActions.switchTab(/ADT/)
 }
@@ -472,8 +461,8 @@ step("Open Patient ADT page",async function(){
 
 step("Open Visit attributes",async function()
 {
-    await taikoHelper.repeatUntilFound(link(visitAttributes))
     await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.repeatUntilFound(link(visitAttributes))
     await taikoInteraction.Click(visitAttributes,'text')
     await taikoElement.waitToPresent(button(save))
     await taikoHelper.repeatUntilNotFound($(overlay))
@@ -484,13 +473,13 @@ step("Open Nutritional page",async function(){
     await taikoHelper.repeatUntilFound(link(nutrionalPage))
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Click(nutrionalPage,'text')
+    await taikoHelper.wait(implicitTimeOut)
+    await taikobrowserActions.switchTab(/registration/)
     await taikoElement.waitToPresent(button(save))
-    await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikobrowserActions.switchTab(/Patient Registration/)
+
 })
 
 step("Confirm if you want to close the visit", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikobrowserActions.acceptAlert(closePopupText)
 });
 
@@ -510,6 +499,7 @@ step("Enter random kebele", async function () {
 step("Enter random Woreda", async function () {
     var woreda =  gaugeHelper.get('woreda')
     await taikoInteraction.Write(woreda,'into',toRightOf(worderElement))
+    await taikoElement.waitToPresent(link(woreda))
     await taikoInteraction.Click(woreda,'link')
 });
 

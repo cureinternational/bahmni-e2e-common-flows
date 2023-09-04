@@ -38,16 +38,6 @@
                     "value":"Patch cast"
                 }
             ]
-        },
-        {
-            "type": "TypeDrowpdown",
-            "label": "Name",
-            "value": "Ashenafi Girma"
-        },
-        {
-            "type": "TextArea",
-            "label": "Acknowledged by staff",
-            "value": "Authorized by Dr. Ashenafi"
         }
     ]
 }

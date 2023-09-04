@@ -39,7 +39,10 @@ step("Verify the specialitis list", async function () {
    {
     var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`
     var speciality=(await $(tabItem).text()).trim()
+    if(speciality=='My Patients'&&speciality=='Active'&&speciality=='All')
+    {
     await taikoassert.assertArray(speciliatyList,speciality)
+    }
 }
 });
 

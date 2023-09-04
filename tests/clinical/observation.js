@@ -40,8 +40,6 @@ var vital='Vital'
 var pulse='Pulse (beats/min)'
 var addNewObsForm='Add New Obs Form'
 var historyNotes='History Notes'
-var notes1='textarea#observation_6'
-var notes2='textarea#observation_19'
 var smokingHistory='Smoking History'
 var reportjpg='./bahmni-e2e-common-flows/data/consultation/observations/patientReport.jpg'
 var report='//*[@class="consultation-image"]/input'
@@ -79,11 +77,9 @@ step("Enter History and examination details <filePath>", async function (filePat
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoElement.waitToPresent(text(historyNotes))
     await taikoInteraction.Write(historyAndExaminationDetails.History_Notes, 'into', historyNotes)
-    await taikoInteraction.Write(historyAndExaminationDetails.History_Notes, 'into',notes1);
-    await taikoInteraction.Write(historyAndExaminationDetails.History_Notes, 'into',notes2);
     await taikoInteraction.Click(historyAndExaminationDetails.Smoking_status,'text', toRightOf(smokingHistory));
-    await taikoInteraction.Attach(reportjpg,report);
-    await taikoInteraction.Attach(reportVideo,video);
+    await taikoInteraction.Attach(reportjpg,$(report));
+    await taikoInteraction.Attach(reportVideo,$(video));
 });
 
 step("Enter Orthopaedic followup <filePath>", async function (filePath) {
@@ -93,11 +89,11 @@ step("Enter Orthopaedic followup <filePath>", async function (filePath) {
 
     if (!await taikoElement.isPresent(link(followupdetails.ObservationFormName))) {
         await taikoInteraction.Click(addNewObsForm,'text')
-        await taikoInteraction.Click(historyAndExaminationDetails.ObservationFormName,'button')
+        await taikoInteraction.Click(followupdetails.ObservationFormName,'button')
 	} 
     else 
     {
-        await taikoInteraction.Click(historyAndExaminationDetails.ObservationFormName,'link')
+        await taikoInteraction.Click(followupdetails.ObservationFormName,'link')
 	}
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Dropdown(toRightOf(author),followupdetails.author)
@@ -111,8 +107,8 @@ step("Enter Orthopaedic followup <filePath>", async function (filePath) {
 
 step("Click patient name", async function () {
     var firstName = gaugeHelper.get("patientFirstName")
-    var patientElement=$(`//div[@class='fc-title' and contains(text(),'${firstName}')]`)
-    await taikoInteraction.EvaluateClick(patientElement)
+    var patientElement=`//div[@class='fc-title' and contains(text(),'${firstName}')]`
+    await taikoInteraction.EvaluateClick($(patientElement))
     var btnstatus= await taikoElement.elementDisabled(button(cancel))
     if(btnstatus)
     {

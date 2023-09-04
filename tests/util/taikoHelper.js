@@ -190,6 +190,10 @@ async function verifyDropDown(value){
     var firstName=value.split(' ')
     assert.ok(await text(firstName[0]).exists())
 }
+async function wait(time) {
+    await waitFor(time)
+}
+
 module.exports = {
     selectEntriesTillIterationEnds: selectEntriesTillIterationEnds,
     verifyConfigurations: verifyConfigurations,
@@ -197,5 +201,6 @@ module.exports = {
     repeatUntilNotFound: repeatUntilNotFound,
     repeatUntilFound: repeatUntilFound,
     repeatUntilEnabled: repeatUntilEnabled,
-    validateFormFromFile: validateFormFromFile
+    validateFormFromFile: validateFormFromFile,
+    wait:wait
 }

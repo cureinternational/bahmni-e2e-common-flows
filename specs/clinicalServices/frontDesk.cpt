@@ -49,8 +49,8 @@
 # Start an OPD Visit
 * Click Start OPD Visit
 * Verify no error displayed on page
-* Click on active patients list
 * Click on home page
+
 
 # Start a <visit> Visit
 * Click Start OPD Visit
@@ -73,11 +73,9 @@
 * Click back button
 
 # visit is closed at the front desk
-* Open "Registration" module
-* Open newly created patient details by search
-* Enter visit details
+* Open "Clinical" module
+* Goto All sections and search the newly created patient
 * Open Nutritional page
-* Confirm if you want to close the visit
 * Close visit
 * Click on active patients list
 * Click on home page
@@ -108,6 +106,7 @@
 # Receptionist creates the <type> patient and starts an OPD
 * Receptionist creates the <type> patient
 * Start an OPD Visit
+
 
 # Receptionist updates the newly created patient as <type> patient and starts an OPD
 * Receptionist updates the <type> patient
@@ -167,14 +166,14 @@
 * Admit the patient to ipd in "OPD" visit
 * Select a bed from <wardType>
 * Close the ADT page
-* Click back button
-* Click back button
+* Click on active patients list
+* Click on home page
 
 # Verify the IPD dashboard
 * Click on IPD
 * Verify the ipd dashboard
-* Click back button
-* Click back button
+* Click on home page
+
 
 # Verify the patient is present in clinical module
 * Open "Clinical" module

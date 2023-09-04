@@ -167,11 +167,11 @@ step("Verify history & examination in patient clinical dashboard", async functio
     await taikoInteraction.Click(img,'xpath')
     await taikoElement.waitToPresent(slideElement)
     await taikoAssert.assertExists(slideElement)
-    await taikoInteraction.EvaluateClick(closeBtn,'xpath')
+    await taikoInteraction.EvaluateClick($(closeBtn))
     await taikoAssert.assertExists($(obsPlyBtn))
     await taikoInteraction.Click(obsPlyBtn,'xpath')
     await taikoAssert.assertExists($(videoDialog))
-    await taikoInteraction.EvaluateClick($(clearFix),'xpath')
+    await taikoInteraction.EvaluateClick($(clearFix))
     await taikoInteraction.Click(backBtn,'xpath')
 });
 

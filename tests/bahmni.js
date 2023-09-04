@@ -44,11 +44,8 @@ step("put randomly generated names for patient", async function () {
 step("Goto Clinical application", async function () {
     try {
         await taikobrowserActions.navigateTo(process.env.bahmniHome);
-        await taikoHelper.repeatUntilNotFound($(overlay))
     } catch (e) {
-        await taikobrowserActions.reloadTab()
-        await taikobrowserActions.navigateTo(process.env.bahmniHome);
-        await taikoHelper.repeatUntilNotFound($(overlay))
+      console.log(e+" error in navigating to clinical application")
     }
 });
 

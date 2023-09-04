@@ -175,8 +175,8 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
     gauge.message(medicalDiagnosis)
     await taikoInteraction.Click(diagnoses,'text')
     await taikoInteraction.Write(medicalDiagnosis.diagnosis.diagnosisName,'into',below(diagnoses))
-    var name=$("(//a[contains(text(),\"" + medicalDiagnosis.diagnosis.diagnosisName + "\")])[1]")
-    await taikoElement.waitToPresent(name)
+    var name=`//a[contains(text(),'${medicalDiagnosis.diagnosis.diagnosisName}')])[1]`
+    await taikoElement.waitToPresent($(name))
     await taikoInteraction.Click(name,'xpath')
     await taikoInteraction.Click(medicalDiagnosis.diagnosis.order,'text',below(order))
     await taikoInteraction.Click(medicalDiagnosis.diagnosis.certainty,'text',below(certainty))

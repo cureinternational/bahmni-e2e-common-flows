@@ -10,6 +10,7 @@
 * Enter appointment time <appointmentTime> into Start time
 * Compute end time
 * Click Save
+* Click on home page
 
 # Receptionist creates a walkin appointment at <appointmentTime> for service
 * Open "Appointment scheduling" module
@@ -25,6 +26,7 @@
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
+* Click on home page
 
 # Receptionist creates a recurring appointment for <days> days every <times> at time <appointmentTime>
 * Open "Appointment scheduling" module
@@ -45,6 +47,7 @@
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
+* Click on home page
 
 # Receptionist cancels the newly created <type> appointment
 * Open "Appointment scheduling" module
@@ -53,6 +56,7 @@
 * Click patient name
 * Cancel the <type> appointment
 * reload the page
+* Click on home page
 
 
 # Receptionist cancels all the appointments
@@ -71,6 +75,7 @@
 * Click patient name
 * Edit the <type> appointment to <appointmentTime>
 * reload the page
+* Click on home page
 
 # Receptionist creates a regular appointment <appointmentTime>
 * Open "Appointment scheduling" module
@@ -90,6 +95,7 @@
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
+* Click on home page
 
 # Receptionist creates a conflict regular appointment
 * Open "Appointment scheduling" module
@@ -113,6 +119,8 @@
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
+* Click on home page
+
 
 # Receptionist creates a regular appointment <appointmentTime> on same day for provider <provider> for speciality <speciality> for service <service>
 * Open "Appointment scheduling" module
@@ -132,27 +140,30 @@
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
+* Click on home page
+
 
 # The patient's appointment should not be found
-* Click back button
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
 * Should not find the patient's name
+* Click on home page
 
 # The patient's appointment should not be found in the waitlist
 * Open "Appointment scheduling" module
 * Select awaiting appointments
 * Should not find the patient's name
+* Click on home page
 
 # The patient's appointment should be edited to <appointmentTime>
-* Click back button
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
 * Click patient name
 * Verify the patient appointment is re-scheduled at <appointmentTime>
 * reload the page
+* Click on home page
 
 # The patient's appointment should not be found in next week
 * Click back button
@@ -193,7 +204,7 @@
 * Click Close
 * Select awaiting appointments  
 * Verify the appointment is present in waitlist
-
+* Click on home page
 
 # Receptionist cancels the newly created waitlist appointment
 * Open "Appointment scheduling" module
@@ -201,3 +212,4 @@
 * Click patient name from waitlist
 * Click Cancel
 * Click yes
+* Click on home page

@@ -34,7 +34,7 @@ step("Save the report", async function () {
 step("validate patient document in patient dashboard", async function() {
 	await taikoInteraction.Click(imgConcept,'xpath')
 	await taikoassert.assertExists($(slide))
-	await taikoElement.waitToPresent($(closeBtn))
+	await taikoElement.waitToPresent($(closeBtn))	
 	const closeButton = $(closeBtn);
 	await taikoInteraction.EvaluateClick(closeButton)
 });

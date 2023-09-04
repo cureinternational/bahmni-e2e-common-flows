@@ -189,6 +189,7 @@ step("Close the appointment popup",async function(){
     await taikoInteraction.Click(addNewAppointment,'text')
     await taikoInteraction.Click(summary,'text')
     await taikoInteraction.Click(yes,'text')
+    await taikoHelper.repeatUntilNotFound($(overlay))
 })
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
@@ -340,12 +341,8 @@ step("Cancel <type> appointment", async function (type) {
 });
 
 step("Click Edit <type> appointment", async function (type) {
-    var btnstatus= await taikoElement.elementDisabled(button(edit))
-    if(btnstatus)
-    {
-        await taikoInteraction.Click(edit,'button')
-    }
-
+    await taikoElement.waitToPresent(text(edit))
+    await taikoInteraction.Click(edit,'button')
 });
 
 step("Update the time as <time>",async function(time){
