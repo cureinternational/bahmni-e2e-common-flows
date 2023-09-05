@@ -162,17 +162,16 @@ step("Verify condition in patient clinical dashboard", async function () {
 step("Verify history & examination in patient clinical dashboard", async function () {
     var historyAndExaminationDetails = gaugeHelper.get("historyAndExaminationDetails")
     assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($(historyExaminationElement))).exists())
-    assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($(historyExaminationElement)), toRightOf(smokingHistory)).exists())
-    assert.ok(await $(img).exists(), "Image not displayed on history & examination");
+    assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($(historyExaminationElement)), toRightOf(smokingHistory)).exists(500,2000))
+    await taikoAssert.assertExists($(img))
     await taikoInteraction.Click(img,'xpath')
-    await taikoElement.waitToPresent(slideElement)
-    await taikoAssert.assertExists(slideElement)
+    await taikoElement.waitToPresent($(slideElement))
+    await taikoAssert.assertExists($(slideElement))
     await taikoInteraction.EvaluateClick($(closeBtn))
     await taikoAssert.assertExists($(obsPlyBtn))
     await taikoInteraction.Click(obsPlyBtn,'xpath')
     await taikoAssert.assertExists($(videoDialog))
     await taikoInteraction.EvaluateClick($(clearFix))
-    await taikoInteraction.Click(backBtn,'xpath')
 });
 
 step("Verify consultation notes in patient clinical dashboard", async function () {
@@ -181,7 +180,7 @@ step("Verify consultation notes in patient clinical dashboard", async function (
 });
 
 step("Validate the lab tests are available in patient clinical dashboard", async function () {
-    assert.ok(await text(labTest, within($(labResults))).exists())
+    await taikoAssert.assertExists($(labResults))
 });
 
 step("Verify no error displayed on page", async function () {

@@ -96,7 +96,6 @@ step("Add surgery details", async function() {
 step("Cancel the surgery", async function() {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Click(cancel,'text',toRightOf(patientIdentifierValue))
-    await taikoElement.waitToPresent(text(patientIdentifierValue))
     await taikoInteraction.Click(cancelSurgery,'text')
 });
 
@@ -119,7 +118,6 @@ step("Click doctor's OT schedule", async function() {
 
 step("Cancel surgeon's scheduled block", async function() {
     await taikoInteraction.Click(cancelBlock,'text')
-    await taikoElement.waitToPresent(text("This change will affect all surgeries of the block"))
     await taikoInteraction.Click(cancelBlock,'text',toRightOf(postPoneBlock))
 });
 

@@ -51,7 +51,7 @@ step("Click Start Special OPD Visit", async function() {
 });
 
 step("Begin new program enrollment", async function() {
-    await taikoElement.waitToPresent(newProgramEnrollment)
+    await taikoElement.waitToExists(text(newProgramEnrollment))
     await taikoInteraction.Click(newProgramEnrollment,'text',below(dob))
 });
 
@@ -77,11 +77,11 @@ step("Select other details id <id>, dr incharge <doctor> and treatment stage <st
 step("Enroll in program", async function() {
     await taikoInteraction.Click(enroll,'button')
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.waitToPresent(saved)
+    await taikoElement.waitToExists(text(saved))
 });
 
 step("Open the program dashboard <program>", async function(program) {
-    await taikoElement.waitToPresent(text(`${program} Dashboard`))
+    await taikoElement.waitToExists(text(`${program} Dashboard`))
     await taikoInteraction.Click(`${program} Dashboard`,'text',within($(dashboardLink)))
     await taikoHelper.repeatUntilNotFound($(overlay))
 });

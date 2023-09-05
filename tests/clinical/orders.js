@@ -39,7 +39,6 @@ step("Click the order <order>", async function (order) {
 
  step("Select the Radiologist",async function(){
     var radiologist=process.env.radiologist
-    await taikoElement.waitToPresent(text(orderCompleted))
     await taikoInteraction.Dropdown(below(orderCompleted),radiologist)
  })
 

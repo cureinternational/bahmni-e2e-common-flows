@@ -50,6 +50,7 @@ var phoneNumberValue='//input[@name="mobilePhone"]'
 var registration='Registration'
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='Save'
+var saveElement ='//button[@type="submit"]'
 var prePatientCheckbox='input#pre-registration-attribute'
 var patientGender = users.getRandomPatientGender();
 var years='Years'
@@ -79,6 +80,7 @@ var closeVisit='Close Visit'
 var registration='Registration'
 var homeBtn='//a[contains(@class,"back-btn")]/i[@class="fa fa-home"]'
 var activePatientList='(//a[contains(@class,"back-btn")]/i[@class="fa fa-users"])[2]'
+var activePatientList2='(//a[contains(@class,"back-btn")]/i[@class="fa fa-users"])[1]'
 var inputRegistrationNumber='input#registrationNumber'
 var inputPatientIdentifier='input#patientIdentifier'
 var village='Village'
@@ -117,8 +119,7 @@ step("Click on <type> patient",async function(type){
     if("cure"==type)
     {
         await taikoHelper.repeatUntilNotFound($(overlay))
-        await taikoElement.waitToPresent(button(save))
-        await taikoHelper.repeatUntilNotFound($(overlay))
+        await taikoHelper.wait(2000)
         await taikoInteraction.Click(prePatientCheckbox,'xpath')
     }
 })
@@ -340,7 +341,7 @@ step("Click on home page and goto registration module", async function () {
 
 step("Click on home page", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoHelper.wait(implicitTimeOut)
+    await taikoElement.waitToPresent($(implicitTimeOut))
     await taikoInteraction.Click(homeBtn,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
@@ -348,7 +349,14 @@ step("Click on home page", async function () {
 step("Click on active patients list", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(implicitTimeOut)
-    await taikoInteraction.Click(activePatientList,'xpath')
+    if(await taikoElement.isPresent($(activePatientList)))
+    {
+     await taikoInteraction.Click(activePatientList,'xpath')
+    }
+    if(await taikoElement.isPresent($(activePatientList2)))
+    {
+     await taikoInteraction.Click(activePatientList2,'xpath')
+    }
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
@@ -445,12 +453,12 @@ step("Choose newly created patient", async function () {
 });
 
 step("wait for create new button", async function () {
-    await taikoElement.waitToPresent(link(createNew))
+    await taikoElement.waitToExists(link(createNew))
 });
 
 step("Open Patient ADT page",async function(){
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.waitToPresent(link(patientADTpage))
+    await taikoElement.waitToExists(link(patientADTpage))
     await taikoHelper.wait(2000)
     await taikoInteraction.Click(patientADTpage,'text')
     await taikoHelper.wait(3000)
@@ -464,7 +472,7 @@ step("Open Visit attributes",async function()
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.repeatUntilFound(link(visitAttributes))
     await taikoInteraction.Click(visitAttributes,'text')
-    await taikoElement.waitToPresent(button(save))
+    await taikoElement.waitToExists(button(save))
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikobrowserActions.switchTab(/registration/)
     await taikobrowserActions.switchTab(/Patient Registration/)
@@ -475,7 +483,7 @@ step("Open Nutritional page",async function(){
     await taikoInteraction.Click(nutrionalPage,'text')
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/registration/)
-    await taikoElement.waitToPresent(button(save))
+    await taikoElement.waitToExists(button(save))
 
 })
 
@@ -499,7 +507,7 @@ step("Enter random kebele", async function () {
 step("Enter random Woreda", async function () {
     var woreda =  gaugeHelper.get('woreda')
     await taikoInteraction.Write(woreda,'into',toRightOf(worderElement))
-    await taikoElement.waitToPresent(link(woreda))
+    await taikoElement.waitToExists(link(woreda))
     await taikoInteraction.Click(woreda,'link')
 });
 

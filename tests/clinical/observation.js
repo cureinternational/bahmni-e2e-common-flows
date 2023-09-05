@@ -75,7 +75,6 @@ step("Enter History and examination details <filePath>", async function (filePat
         await taikoInteraction.Click(historyAndExaminationDetails.ObservationFormName,'link')
 	}
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.waitToPresent(text(historyNotes))
     await taikoInteraction.Write(historyAndExaminationDetails.History_Notes, 'into', historyNotes)
     await taikoInteraction.Click(historyAndExaminationDetails.Smoking_status,'text', toRightOf(smokingHistory));
     await taikoInteraction.Attach(reportjpg,$(report));
