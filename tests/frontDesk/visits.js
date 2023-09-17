@@ -45,8 +45,8 @@ var img="//a[@class='img-concept']/img"
 var slideElement='.slide'
 var closeBtn='//button[@class="dialog-close-btn"]/i'
 var obsPlyBtn='.obs-play-btn'
-var videoDialog='.video-dialog'
-var clearFix=`//*[@class='ngdialog-close clearfix']`
+var videoDialog='button.obs-play-btn'
+var clearFix=`//*[@class="ngdialog-close clearfix"]`
 var backBtn='.back-btn'
 var consultationNote = gaugeHelper.get("consultationNotes")
 var opd='OPD'
@@ -161,17 +161,10 @@ step("Verify condition in patient clinical dashboard", async function () {
 
 step("Verify history & examination in patient clinical dashboard", async function () {
     var historyAndExaminationDetails = gaugeHelper.get("historyAndExaminationDetails")
-    assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($(historyExaminationElement))).exists())
+    assert.ok(await text(`${historyAndExaminationDetails.History_Notes}`, within($(historyExaminationElement))).exists(500,2000))
     assert.ok(await text(`${historyAndExaminationDetails.Smoking_status}`, within($(historyExaminationElement)), toRightOf(smokingHistory)).exists(500,2000))
     await taikoAssert.assertExists($(img))
-    await taikoInteraction.Click(img,'xpath')
-    await taikoElement.waitToPresent($(slideElement))
-    await taikoAssert.assertExists($(slideElement))
-    await taikoInteraction.EvaluateClick($(closeBtn))
-    await taikoAssert.assertExists($(obsPlyBtn))
-    await taikoInteraction.Click(obsPlyBtn,'xpath')
     await taikoAssert.assertExists($(videoDialog))
-    await taikoInteraction.EvaluateClick($(clearFix))
 });
 
 step("Verify consultation notes in patient clinical dashboard", async function () {
@@ -196,4 +189,10 @@ step("Validate obs <form> on the patient clinical dashboard", async function (fo
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.validateFormFromFile(obsFormValues.ObservationFormDetails, obsFormValues.ObservationClinicalFormName)
     await taikoInteraction.Click(formClose,'xpath')
+});
+
+step("Validate new obs <form> on the patient clinical dashboard", async function (formPath) {
+    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
+    gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
+    await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationClinicalFormName)
 });

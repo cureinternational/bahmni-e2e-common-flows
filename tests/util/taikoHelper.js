@@ -2,6 +2,7 @@ const { button, toRightOf, textBox, into, write, press, click, timeField, below,
 var date = require("./date");
 var assert = require("assert");
 const { time } = require('console');
+const taikoAssert = require('../../../components/taikoAssert');
 
 
 async function Click(type, value, relativeLocator) {
@@ -186,6 +187,11 @@ async function validateFormFromFile(configurations) {
         }
     }
 }
+
+async function validateNewFormFromFile(formName) {
+    taikoAssert.assertExists(text(formName))
+}
+
 async function verifyDropDown(value){
     var firstName=value.split(' ')
     assert.ok(await text(firstName[0]).exists())
@@ -202,5 +208,6 @@ module.exports = {
     repeatUntilFound: repeatUntilFound,
     repeatUntilEnabled: repeatUntilEnabled,
     validateFormFromFile: validateFormFromFile,
+    validateNewFormFromFile:validateNewFormFromFile,
     wait:wait
 }
