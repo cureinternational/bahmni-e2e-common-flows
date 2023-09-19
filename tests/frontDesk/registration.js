@@ -260,15 +260,10 @@ step(["Log out if still logged in", "Receptionist logs out"], async function () 
 })
 
 step("Login as user <user> with location <location>", async function (user, location) {
-    if (!await taikoElement.isPresent(textBox(toRightOf(userName)))) {
-        await reload()
-    }
     await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),'into',toRightOf(userName))
     await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),'into',toRightOf(passWord))
     await taikoInteraction.Dropdown(locationDropDown,location)
     await taikoInteraction.Click(login,'button')
-    await taikoHelper.repeatUntilNotFound(text(loginText))
-    await taikoHelper.repeatUntilNotFound($(overlay))
 })
 
 step("Login as user <user>", async function (user) {
