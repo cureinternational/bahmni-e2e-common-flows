@@ -119,8 +119,9 @@ step("Click on <type> patient",async function(type){
     if("cure"==type)
     {
         await taikoHelper.repeatUntilNotFound($(overlay))
-        await taikoHelper.wait(2000)
-        await taikoInteraction.Click(prePatientCheckbox,'xpath')
+        await taikoElement.waitToPresent($(prePatientCheckbox))
+        await taikoHelper.repeatUntilNotFound($(overlay))
+        await taikoInteraction.EvaluateClick($(prePatientCheckbox))
     }
 })
 
@@ -336,7 +337,7 @@ step("Click on home page and goto registration module", async function () {
 
 step("Click on home page", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.waitToPresent($(implicitTimeOut))
+    await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.Click(homeBtn,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });

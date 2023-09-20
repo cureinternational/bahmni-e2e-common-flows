@@ -1,0 +1,66 @@
+{
+    "ObservationFormName": "Admission Order Form",
+    "ObservationClinicalFormName":"Admission Order Form",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Speciality",
+            "value": "Orthopaedics"
+        },
+        {
+            "type": "TextArea",
+            "label": "Procedure",
+            "value": "admission order procedure"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Surgeon",
+            "value": "Tim Nunn"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Assisting Surgeon",
+            "value": "Laurence Wicks"
+        },
+        {
+            "type": "Date",
+            "label": "Date",
+            "value": "1"
+        },
+        {
+            "type": "Button",
+            "label": "No Date Reason",
+            "value": "Other"
+        },
+        {
+            "type": "Date",
+            "label": "Date of Admission",
+            "value": "1"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Reason for Admission",
+            "value": "Medical Treatment"
+        },
+        {
+            "type": "Button",
+            "label": "Admit To",
+            "value": "Main Ward"
+        },
+        {
+            "type": "Button",
+            "label": "Physician Checklist",
+            "value": "Crutches Ordered"
+        },
+        {
+            "type": "Button",
+            "label": "Physician Orders on Admission",
+            "value": "Remove Cast"
+        },
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "automation test comments"
+        }
+    ]
+}

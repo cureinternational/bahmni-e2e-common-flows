@@ -3,6 +3,8 @@ var date = require("./date");
 var assert = require("assert");
 const { time } = require('console');
 const taikoAssert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoElement = require('../../../components/taikoElement');
 
 
 async function Click(type, value, relativeLocator) {
@@ -133,10 +135,18 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 await write(dateValue, into(timeField(toRightOf(configuration.label))))
                 await write(timeValue,$('//input[@type="time"]'))
                 break;
-            case 'TypeDrowpdown':
+            case 'TypeDropdown':
                 var dropDownLabel=configuration.label
                 var dropDownValue=configuration.value
                 await selectDropDown(dropDownLabel, dropDownValue)
+                break;
+            case 'CustomDropdown':
+                var dropDownLabel=configuration.label
+                var dropDownValue=configuration.value
+                var selectElement='//div[contains(text(),"Select")]'
+                await taikoInteraction.Click(selectElement,'xpath',toRightOf(dropDownLabel))
+                var element=`//div[contains(text(),"${dropDownValue}")]`
+                await taikoInteraction.Click(element,'xpath',toRightOf(dropDownLabel))
                 break;
             case 'Dropdown':
                 var dropDownLabel=configuration.label
@@ -149,12 +159,12 @@ async function executeConfigurations(configurations, observationFormName, isNotO
     }
 }
 async function selectDropDown(locator,value){
-    await click($('div#react-select-2--value'))
+    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(locator))
     await write(value, into(toRightOf(locator)))
-    await waitFor(200);
     var element=`//div[contains(text(),"${value}")]`
-    await waitFor(async () => (await $(`${element}`).exists()))
-    await click($(`${element}`),{force:true})
+    await taikoElement.waitToExists($(element))
+    await wait(1000)
+    await taikoInteraction.Click(element,'xpath')
 }
 async function validateFormFromFile(configurations) {
     for (var configuration of configurations) {
@@ -176,7 +186,7 @@ async function validateFormFromFile(configurations) {
                 var dateFormatted = date.addDaysAndReturnDateInShortFormat(value.split(",")[0])
                 assert.ok((text(`${dateFormatted}]`)).exists(), dateFormatted + " To Right of " + label + " is not exist.")
                 break;
-            case 'TypeDrowpdown':
+            case 'TypeDropdown':
                 var dropDownLabel=configuration.label
                 var dropDownValue=configuration.value
                 await verifyDropDown(dropDownLabel, dropDownValue)

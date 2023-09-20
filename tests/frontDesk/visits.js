@@ -194,5 +194,7 @@ step("Validate obs <form> on the patient clinical dashboard", async function (fo
 step("Validate new obs <form> on the patient clinical dashboard", async function (formPath) {
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(1000)
     await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationClinicalFormName)
 });

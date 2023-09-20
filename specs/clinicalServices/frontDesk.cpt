@@ -82,7 +82,6 @@
 # Receptionist creates the <type> patient
 * Open "Registration" module
 * Create a new <type> patient with random patient details
-* Click on home page
 
 # Receptionist updates the <type> patient
 * Open "Registration" module

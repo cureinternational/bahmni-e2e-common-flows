@@ -1,59 +1,36 @@
 {
     "ObservationFormName": "Vitals",
+    "ObservationClinicalFormName":"Vitals",
     "ObservationFormDetails": [
         {
-            "type": "TextBox",
-            "label": "Pulse",
-            "short_name": "HR",
-            "value": "70",
-            "unit":"(beats/min)"
+            "type": "Input",
+            "label": "Arterial Blood Oxygen Saturation (Pulse Oximeter)",
+            "value": "96"
         },
         {
-            "type": "TextBox",
-            "label": "Arterial blood oxygen saturation (pulse oximeter)",
-            "short_name": "SpO2",
-            "value": "99",
-            "unit":"(%)"
+            "type": "Input",
+            "label": "Respiratory Rate",
+            "value": "15"
         },
         {
-            "type": "TextBox",
-            "label": "Respiratory rate",
-            "short_name": "Respiratory rate",
-            "value": "99",
-            "unit":""
+            "type": "Input",
+            "label": "Temperature (F)",
+            "value": "96"
         },
         {
-            "type": "TextBox",
-            "label": "Temperature",
-            "short_name": "Temperature",
-            "value": "99",
-            "unit":"(F)"
+            "type": "Input",
+            "label": "Systolic Blood Pressure (mmHg)",
+            "value": "110"
         },
         {
-            "type": "Group",
-            "label": "Blood Pressure",
-            "value": [
-                {
-                    "type": "TextBox",
-                    "label": "Diastolic blood pressure",
-                    "short_name": "DBP",
-                    "value": "110",
-                    "unit":"(mmHg)"
-                },
-                {
-                    "type": "TextBox",
-                    "label": "Systolic blood pressure",
-                    "short_name": "Sbp",
-                    "value": "110",
-                    "unit":"(mmHg)"
-                },
-                {
-                    "type": "Button",
-                    "label": "Body position",
-                    "short_name": "Body position",
-                    "value": "standing"
-                }
-            ]
+            "type": "Input",
+            "label": "Diastolic Blood Pressure (mmHg)",
+            "value": "70"
+        },
+        {
+            "type": "Button",
+            "label": "Body Position",
+            "value": "Sitting"
         }
     ]
 }
