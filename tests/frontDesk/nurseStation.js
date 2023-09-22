@@ -1,35 +1,13 @@
 "use strict";
 const path = require('path');
-const {
-	above,
-	click,
-	attach,
-	fileField,
-	button,
-	write,
-	dropDown,
-	into,
-	textBox,
-	below,
-	waitFor,
-	within,
-	confirm,
-	accept,
-	text,
-	press,
-	highlight,
-	timeField,
-	toRightOf,
-	$,
-	scrollTo,
-	toLeftOf,
-	link
-} = require('taiko');
+const {click,write,dropDown,into,textBox,below,within,text,$,link} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
 const taikoInteraction = require('../../../components/taikoInteraction');
 const taikoElement = require('../../../components/taikoElement');
+
+
 var toAdmit = "To Admit"
 var availableBed='//*[@class="col available" or @class="bed AVAILABLE"]'
 var assign='Assign'

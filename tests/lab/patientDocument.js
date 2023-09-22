@@ -1,11 +1,10 @@
 "use strict"
-const { fileField, click, attach, button,evaluate, $, highlight, image, toLeftOf, below, text, waitFor,dropDown } = require('taiko');
+const { fileField,button,$ } = require('taiko');
 const path = require('path');
 const taikoHelper = require("../util/taikoHelper")
 const taikoElement=require('../../../components/taikoElement')
 const taikoInteraction=require('../../../components/taikoInteraction')
 const taikoassert=require('../../../components/taikoAssert')
-var assert = require("assert")
 
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='SAVE'

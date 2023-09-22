@@ -1,7 +1,8 @@
 "use strict"
-const { goto, toRightOf, textBox, text, into, write, click, $, below, checkBox, waitFor, image, within, link, highlight, screenshot } = require('taiko');
+const {goto, toRightOf, textBox, text, into, write, click, $, below, checkBox, waitFor, image, within, link} = require('taiko');
 var fileExtension = require('../util/fileExtension')
 const taikoHelper = require("../util/taikoHelper")
+
 step("Enter password in ELIS", async function () {
         await write("adminADMIN!", into(textBox(toRightOf("Enter Password:"))));
 });

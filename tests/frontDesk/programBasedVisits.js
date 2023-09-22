@@ -1,30 +1,9 @@
-const {
-    $,
-    click,
-    button,
-    toRightOf,
-    focus,
-    dropDown,
-    write,
-    textBox,
-    into,
-    timeField,
-    waitFor,
-    attach,
-    fileField,
-    below,
-    link,
-    text,
-    within,
-    scrollTo,
-    highlight
-} = require('taiko');
+const {$,toRightOf,below,link,text,within} = require('taiko');
 var date = require("../util/date");
-var fileExtension = require("../util/fileExtension");
-var path = require("path")
 const taikoHelper = require("../util/taikoHelper");
 const taikoInteraction = require('../../../components/taikoInteraction');
 const taikoElement = require('../../../components/taikoElement');
+
 var startOpdVisit='Start OPD Visit'
 var submitBtn=".submit-btn-container"
 var startSpecialOpdVisit='Start Special OPD Visit'

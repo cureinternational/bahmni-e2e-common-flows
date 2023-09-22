@@ -1,32 +1,7 @@
 "use strict";
-const {
-    click,
-    waitFor,
-    focus,
-    toRightOf,
-    textBox,
-    text,
-    into,
-    write,
-    $,
-    dropDown,
-    fileField,
-    attach,
-    scrollTo,
-    reload,
-    highlight,
-    below,
-    button,
-    near,
-    to,
-    link,
-    timeField,
-    evaluate
-} = require('taiko');
-var assert = require("assert");
+const {text,$,below} = require('taiko');
 var fileExtension = require("../util/fileExtension");
 const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
 const taikoassert = require('../../../components/taikoAssert');
 
 var orderCompleted='Order is Completed'

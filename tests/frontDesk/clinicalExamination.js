@@ -1,24 +1,5 @@
 "use strict";
-const {
-    click,
-    waitFor,
-    timeField,
-    toRightOf,
-    textBox,
-    into,
-    write,
-    dropDown,
-    highlight,
-    below,
-    within,
-    scrollTo,
-    $,
-    text,
-    confirm,
-    accept,
-    button,
-    link
-} = require('taiko');
+const {toRightOf,textBox,dropDown,below,$,text} = require('taiko');
 var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")

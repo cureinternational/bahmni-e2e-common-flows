@@ -1,4 +1,4 @@
-const { $, goto, below, write, textBox, into, click, toLeftOf, dropDown, checkBox, reload, text, timeField, waitFor, highlight, screenshot, toRightOf, button, switchTo, within } = require('taiko');
+const { $,below, click, toLeftOf, dropDown,text, timeField,toRightOf, button, within } = require('taiko');
 var assert = require("assert")
 var date = require("./util/date");
 const gaugeHelper=require("./util/gaugeHelper")

@@ -28,6 +28,16 @@
             "value": "1"
         },
         {
+            "type": "Input",
+            "label": "Hour(s)",
+            "value": "1"
+        },
+        {
+            "type": "Input",
+            "label": "Minute(s)",
+            "value": "30"
+        },
+        {
             "type": "Button",
             "label": "No Date Reason",
             "value": "Other"

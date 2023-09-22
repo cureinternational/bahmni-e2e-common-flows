@@ -1,30 +1,10 @@
 "use strict";
-const {
-    click,
-    waitFor,
-    focus,
-    button,
-    toRightOf, 
-    textBox, 
-    above,
-    into, 
-	write, 
-	$,
-	dropDown,
-    fileField,
-    timeField,
-    attach,
-    scrollTo,
-    highlight,
-    toLeftOf,
-} = require('taiko');
+const {click,toRightOf, above,$} = require('taiko');
 
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 const taikoInteraction = require("../../../components/taikoInteraction");
-const taikoassert= require("../../../components/taikoAssert");
-const taikoElement= require("../../../components/taikoElement");
 
 var otScheduling = 'OT Scheduling'
 var newSurgicalBlock = 'New Surgical Block'

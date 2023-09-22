@@ -1,38 +1,10 @@
 "use strict";
-const {
-    click,
-    waitFor,
-    focus,
-    toRightOf,
-    textBox,
-    text,
-    into,
-    write,
-    $,
-    dropDown,
-    fileField,
-    attach,
-    scrollTo,
-    reload,
-    highlight,
-    below,
-    button,
-    near,
-    to,
-    link,
-    timeField,
-    evaluate,
-    above
-} = require('taiko');
+const {toRightOf,text,$, button,link,} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 const taikoInteraction = require("../../../components/taikoInteraction");
-const taikoassert= require("../../../components/taikoAssert");
 const taikoElement= require("../../../components/taikoElement");
 const fileExtension = require("../util/fileExtension")
-const path = require('path');
-var assert = require("assert");
-const { subscribe } = require('diagnostics_channel');
 
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var vitals='Vitals'

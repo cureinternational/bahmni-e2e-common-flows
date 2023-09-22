@@ -1,30 +1,9 @@
-const {
-    click,
-    button,
-    text,
-    press,
-    write,
-    waitFor,
-    below,
-    into,
-    above,
-    highlight,
-    checkBox,
-    toLeftOf,
-    fileField,
-    timeField,
-    attach,
-    image,
-    $,
-    within
-} = require('taiko');
+const {click,button,text,below,above,highlight,checkBox,toLeftOf,fileField, attach,$} = require('taiko');
 var assert = require("assert");
-var fileExtension = require("../util/fileExtension");
-var date = require("../util/date");
+
 var users = require("../util/users")
 const taikoHelper = require("../util/taikoHelper");
 const gaugeHelper=require("../util/gaugeHelper")
-const { link } = require('fs');
 const path = require('path');
 const taikoInteraction = require('../../../components/taikoInteraction');
 

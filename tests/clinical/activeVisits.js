@@ -1,29 +1,5 @@
 "use strict";
-const {
-    click,
-    waitFor,
-    focus,
-    toRightOf,
-    textBox,
-    text,
-    into,
-    write,
-    $,
-    dropDown,
-    fileField,
-    attach,
-    scrollTo,
-    reload,
-    highlight,
-    below,
-    button,
-    near,
-    to,
-    link,
-    timeField,
-    evaluate
-} = require('taiko');
-var assert = require("assert");
+const {text,$} = require('taiko');
 const gaugeHelper = require("../util/gaugeHelper");
 const taikoInteraction = require("../../../components/taikoInteraction");
 const taikoassert= require("../../../components/taikoAssert");

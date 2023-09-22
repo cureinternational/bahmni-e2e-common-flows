@@ -1,4 +1,4 @@
-const { write, toRightOf, into, textBox, press, goto, below, scrollTo, click, text, above, highlight, waitFor, $, evaluate } = require("taiko");
+const { write, toRightOf, into, textBox, press, goto, below, scrollTo, click,  highlight, waitFor, $ } = require("taiko");
 var assert = require("assert")
 var users = require("./util/users");
 var gaugeHelper = require("./util/gaugeHelper");

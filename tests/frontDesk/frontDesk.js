@@ -164,6 +164,7 @@ step("Click on IPD", async function () {
 })
 
 step("Verify the ipd dashboard", async function () {
+    await taikoElement.waitToExists(text('Allergies'))
     await verifyDisplayControl('Allergies')
     await verifyDisplayControl('Diagnosis')
     await verifyDisplayControl('Nutritional Values')

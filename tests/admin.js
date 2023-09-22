@@ -1,6 +1,5 @@
 "use strict";
 const {
-    goto,
     write,
     above,
     dropDown,
@@ -16,20 +15,15 @@ const {
     text,
     attach,
     dragAndDrop,
-    confirm,
     accept,
     button,
     near,
     link,
     press,
-    doubleClick,
     toRightOf,
-    highlight,
-    mouseAction,
     currentURL,
     radioButton,
-    fileField,
-    tableCell,
+    fileField
 } = require('taiko');
 
 const path = require('path');

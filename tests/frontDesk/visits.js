@@ -1,30 +1,11 @@
 /* globals gauge*/
 "use strict";
-const {
-    $,
-    click,
-    button,
-    toRightOf,
-    text,
-    toLeftOf,
-    within,
-    write,
-    into,
-    textBox,
-    press,
-    waitFor,
-    scrollTo,
-    highlight,
-    link,
-    below,
-    evaluate
-} = require('taiko');
+const {$,click,toRightOf,text,toLeftOf,within,link,below} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension")
 var assert = require('assert');
 const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
 const taikoAssert = require('../../../components/taikoAssert');
 
 var startOpdVisit='Start OPD Visit'

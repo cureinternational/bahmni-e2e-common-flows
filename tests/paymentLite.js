@@ -1,4 +1,4 @@
-const { goto, click, waitFor, button, write, evaluate, into, textBox, below, scrollTo, above, toLeftOf, toRightOf, $, text, doubleClick, press, link, client, scrollUp } = require("taiko");
+const { goto, click, waitFor, button, write, evaluate, into, textBox, below, scrollTo, above, toLeftOf, toRightOf, $, text, doubleClick, link, client} = require("taiko");
 var fileExtension = require("./util/fileExtension")
 var assert = require("assert")
 var users = require("./util/users");

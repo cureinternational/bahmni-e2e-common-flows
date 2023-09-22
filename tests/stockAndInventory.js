@@ -1,4 +1,4 @@
-const { goto, $, below, write, textBox, into, click, toLeftOf, checkBox, reload, text, waitFor, highlight, screenshot } = require('taiko');
+const { goto, $, below, write, textBox, into, click, text, waitFor} = require('taiko');
 var assert = require("assert")
 const gaugeHelper = require("./util/gaugeHelper")
 const taikobrowserActions = require("../../components/taikobrowserActions")

@@ -1,31 +1,4 @@
-const {
-    $,
-    dropDown,
-    button,
-    within,
-    highlight,
-    timeField,
-    toRightOf,
-    write,
-    goto,
-    above,
-    click,
-    checkBox,
-    toLeftOf,
-    text,
-    into,
-    textBox,
-    waitFor,
-    confirm,
-    accept,
-    scrollDown,
-    link,
-    below,
-    press,
-    scrollTo,
-    evaluate,
-    clear
-} = require('taiko');
+const {$,dropDown,button,within,toRightOf,write,click,toLeftOf,text,into,textBox,waitFor,below} = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
@@ -257,6 +230,7 @@ step("Goto day view of the calendar", async function () {
 
 step("Click Close", async function () {
     await taikoInteraction.Click(closeBtn,'xpath')
+    await taikoElement.waitToPresent(text(discard))
     if(await taikoElement.isPresent(text(discard)))
     {
     await taikoInteraction.Click(discard,'text')

@@ -1,50 +1,14 @@
-const {
-    $,
-    dropDown,
-    button,
-    within,
-    highlight,
-    toRightOf,
-    write,
-    goto,
-    above,
-    click,
-    checkBox,
-    toLeftOf,
-    text,
-    into,
-    textBox,
-    waitFor,
-    confirm,
-    accept,
-    scrollDown,
-    link,
-    below,
-    press,
-    scrollTo,
-    reload,
-    timeField,
-    attach,
-    fileField,
-    switchTo,
-    title,
-    closeBrowser,
-    doubleClick,
-    openTab
-} = require('taiko');
+const {$,button,toRightOf,toLeftOf,text,waitFor,link,below,press,timeField,fileField} = require('taiko');
 var users = require("../util/users");
-var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper=require("../util/gaugeHelper")
 const { faker } = require('@faker-js/faker/locale/en_IND');
-const alert=require("../../../components/taikoalert")
 const taikoInteraction=require("../../../components/taikoInteraction")
-var assert = require("assert");
-const { closeTab } = require('taiko');
-const { ClientRequest } = require('http');
 const taikoElement = require('../../../components/taikoElement');
 const taikobrowserActions = require('../../../components/taikobrowserActions');
 const taikoAssert = require('../../../components/taikoAssert');
+
+
 var update='Update'
 var phoneNumberValue='//input[@name="mobilePhone"]'
 var registration='Registration'
