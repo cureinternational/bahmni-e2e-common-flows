@@ -34,6 +34,9 @@ var closeConsultation='[ng-click="closeTeleConsultation()"]'
 var diagnoses='Diagnoses'
 var order='Order'   
 var certainty='Certainty'
+var urgentBtnElement='//button[@title="Urgent"]'
+var notesBtnElement='//i[contains(@class,"fa fa-file-text-o")]'
+var okBtn='OK'
 
 step("click radiology",async function(){
     await taikoInteraction.Click(radiology,'text')
@@ -46,12 +49,18 @@ step("click laboratory",async function(){
 step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile) {
     var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionFile}.json`;
     var testPrescription = JSON.parse(fileExtension.parseContent(prescriptionFile))
+    var notesList=testPrescription.notes
     gauge.message(testPrescription)
     gaugeHelper.save("LabTest", testPrescription.test)
     await taikoHelper.repeatUntilFound(text(testPrescription.test))
-    console.log("test found.")
     await taikoInteraction.Click(testPrescription.test, 'text')
-    console.log("Selected test. " +testPrescription.test)
+    await taikoInteraction.Click(urgentBtnElement,'xpath',toRightOf(testPrescription.test))
+    await taikoInteraction.Click(notesBtnElement,'xpath',toRightOf(testPrescription.test))
+    for(let i=0;i<notesList.length;i++)
+    {
+        await taikoInteraction.Click(notesList[i].button, 'button')
+    }
+    await taikoInteraction.Click(okBtn,'button')
 });
 
 
@@ -154,3 +163,13 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
     await taikoInteraction.Click(medicalDiagnosis.diagnosis.order,'text',below(order))
     await taikoInteraction.Click(medicalDiagnosis.diagnosis.certainty,'text',below(certainty))
 });
+
+step("Verify the radiology notes <order>",async function(orderFile){
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${orderFile}.json`;
+    var testPrescription = JSON.parse(fileExtension.parseContent(prescriptionFile))
+    var notesList=testPrescription.notes
+    notesList.forEach(async function (note) {
+        await taikoElement.isExists(text(note.message))
+
+    })
+})

@@ -68,13 +68,16 @@
 * Save data
 * Verify no error displayed on page
 
-# Verify the Radiologist name is displayed for <order>
+# Verify the orders for <order>
 * Open "Orders" module
 * Select the patient
 * Click the order <order>
+* Verify the radiology notes <order>
 * Select the Radiologist
 * Click Save
 * Verify the Radiologist Name
+* Click on active patients list
+* Verify the drug orders
 * Click on home page
 
 # The doctor joins the link for the appointment

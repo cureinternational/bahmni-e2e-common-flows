@@ -1,4 +1,14 @@
 {
     "LabGroup":"Blood",
-    "test":"Platelets"
+    "test":"Platelets",
+    "notes":[
+        {
+        "button":"Pre-Op",
+        "message":"Pre-operative X-ray for diagnostic or planning purposes"
+        },
+        {
+        "button":"Monitoring",
+        "message":"Monitoring of progress for alignment / comparative purposes"
+        }
+]
 }
