@@ -3,6 +3,7 @@ var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper");
 const taikoInteraction = require('../../../components/taikoInteraction');
 const taikoElement = require('../../../components/taikoElement');
+const taikoassert = require('../../../components/taikoAssert');
 
 var startOpdVisit='Start OPD Visit'
 var submitBtn=".submit-btn-container"
@@ -22,6 +23,8 @@ var saved='Saved'
 var messageText='.message-text'
 var dashboardLink='#dashboard-link'
 var all='All'
+var tab='//li[contains(@class,"tab-item")]'
+var programList=process.env.programList.split(',')
 
 step("Click Start Special OPD Visit", async function() {
     await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
@@ -70,3 +73,17 @@ step("Goto All sections", async function () {
     await taikoInteraction.Click(all,'link')
     await taikoHelper.repeatUntilFound(link(all))
 });
+
+step("Verify the programs list",async function(){
+    var tabLength=(await $(tab).elements()).length
+   
+   for(let i=1;i<tabLength;i++)
+   {
+    var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`
+    var program=(await $(tabItem).text()).trim()
+    if(program!='All')
+    {
+    await taikoassert.assertArray(programList,program)
+    }
+}
+})

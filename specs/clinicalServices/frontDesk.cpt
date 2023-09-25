@@ -174,7 +174,7 @@
 * Click on home page
 
 
-# Verify the patient is present in clinical module
+# Verify the patient is not present in clinical module
 * Open "Clinical" module
 * Goto All sections and search the newly created patient
 * Verify the patient is not appearing
