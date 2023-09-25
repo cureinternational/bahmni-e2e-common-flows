@@ -1,5 +1,5 @@
 {
 	"class":"table patient-list-table",
-	"columns":["Patient ID","Name","Date Of Birth","Gender","Contact Number","Date Of Registration","Start Date","Provider","Program State"],
+	"columns":["Patient ID","Name","Date Of Birth","Gender","Contact Number","Date Of Registration","Start Date","Provider","Program State","Appointment Status"],
 	"sortBy":{"column":"Date Of Registration","type":"date","order":"desc"}
 }

@@ -183,3 +183,6 @@
 * Verify the columns in the table <tableFile>
 * Verify the sorting in the table <tableFile>
 
+#Verify the program queue table <tableFile>
+* Verify the columns in the table <tableFile>
+

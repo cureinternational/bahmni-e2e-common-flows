@@ -200,10 +200,10 @@ step("Verify the columns in the table <tableFile>", async function (tableFile) {
     var tableHeaders = table.columns
     var tableElement = `//table[@class='${table.class}']`
     var headers = (await $(`${tableElement}//th`).elements()).length
-    for (let i = 1; i < headers; i++) {
+    for (let i = 1; i <= headers; i++) {
         var element = `${tableElement}//th[${i}]`
         var columnHeader = (await $(element).text()).trim()
-        assert.ok(tableHeaders.includes(columnHeader))
+        await taikoAssert.assertArray(tableHeaders, columnHeader)
     }
 })
 
