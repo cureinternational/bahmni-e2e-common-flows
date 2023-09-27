@@ -6,11 +6,13 @@ const taikoHelper = require("../util/taikoHelper");
 const gaugeHelper=require("../util/gaugeHelper")
 const path = require('path');
 const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoAssert = require('../../../components/taikoAssert');
+const taikoElement = require('../../../components/taikoElement');
 
 var search='Search'
 var foundElement='Found 1 patient'
 var pendingLabOrder='Pending Lab Orders'
-var test='Test'
+var test='Tests'
 var uploadReport='Upload Report'
 var reportDate='#reportDate'
 var todayElement='//SPAN[contains(@class,"today")]'
@@ -19,6 +21,8 @@ var requestedBy='Requested by'
 var saveAndUpload='Save and Upload'
 var reportSuccessMessageElement='//H3[text()="Report successfully uploaded"]'
 var reportsTable='Reports Table'
+var labLiteSearch='//input[@role="searchbox"]'
+var implicitTimeOut = parseInt(process.env.implicitTimeOut)
 
 step("start patient search", async function () {
     await click(button({ "aria-label": "Search Patient" }))
@@ -26,23 +30,19 @@ step("start patient search", async function () {
 
 step("enter the patient name in lablite", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await taikoInteraction.Write(patientIdentifierValue,'xpath', { "placeholder": "Search for a patient by name or identifier number" });
+    await taikoInteraction.Write(patientIdentifierValue,'xpath',labLiteSearch);
     await taikoInteraction.Click(search,'button')
-    await click(button(search))
 });
 
 step("Select the patient in lablite search result", async function () {
-    var patientFirstName = gaugeHelper.get("patientFirstName");
-    var patientMiddleName = gaugeHelper.get("patientMiddleName");
-    var patientLastName = gaugeHelper.get("patientLastName");
-    assert.ok(await text(foundElement).exists())
-    await click(`${patientFirstName} ${patientMiddleName} ${patientLastName}`)
+    var patientFullName = gaugeHelper.get("patientFullName");
+    await taikoInteraction.Click(patientFullName,'text')
 });
 
 step("Verify test prescribed is displayed on Pending Lab Orders table", async function () {
     var labTest = gaugeHelper.get("LabTest")
-    await highlight(text(labTest, below(pendingLabOrder), below(test), above(uploadReport)))
-    assert.ok(await text(labTest, below(pendingLabOrder), below(test), above(uploadReport)).exists())
+    await taikoHelper.wait(implicitTimeOut)
+    await taikoAssert.assertExists(text(labTest))
 });
 
 step("Open upload report side panel", async function () {
@@ -72,10 +72,9 @@ step("Select Doctor in side panel", async function () {
 step("Upload and verify the reports table", async function () {
     var labTest = gaugeHelper.get("LabTest")
     var labReportFile = gaugeHelper.get("labReportFile")
-    await click(button(saveAndUpload));
+    await taikoInteraction.Click(saveAndUpload,'button')
     await taikoHelper.repeatUntilNotFound($(reportSuccessMessageElement));
-    await highlight(text(labTest, below(reportsTable), below(test), toLeftOf(labReportFile)))
-    assert.ok(await text(labTest, below(reportsTable), below(test), toLeftOf(labReportFile)).exists());
+    await taikoAssert.assertExists(text(labReportFile))
 });
 
 step("Verify the uploaded report", async function () {
@@ -90,7 +89,7 @@ step("Verify the uploaded report", async function () {
 
 
 step("Click Home button on lab-lite", async function() {
-	await click(button({ "aria-label": "Home" }));
+    await taikoInteraction.Click('//button[@aria-label="Home"]','xpath')
 });
 
 step("Verify order is removed from Pending lab orders table", async function() {

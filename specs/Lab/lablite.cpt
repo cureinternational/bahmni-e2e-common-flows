@@ -17,7 +17,6 @@
 
 # Upload and verify report in lablite
 * Upload report in Lablite
-* Verify the uploaded report
 
 # Verify lab-lite audit events
 * Verify Event "User <user> accessed lab entry module" in Audit log for the "doctor"

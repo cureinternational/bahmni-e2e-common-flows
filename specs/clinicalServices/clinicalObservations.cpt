@@ -30,7 +30,7 @@
 * Doctor prescribes medications <medicines>
 
 # Doctor advises medicines <medicines> and tests <tests>
-* Doctor prescribes tests <tests>
+* Doctor prescribes lab test <tests>
 * Doctor prescribes medications <medicines>
 
 # Doctor opens Patient <program> dashboard
@@ -55,20 +55,20 @@
 * Save data
 * Verify no error displayed on page
 
-# Doctor prescribes radiology <tests>
+# Doctor prescribes radiology test <tests>
 * Open "Orders" Tab
 * Doctor prescribe tests <tests>
 * Save data
 * Verify no error displayed on page
 
-# Doctor prescribes tests <tests>
+# Doctor prescribes lab test <tests>
 * Open "Orders" Tab
 * click laboratory
 * Doctor prescribe tests <tests>
 * Save data
 * Verify no error displayed on page
 
-# Verify the orders for <order>
+# Verify the radiology order for <order>
 * Open "Orders" module
 * Select the patient
 * Click the order <order>
@@ -78,6 +78,10 @@
 * Verify the Radiologist Name
 * Click on active patients list
 * Verify the drug orders
+
+# Verify the lab order for <order>
+* Click on Lab order
+* Verify the lab order <order>
 * Click on home page
 
 # The doctor joins the link for the appointment
