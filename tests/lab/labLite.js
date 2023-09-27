@@ -1,5 +1,4 @@
-const {click,button,text,below,above,highlight,checkBox,toLeftOf,fileField, attach,$} = require('taiko');
-var assert = require("assert");
+const {click,text,below,above,checkBox,toLeftOf,fileField, attach,$} = require('taiko');
 
 var users = require("../util/users")
 const taikoHelper = require("../util/taikoHelper");
@@ -25,7 +24,7 @@ var labLiteSearch='//input[@role="searchbox"]'
 var implicitTimeOut = parseInt(process.env.implicitTimeOut)
 
 step("start patient search", async function () {
-    await click(button({ "aria-label": "Search Patient" }))
+    await taikoInteraction.Click('//button[@aria-label="Search Patient"]','xpath')
 });
 
 step("enter the patient name in lablite", async function () {
@@ -36,6 +35,7 @@ step("enter the patient name in lablite", async function () {
 
 step("Select the patient in lablite search result", async function () {
     var patientFullName = gaugeHelper.get("patientFullName");
+    await taikoHelper.wait(3000)
     await taikoInteraction.Click(patientFullName,'text')
 });
 
@@ -46,7 +46,7 @@ step("Verify test prescribed is displayed on Pending Lab Orders table", async fu
 });
 
 step("Open upload report side panel", async function () {
-    await click(uploadReport);
+    await taikoInteraction.Click(uploadReport,'text')
 });
 
 step("Select prescribed test in Pending Lab Orders table", async function () {
@@ -61,12 +61,12 @@ step("Select Lab Report in side panel", async function () {
 });
 
 step("Select today's date in Report Date Field", async function () {
-    await click($(reportDate))
-    await click($(todayElement))
+    await taikoInteraction.Click(reportDate,'xpath')
+    await taikoInteraction.Click(todayElement,'xpath')
 });
 
 step("Select Doctor in side panel", async function () {
-    await dropDown(below(requestedBy)).select(doctor);
+    await taikoInteraction.Dropdown(below(requestedBy),doctor)
 });
 
 step("Upload and verify the reports table", async function () {
@@ -81,10 +81,8 @@ step("Verify the uploaded report", async function () {
     var labReportFile = gaugeHelper.get("labReportFile")
     await click(labReportFile);
     var file='//DIV[contains(@class,"is-visible")]//IMG/../../..//h3[text()="' + labReportFile +' "]'
-    await highlight($(file))
-    await highlight($("//DIV[contains(@class,'is-visible')]//IMG"))
-    assert.ok(await $(file).exists());
-    await click(button({ "aria-label": "close" }));
+    await taikoAssert.assertExists($(file))
+    await taikoInteraction.Click('//button[@aria-label="close"]','xpath')
 });
 
 
@@ -94,5 +92,5 @@ step("Click Home button on lab-lite", async function() {
 
 step("Verify order is removed from Pending lab orders table", async function() {
     var labTest = gaugeHelper.get("LabTest")
-    assert.ok(!await text(labTest,above(uploadReport)).exists(500,1000));
+    await taikoAssert.assertNotExists(text(labTest,above(uploadReport)))
 });

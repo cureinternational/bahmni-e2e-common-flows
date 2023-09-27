@@ -7,7 +7,8 @@ const gaugeHelper = require('../util/gaugeHelper');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoBrowserAction=require('../../../components/taikobrowserActions.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
-
+const taikoHelper = require('../util/taikoHelper');
+const implicitWaitTime=parseInt(process.env.implicitTimeOut)
 var orderCompleted='Order is Completed'
 
 step("Click the order <order>", async function (order) {
@@ -41,7 +42,8 @@ step("Click the order <order>", async function (order) {
     var labOrder = JSON.parse(fileExtension.parseContent(orderFile))
    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
    await taikoInteraction.Click(patientIdentifierValue,'link')
-   await taikoBrowserAction.switchTab(/Lab Entry/)
+   await taikoHelper.wait(10000)
    await taikoBrowserAction.switchTab(/lab/)
+   await taikoBrowserAction.switchTab(/Lab Entry/)
    await taikoAssert.assertExists(text(labOrder.test))
  })

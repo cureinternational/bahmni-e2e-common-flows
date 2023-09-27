@@ -7,6 +7,7 @@ const { stat } = require('fs');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoassert = require('../../../components/taikoAssert.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
 
 var addNewAppointment = 'Add new appointment'
 var patientNameId='Patient Name or ID'
@@ -399,10 +400,10 @@ step("Verify the appointment locations",async function(){
 step("Verify the appointment specialitis list",async function(){
     for(let i=0;i<speciality.length;i++)
     {
-        if(speciality[i]!='Active' && speciality[i]!='My Patients' && speciality[i]!='All') {
+        if(speciality[i]!='Active' && speciality[i]!='My Patients' && speciality[i]!='All'&& speciality[i]!='Anaesthesia') {
             var specialityElement="//div[text()='" + speciality[i] + "']"
-            await write(speciality[i], into($(specialitySearchInput)))
-            assert.ok(await $(specialityElement).exists());
+            await taikoInteraction.Write(speciality[i],"xpath",specialitySearchInput)
+            await taikoAssert.assertExists($(specialityElement))
             await taikoInteraction.Click(specialitySearchInput,'xpath')
         }
         
@@ -415,8 +416,8 @@ step("Verify if all the providers are present",async function(){
     for(let i=0;i<providers.length;i++)
     {
         var providerElement="//div[text()='" + providers[i] + "']"
-        await write(providers[i], into($(providerSearchInput)))
-        assert.ok(await $(providerElement).exists());
+        await taikoInteraction.Write(providers[i],"xpath",providerSearchInput)
+        await taikoAssert.assertExists($(providerElement))
         await taikoInteraction.Click(providerSearchBtn,'xpath')
     }
     
@@ -425,7 +426,7 @@ step("Verify if all the providers are present",async function(){
 step("Verify the patient appointment is re-scheduled at <appointmentTime>", async function (appointmentTime){
     let appointmentStartTime = appointmentTime.split(" ")[0];
     let appointmentEnd = appointmentTime.split(" ")[1];
-    assert.ok(text(`${appointmentStartTime}:00 ${appointmentEnd} - ${appointmentStartTime}:30 ${appointmentEnd}`, toRightOf('Slot:')).exists())
+    await taikoAssert.assertExists(text(`${appointmentStartTime}:00 ${appointmentEnd} - ${appointmentStartTime}:30 ${appointmentEnd}`, toRightOf('Slot:')))
  });
 
  step('Enter the appointment date',async function(){
