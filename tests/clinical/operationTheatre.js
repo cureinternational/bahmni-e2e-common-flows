@@ -4,7 +4,7 @@ const {click,toRightOf, above,$} = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
-const taikoInteraction = require("../../../components/taikoInteraction");
+const taikoInteraction = require("../../../components/taikoInteraction.js");
 
 var otScheduling = 'OT Scheduling'
 var newSurgicalBlock = 'New Surgical Block'

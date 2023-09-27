@@ -1,32 +1,13 @@
 "use strict";
-const {
-    click,
-    waitFor,
-    timeField,
-    toRightOf,
-    textBox,
-    into,
-    write,
-    dropDown,
-    highlight,
-    below,
-    within,
-    scrollTo,
-    $,
-    text,
-    confirm,
-    accept,
-    button,
-    link, evaluate, switchTo, closeTab
-} = require('taiko');
+const {waitFor,dropDown,$,text, switchTo, closeTab} = require('taiko');
 var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
 const gaugeHelper = require("./../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
-const taikoassert = require('../../../components/taikoAssert');
-const taikoElement = require('../../../components/taikoElement');
-const taikoAssert = require('../../../components/taikoAssert');
-const taikoInteraction = require('../../../components/taikoInteraction');
+const taikoassert = require('../../../components/taikoAssert.js');
+const taikoElement = require('../../../components/taikoElement.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
 
 var expectedLocationsList = process.env.registrationLocations.split(",")
 var locationOption = '//select[@id="location"]/option'

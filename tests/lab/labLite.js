@@ -5,9 +5,9 @@ var users = require("../util/users")
 const taikoHelper = require("../util/taikoHelper");
 const gaugeHelper=require("../util/gaugeHelper")
 const path = require('path');
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoAssert = require('../../../components/taikoAssert');
-const taikoElement = require('../../../components/taikoElement');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
+const taikoElement = require('../../../components/taikoElement.js');
 
 var search='Search'
 var foundElement='Found 1 patient'

@@ -1,9 +1,9 @@
 const {$,toRightOf,below,link,text,within} = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper");
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
-const taikoassert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoElement = require('../../../components/taikoElement.js');
+const taikoassert = require('../../../components/taikoAssert.js');
 
 var startOpdVisit='Start OPD Visit'
 var submitBtn=".submit-btn-container"

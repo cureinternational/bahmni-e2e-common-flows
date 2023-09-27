@@ -1,12 +1,12 @@
 "use strict";
 const {text,$,below} = require('taiko');
 var fileExtension = require("../util/fileExtension");
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoassert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoassert = require('../../../components/taikoAssert.js');
 const gaugeHelper = require('../util/gaugeHelper');
-const taikoElement = require('../../../components/taikoElement');
-const taikoBrowserAction=require('../../../components/taikobrowserActions');
-const taikoAssert = require('../../../components/taikoAssert');
+const taikoElement = require('../../../components/taikoElement.js');
+const taikoBrowserAction=require('../../../components/taikobrowserActions.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
 
 var orderCompleted='Order is Completed'
 

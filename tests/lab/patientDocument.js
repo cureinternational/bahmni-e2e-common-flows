@@ -2,9 +2,9 @@
 const { fileField,button,$ } = require('taiko');
 const path = require('path');
 const taikoHelper = require("../util/taikoHelper")
-const taikoElement=require('../../../components/taikoElement')
-const taikoInteraction=require('../../../components/taikoInteraction')
-const taikoassert=require('../../../components/taikoAssert')
+const taikoElement=require('../../../components/taikoElement.js')
+const taikoInteraction=require('../../../components/taikoInteraction.js')
+const taikoassert=require('../../../components/taikoAssert.js')
 
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='SAVE'

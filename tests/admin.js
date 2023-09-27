@@ -32,7 +32,7 @@ var taikoHelper = require("./util/taikoHelper");
 var users = require("./util/users");
 const csvConfig = require("./util/csvConfig");
 var date = require("./util/date");
-var taikoitr=require("./../../components/taikoInteraction")
+var taikoitr=require("./../../components/taikoInteraction.js")
 const gaugeHelper=require("./util/gaugeHelper")
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 

@@ -9,12 +9,12 @@ const {
     within
 } = require('taiko');
 var taikoHelper = require("./util/taikoHelper");
-const taikobrowserActions=require("../../components/taikobrowserActions")
-const taikoElement=require("../../components/taikoElement")
+const taikobrowserActions=require("../../components/taikobrowserActions.js")
+const taikoElement=require("../../components/taikoElement.js")
 var users = require("./util/users")
 const csvConfig = require("./util/csvConfig");
 const gaugeHelper = require("./util/gaugeHelper");
-const taikoInteraction = require('../../components/taikoInteraction');
+const taikoInteraction = require('../../components/taikoInteraction.js');
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 
 step("put first name <firstName> middle name <middleName> lastname <lastName>", async function (firstName, middleName, lastName) {

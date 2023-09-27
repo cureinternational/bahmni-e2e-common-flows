@@ -1,8 +1,8 @@
 const {$} = require('taiko');
 
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
-const taikoAssert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoElement = require('../../../components/taikoElement.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
 
 var calendarElement='//input[contains(@class,"calendar-day-input")]'
 var notesTabElement='//div[@class="notesTab"]'

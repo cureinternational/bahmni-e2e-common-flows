@@ -4,9 +4,9 @@ const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var assert = require("assert");
 const { stat } = require('fs');
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
-const taikoassert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoElement = require('../../../components/taikoElement.js');
+const taikoassert = require('../../../components/taikoAssert.js');
 
 var addNewAppointment = 'Add new appointment'
 var patientNameId='Patient Name or ID'

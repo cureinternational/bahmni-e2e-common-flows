@@ -2,9 +2,9 @@ const { button, toRightOf, textBox, into, write, press, click, timeField, below,
 var date = require("./date");
 var assert = require("assert");
 const { time } = require('console');
-const taikoAssert = require('../../../components/taikoAssert');
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
+const taikoAssert = require('../../../components/taikoAssert.js');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoElement = require('../../../components/taikoElement.js');
 
 
 async function Click(type, value, relativeLocator) {

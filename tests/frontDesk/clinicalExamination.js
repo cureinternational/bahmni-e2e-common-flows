@@ -4,8 +4,8 @@ var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var assert = require('assert');
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoElement = require('../../../components/taikoElement.js');
 
 var radiology='Radiology'
 var laboratory='Laboratory'

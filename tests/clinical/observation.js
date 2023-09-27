@@ -2,8 +2,8 @@
 const {toRightOf,text,$, button,link,} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
-const taikoInteraction = require("../../../components/taikoInteraction");
-const taikoElement= require("../../../components/taikoElement");
+const taikoInteraction = require("../../../components/taikoInteraction.js");
+const taikoElement= require("../../../components/taikoElement.js");
 const fileExtension = require("../util/fileExtension")
 
 var overlay='//div[@id="overlay" and @style="display: block;"]'

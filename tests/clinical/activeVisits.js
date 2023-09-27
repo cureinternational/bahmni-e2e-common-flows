@@ -1,8 +1,8 @@
 "use strict";
 const {text,$} = require('taiko');
 const gaugeHelper = require("../util/gaugeHelper");
-const taikoInteraction = require("../../../components/taikoInteraction");
-const taikoassert= require("../../../components/taikoAssert");
+const taikoInteraction = require("../../../components/taikoInteraction.js");
+const taikoassert= require("../../../components/taikoAssert.js");
 var tab='//li[contains(@class,"tab-item")]'
 var speciliatyList=process.env.specialityList.split(',')
 var myPatients='My Patients'

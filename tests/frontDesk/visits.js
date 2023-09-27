@@ -5,8 +5,8 @@ const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension")
 var assert = require('assert');
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoAssert = require('../../../components/taikoAssert');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
 
 var startOpdVisit='Start OPD Visit'
 var submitBtn='.submit-btn-container'

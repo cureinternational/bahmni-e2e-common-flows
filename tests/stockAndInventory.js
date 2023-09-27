@@ -1,7 +1,7 @@
 const { goto, $, below, write, textBox, into, click, text, waitFor} = require('taiko');
 var assert = require("assert")
 const gaugeHelper = require("./util/gaugeHelper")
-const taikobrowserActions = require("../../components/taikobrowserActions")
+const taikobrowserActions = require("../../components/taikobrowserActions.js")
 step("enter odoo username", async function () {
     await write(process.env.odooUsername, into(textBox(below("Email"))));
 });

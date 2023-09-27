@@ -4,8 +4,8 @@ const {click,write,dropDown,into,textBox,below,within,text,$,link} = require('ta
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
-const taikoInteraction = require('../../../components/taikoInteraction');
-const taikoElement = require('../../../components/taikoElement');
+const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoElement = require('../../../components/taikoElement.js');
 
 
 var toAdmit = "To Admit"
