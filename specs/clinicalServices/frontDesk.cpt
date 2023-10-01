@@ -186,3 +186,10 @@
 #Verify the program queue table <tableFile>
 * Verify the columns in the table <tableFile>
 
+#Receptionist search the patient by phone number
+* Open "Registration" module
+* Search the patient by phone number
+
+#Verify the patient is returned in the search results
+* Verify the patient present in search results
+

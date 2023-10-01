@@ -530,3 +530,14 @@ step("Verify the relation is added", async function () {
     var relationName=gaugeHelper.get("relationName")
     await taikoElement.waitToExists(link(relationName))
 })
+
+step("Search the patient by phone number", async function () {
+    var phoneNumber=gaugeHelper.get("patientMobileNumber")
+    await taikoInteraction.Write(phoneNumber,'below','Phone Number')
+    await taikoInteraction.pressEnter()
+})
+
+step("Verify the patient present in search results", async function () {
+    var patientId=gaugeHelper.get("patientIdentifier")
+    await taikoElement.isExists(text(patientId))
+})
