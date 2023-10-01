@@ -14,6 +14,7 @@ const taikoElement=require("../../components/taikoElement.js")
 var users = require("./util/users")
 const csvConfig = require("./util/csvConfig");
 const gaugeHelper = require("./util/gaugeHelper");
+const logHelper=require("./util/logHelper")
 const taikoInteraction = require('../../components/taikoInteraction.js');
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 
@@ -41,7 +42,7 @@ step("Goto Clinical application", async function () {
     try {
         await taikobrowserActions.navigateTo(process.env.bahmniHome);
     } catch (e) {
-      console.log(e+" error in navigating to clinical application")
+      logHelper.info(e+" error in navigating to clinical application")
     }
 });
 

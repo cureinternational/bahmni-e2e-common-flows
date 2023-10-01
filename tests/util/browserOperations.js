@@ -15,7 +15,8 @@ const path = require('path');
 const taikoHelper = require('../util/taikoHelper');
 const console = require('console');
 const fileExtension = require('../util/fileExtension')
-const manageUsers = require('../util/requestResponse')
+const manageUsers = require('../util/requestResponse');
+const logHelper = require('./logHelper');
 const headless = process.env.headless_chrome.toLowerCase() === 'true';
 
 
@@ -45,7 +46,7 @@ beforeScenario(async (context) => {
     }
     catch (e) {
         await closeBrowser();
-        console.log('Error opening new browser - ' + e.message)
+        logHelper.info('Error opening new browser - ' + e.message)
         await openBrowser(browserOptions)
     }
     await setConfig({ ignoreSSLErrors: true ,retryTimeout:parseInt(process.env.retryTimeout),waitForNavigation: true,navigationTimeout:parseInt(process.env.actionTimeout)});
@@ -55,11 +56,10 @@ beforeScenario(async (context) => {
 afterScenario(async (context) => {
     try {
         await waitFor(2000)
-
         console.log('< '+'='.repeat(30)+' >')
         await closeBrowser();
     }
     catch (e) {
-        console.log('Error closing the existing browser - ' + e.message)
+        logHelper.info('Error closing the existing browser - ' + e.message)
     }
 }, { tags: ['ui'] });

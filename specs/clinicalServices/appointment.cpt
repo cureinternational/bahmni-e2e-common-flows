@@ -198,6 +198,7 @@
 * Search and select provider
 * Search and select location
 * select the Regular appointment option
+* check the date for holiday on "12/24/2023"
 * select appointment status as "Waitlist"
 * Check and Save
 * wait for "1000"

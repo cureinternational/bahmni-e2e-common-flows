@@ -6,6 +6,7 @@ const gaugeHelper = require("../util/gaugeHelper")
 var assert = require('assert');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
+const taikoAssert = require('../../../components/taikoAssert');
 
 var radiology='Radiology'
 var laboratory='Laboratory'
@@ -58,6 +59,7 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
     await taikoInteraction.Click(notesBtnElement,'xpath',toRightOf(testPrescription.test))
     for(let i=0;i<notesList.length;i++)
     {
+        await taikoHelper.wait(1000)
         await taikoInteraction.Click(notesList[i].button, 'button')
     }
     await taikoInteraction.Click(okBtn,'button')
@@ -93,8 +95,8 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
         await taikoInteraction.Click(add,'text')
             if(medicalPrescriptions.rule!=undefined)
             {
-             await taikoElement.isPresent(text(medicalPrescriptions.perDay))
-             await taikoElement.isPresent(text(medicalPrescriptions.total))
+             await taikoElement.isExists(text(medicalPrescriptions.perDay))
+             await taikoElement.isExists(text(medicalPrescriptions.total))
             }
            if(medicalPrescriptions.isIPD=='true')
            {
@@ -114,7 +116,6 @@ step("Doctor captures consultation notes <notes>", async function (notes) {
 
 step("Doctor clicks consultation", async function () {
     await taikoInteraction.Click(consultation,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Choose Disposition", async function () {
@@ -172,4 +173,11 @@ step("Verify the radiology notes <order>",async function(orderFile){
         await taikoElement.isExists(text(note.message))
 
     })
+})
+step("Verify the patient is consulted",async function(){
+    var patientId=gaugeHelper.get('patientIdentifier')
+    await taikoInteraction.Click('Active','link')
+    var encounterTimeElement=`//a[contains(text(),'${patientId}')]/ancestor::tr/td[9]`
+    var encounterTime=await taikoElement.getText($(encounterTimeElement))
+    await taikoAssert.assertNotEmpty(encounterTime)
 })

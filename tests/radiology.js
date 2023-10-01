@@ -2,6 +2,7 @@ const { write, toRightOf, into, textBox, press, goto, below, scrollTo, click,  h
 var assert = require("assert")
 var users = require("./util/users");
 var gaugeHelper = require("./util/gaugeHelper");
+const logHelper = require('./util/logHelper');
 step("Enter Radiology username", async function () {
     await write(users.getUserNameFromEncoding(process.env.pacsUser), into(textBox(toRightOf("Username"))));
 });
@@ -24,7 +25,7 @@ step("Enter patient id in radiology app", async function () {
 
 step("Goto DCM4chee", async function () {
     var URLDCM = process.env.bahmniHost + process.env.dcm4chee
-    console.log(URLDCM)
+    logHelper.info(URLDCM)
     await goto(URLDCM)
 });
 

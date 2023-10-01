@@ -1,10 +1,11 @@
 const { button, toRightOf, textBox, into, write, press, click, timeField, below, scrollTo, text, evaluate, $, checkBox, waitFor, image, within, dropDown } = require('taiko');
 var date = require("./date");
 var assert = require("assert");
-const { time } = require('console');
+const { time, log } = require('console');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
+const logHelper = require('./logHelper');
 
 
 async function Click(type, value, relativeLocator) {
@@ -154,7 +155,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 await dropDown(toRightOf(dropDownLabel)).select(dropDownValue)
                 break;
             default:
-                console.log("Unhandled " + configuration.label + ":" + configuration.value)
+                logHelper.info("Unhandled " + configuration.label + ":" + configuration.value)
         }
     }
 }

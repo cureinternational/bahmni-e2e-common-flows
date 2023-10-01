@@ -69,6 +69,8 @@ var providerSearchInput="//div[@data-testid='provider-search']//input"
 var providerSearchBtn="//div[@data-testid='provider-search']//button[1]"
 var conflictMessage='You have an overlapping conflict'
 var saveAnyway='Save Anyway'
+var holidayDateElement='div.bx--form-requirement'
+var holidayText='Date selected is a Public Holiday'
 
 step("View all appointments", async function () {
     var list=process.env.appointmentList
@@ -92,11 +94,11 @@ step("Select patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
     var patientNameElement=`//a[text()='${patientName}']`
-    var firstNameArr=firstName.split("")
-    for(let i=0;i<firstNameArr.length;i++)
+    var patientIdArr=patientIdentifierValue.split("")
+    for(let i=0;i<patientIdArr.length;i++)
     {
-        await taikoInteraction.Write(firstNameArr[i],"xpath",searchbox)
-        if(await taikoElement.isPresent($(patientNameElement)))
+        await taikoInteraction.Write(patientIdArr[i],"xpath",searchbox)
+        if(await taikoElement.isExists($(patientNameElement)))
         {
             await taikoInteraction.EvaluateClick($(patientNameElement))
             break;
@@ -152,8 +154,7 @@ step("Search and select appointment location", async function () {
 });
 
 step("Select appointment date <date>", async function (date) {
-    await taikoInteraction.Clear(appointmentDateElement,'below')
-    //await clear(textBox(below(appointmentDateElement)))
+    await taikoInteraction.Clear(below(appointmentDateElement))
     await taikoInteraction.Write(date,"into",below(appointmentDateElement))
 });
 
@@ -231,8 +232,7 @@ step("Goto day view of the calendar", async function () {
 
 step("Click Close", async function () {
     await taikoInteraction.Click(closeBtn,'xpath')
-    await taikoElement.waitToPresent(text(discard))
-    if(await taikoElement.isPresent(text(discard)))
+    if(await taikoElement.isExists(text(discard)))
     {
     await taikoInteraction.Click(discard,'text')
     }
@@ -329,8 +329,8 @@ step("Click Edit <type> appointment", async function (type) {
 
 step("Update the time as <time>",async function(time){
     var value=time.split(" ")
-    await taikoInteraction.Clear(startTime,'below')
-    await taikoInteraction.Clear(endTime,'below')
+    await taikoInteraction.Clear(below(startTime))
+    await taikoInteraction.Clear(below(endTime))
     await taikoInteraction.Write(value[0],'into',below(startTime))
 })
 
@@ -344,7 +344,7 @@ step("Select awaiting appointments", async function () {
 });
 
 step("Create a service if it does not exist", async function () {
-    if (await taikoElement.isPresent(text(process.env.service)))
+    if (await taikoElement.isExists(text(process.env.service)))
         return
     await taikoInteraction.Click(addNewService,'text')
     await taikoInteraction.Write(process.env.service,"into",{ placeHolder: "Enter a service name" })
@@ -432,6 +432,14 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
  step('Enter the appointment date',async function(){
     let appointmentDate = gaugeHelper.get("startDate");
     await taikoInteraction.Write(appointmentDate,"into",{placeholder:"mm/dd/yyyy"})
+ })
+
+ step("check the date for holiday on <holidayDate>",async function(holidayDate){
+    await taikoInteraction.Write(holidayDate,"into",{placeholder:"mm/dd/yyyy"})
+    await taikoInteraction.pressEnter()
+    var text=await taikoElement.getText($(holidayDateElement))
+    taikoAssert.assertEquals(text,holidayText)
+    await taikoInteraction.Write('','into',below(startTime))
  })
  step("Verify the conflict message",async function(){
     await taikoassert.assertExists(text(conflictMessage))

@@ -37,8 +37,8 @@ step("Enter History and examination details <filePath>", async function (filePat
     var historyAndExaminationFile = `./bahmni-e2e-common-flows/data/${filePath}.json`
     var historyAndExaminationDetails = JSON.parse(fileExtension.parseContent(historyAndExaminationFile))
     gaugeHelper.save("historyAndExaminationDetails", historyAndExaminationDetails)
-
-    if (!await taikoElement.isPresent(link(historyAndExaminationDetails.ObservationFormName))) 
+    var formNameElement=`'//button[contains(text(),"${historyAndExaminationDetails.ObservationFormName}")]'`
+    if (await taikoElement.isNotPresent($(formNameElement))) 
     {
         await taikoInteraction.Click(addNewObsForm,'text')
         await taikoInteraction.Click(historyAndExaminationDetails.ObservationFormName,'button')
@@ -91,7 +91,7 @@ step("Click patient name", async function () {
 
 step("Should not find the patient's name", async function () {
     var fullName = gaugeHelper.get("patientFullName")
-    await taikoElement.isNotPresent(text(fullName))
+    await taikoElement.isNotExists(text(fullName))
 });
 
 

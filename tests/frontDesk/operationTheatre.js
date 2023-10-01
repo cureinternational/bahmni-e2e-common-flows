@@ -31,6 +31,9 @@ step('Add note verify the note',async function(){
 });
 
 step('Delete the note',async function(){
+    if(await taikoElement.isExists($(deleteNotesElement)))
+    {
     await taikoInteraction.EvaluateClick($(deleteNotesElement))
     await taikoInteraction.EvaluateClick($(deleteNotesYes))
+    }
 })

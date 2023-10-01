@@ -8,7 +8,7 @@ const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoElement = require('../../../components/taikoElement.js');
 
-var search='Search'
+var searchElement='//button[contains(text(),"Search")]'
 var foundElement='Found 1 patient'
 var pendingLabOrder='Pending Lab Orders'
 var test='Tests'
@@ -30,12 +30,12 @@ step("start patient search", async function () {
 step("enter the patient name in lablite", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Write(patientIdentifierValue,'xpath',labLiteSearch);
-    await taikoInteraction.Click(search,'button')
+    await taikoInteraction.Click(searchElement,'xpath')
 });
 
 step("Select the patient in lablite search result", async function () {
     var patientFullName = gaugeHelper.get("patientFullName");
-    await taikoHelper.wait(3000)
+    await taikoElement.waitToExists(text(foundElement))
     await taikoInteraction.Click(patientFullName,'text')
 });
 

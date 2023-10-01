@@ -9,6 +9,7 @@ const assert = require("assert")
 const fileExtension = require("./fileExtension")
 const { waitFor } = require("taiko");
 const gaugeHelper=require("./gaugeHelper")
+const logHelper = require('./logHelper');
 function getUserNameFromEncoding(encodedUser) {
     let user = new Buffer(encodedUser, 'base64');
     let decodedUser = user.toString('ascii');
@@ -79,7 +80,7 @@ async function downloadAndReturnImage() {
             assert.ok(fileExtension.exists(filepath), "Patient image not downloaded.");
             max_Retry = 0;
         } catch (e) {
-            console.log("Image download failed - " + e.message + ". Retrying...")
+            logHelper.info("Image download failed - " + e.message + ". Retrying...")
             max_Retry = max_Retry - 1;
         }
     }

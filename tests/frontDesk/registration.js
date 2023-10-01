@@ -1,4 +1,4 @@
-const {$,button,toRightOf,toLeftOf,text,waitFor,link,below,press,timeField,fileField} = require('taiko');
+const {$,button,toRightOf,toLeftOf,text,link,below,press,timeField,fileField} = require('taiko');
 var users = require("../util/users");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper=require("../util/gaugeHelper")
@@ -73,6 +73,10 @@ var relationShips='Relationships'
 var selectPerson='Select Person'
 var registerNewPerson='Register New Person'
 var register='Register'
+var relationFirstNameElement="//input[@name='firstName']"
+var relationLastNameElement="//input[@name='lastName']"
+var relationBirthDateElement='//input[@name="birthdate"]'
+var closeRelationPopup='//div[@class="add-person-iframe"]/child::span[@class="close"]'
 var implicitTimeOut=parseInt(process.env.implicitTimeOut)
 
 step("Open <moduleName> module", async function (moduleName) {
@@ -141,12 +145,12 @@ step("Enter age of the patient <age>", async function (age) {
 });
 
 step("Enter patient mobile number <mobile>", async function (mobile) {
-    if (await taikoElement.isPresent(text(primaryContact))) 
+    if (await taikoElement.isExists(text(primaryContact))) 
     {
         if (gaugeHelper.get(isNewPatient))
             await taikoInteraction.Write(mobile,'into',toRightOf(primaryContact))
     }
-    else if (await taikoElement.isPresent(text(phoneNumber))) {
+    else if (await taikoElement.isExists(text(phoneNumber))) {
         if (gaugeHelper.get(isNewPatient))
             await taikoInteraction.Write(mobile,'into',toRightOf(phoneNumber))
     }
@@ -172,7 +176,7 @@ step("Enter random age of the patient", async function () {
 
 step("Enter patient random mobile number", async function () {
     var mobile = faker.phone.number('+919#########')
-    if(await taikoElement.isPresent(text(mobilePhone))) {
+    if(await taikoElement.isExists(text(mobilePhone))) {
         if (gaugeHelper.get(isNewPatient))
         await taikoInteraction.Write(mobile,'into',toRightOf(mobilePhone))
     }
@@ -212,7 +216,7 @@ step("Select the newly created patient from all section", async function () {
 
 step(["Log out if still logged in", "Receptionist logs out"], async function () {
     try {
-        if(!taikoElement.isPresent(text('Registration')))
+        if(!taikoElement.isExists(text('Registration')))
         {
             taikoInteraction.Click(homeBtn,'xpath')
         }
@@ -300,14 +304,11 @@ step("Click on home page and goto registration module", async function () {
 });
 
 step("Click on home page", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.Click(homeBtn,'xpath')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click on active patients list", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(implicitTimeOut)
     if(await taikoElement.isPresent($(activePatientList)))
     {
@@ -327,7 +328,6 @@ step("Open newly created patient details by search", async function () {
     await taikoInteraction.Write(patientIdentifierValue,'xpath',inputRegistrationNumber)
     await taikoInteraction.pressEnter()
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.isPresent(link(patientIdentifierValue))
 if(await taikoElement.isPresent(link(patientIdentifierValue)))
 { 
     await taikoInteraction.Click(patientIdentifierValue,'link')
@@ -367,7 +367,7 @@ step("Save the newly created patient data", async function () {
 });
 
 step("Click create new patient if patient does not exist", async function () {
-    if (await taikoElement.isPresent(text(noResultsFound))) {
+    if (await taikoElement.isExists(text(noResultsFound))) {
         await taikoInteraction.Click(createNew,'link')
         gaugeHelper.save(isNewPatient, true)
         await taikoHelper.repeatUntilNotFound($(overlay))
@@ -401,7 +401,7 @@ step("Enter patient last name <lastName>", async function (lastName) {
 });
 
 step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
-    await waitFor(timeInMilliSeconds)
+    await taikoHelper.wait(timeInMilliSeconds)
 });
 
 step("Choose newly created patient", async function () {
@@ -496,15 +496,14 @@ step("Create a new relation", async function () {
     await taikoInteraction.Click(registerNewPerson,'text')
     var firstName = users.randomName(8)
     gaugeHelper.print('Relation firstName', firstName)
-    await taikoInteraction.Write(firstName,'default',"//input[@name='firstName']")
+    await taikoInteraction.Write(firstName,'default',relationFirstNameElement)
     var lastName = users.randomName(8)
-    gaugeHelper.print('Relation lastName', lastName)
     gaugeHelper.save("relationName", firstName+' '+lastName)
-    await taikoInteraction.Write(lastName,'default',"//input[@name='lastName']")
-    await taikoInteraction.Write('01/01/1970','default','//input[@name="birthdate"]')
+    await taikoInteraction.Write(lastName,'default',relationLastNameElement)
+    await taikoInteraction.Write('01/01/1980','default',relationBirthDateElement)
     await taikoInteraction.Dropdown(below(gender),'Male')
-    await taikoInteraction.Write(firstName,'into',below("First name"))
     await taikoInteraction.Click(register,'text')
+    await taikoHelper.wait(1000)
 })
 
 step('Click on the newly added relation',async function(){
@@ -513,7 +512,7 @@ step('Click on the newly added relation',async function(){
 })
 
 step('Add the phone number',async function(){
-    await waitFor(2000)
+    await taikoHelper.wait(2000)
     var phoneNumber=faker.phone.number('+919#########')
     await taikoInteraction.Write(phoneNumber,'default',phoneNumberValue)
 })
@@ -522,3 +521,12 @@ step('Update the relation',async function(){
     await taikoInteraction.Click(update,'text')
 })
 
+step("Close the relation popup", async function () {
+    await taikoInteraction.Click(closeRelationPopup,'xpath')
+
+})
+
+step("Verify the relation is added", async function () {
+    var relationName=gaugeHelper.get("relationName")
+    await taikoElement.waitToExists(link(relationName))
+})

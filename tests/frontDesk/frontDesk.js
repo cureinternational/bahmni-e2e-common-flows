@@ -93,7 +93,7 @@ step("Verify the patient presence in the <wardType>", async function (wardType) 
     await taikoHelper.repeatUntilNotFound($(overlay))
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Write(patientIdentifierValue, 'xpath', '//input[@ng-model="searchText"]')
-    await taikoElement.isPresent(text(patientIdentifierValue))
+    await taikoElement.isExists(text(patientIdentifierValue))
 })
 
 step("Admit the patient to ipd in <visitType> visit", async function (visitType) {

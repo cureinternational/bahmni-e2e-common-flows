@@ -2,6 +2,7 @@ var path = require("path");
 
 var cwd = process.cwd();
 var fs = require("fs");
+const logHelper = require('./logHelper');
 
 
 
@@ -15,7 +16,7 @@ function write(file, content) {
 
 function rename(fromFile, toFile, done) {
   fs.rename(fromFile, toFile, function (err) {
-    if (err) console.log("ERROR: " + err);
+    if (err) logHelper.info("ERROR: " + err)
     done();
   });
 }
@@ -47,7 +48,7 @@ function createDirIfNotPresent(path) {
 function rmContentsOfDir(dirPath, extension) {
   try { var files = fs.readdirSync(dirPath); }
   catch (e) {
-    console.log("Error reading directory %s due to %s", dirPath, e);
+    logHelper.info("Error reading directory ", dirPath)
     return;
   }
   if (files.length > 0)
@@ -64,7 +65,9 @@ function rmContentsOfDir(dirPath, extension) {
 
 function remove(file) {
   try { fs.unlinkSync(file); }
-  catch (e) { console.log("Error removing file %s due to %s", file, e); }
+  catch (e) { 
+    logHelper.info("Error removing file %s due to %s", file)
+    }
 }
 
 function removeDir(dir) {

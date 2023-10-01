@@ -8,6 +8,7 @@ const console = require("console");
 const pdf = require('pdf-parse');
 const axios = require('axios')
 const gaugeHelper=require("./util/gaugeHelper")
+const logHelper=require("./util/logHelper")
 
 step("Goto paymentlite", async function () {
 	await goto(process.env.paymentLiteurl + '/login', { waitForNavigation: true })
@@ -180,7 +181,7 @@ step("Select customer", async function () {
 		else {
 			maxRetry = maxRetry - 1;
 			assert.ok(maxRetry > 0, "Patient not found in Payment lite. Patient - " + fullName)
-			console.log("Waiting for 5 seconds and reload the customers page to wait for Patient - " + fullName + ". Remaining attempts " + maxRetry)
+			logHelper.info("Waiting for 5 seconds and reload the customers page to wait for Patient - " + fullName + ". Remaining attempts " + maxRetry)
 			await waitFor(4000);
 			await click("Customers", { waitForNavigation: true })
 		}
@@ -304,13 +305,13 @@ step("Validate the downloaded report", async function () {
 		});
 	}
 	catch (e) {
-		console.log(e);
+		logHelper.info(e)
 		gauge.message(e.message)
 	}
 });
 
 step("create Login Users for paymentlite", async function () {
-	console.log("Creating users if not exists.")
+	logHelper.info("Creating users if not exists.")
 	let company = "1";
 	let max_Retry = 3
 	while (max_Retry > 0) {
@@ -398,8 +399,8 @@ step("create Login Users for paymentlite", async function () {
 		}
 		catch (e) {
 			max_Retry = max_Retry - 1
-			console.log(e.message);
-			console.log("Request to Payment Lite Failed, attempting again after 2 seconds, attempts left - " + max_Retry);
+			logHelper.info(e.message)
+			logHelper.info("Request to Payment Lite Failed, attempting again after 2 seconds, attempts left - " + max_Retry);
 			await waitFor(1000);
 		}
 

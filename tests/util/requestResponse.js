@@ -3,9 +3,11 @@ const axios = require('axios')
 var date = require("./date");
 const assert = require("assert");
 var users = require("./users");
+const { log } = require('console');
+const logHelper = require('./logHelper');
 
 async function getOpenMRSResponse(request) {
-    console.log(request)
+    logHelper.info(request)
     gauge.message(request)
 
     return await axios.get(request
@@ -26,7 +28,7 @@ async function makeOpenVisitCall(patientUUID, visitType, URL) {
         .replace("<toDate>", tomorrow)
         .replace("<visitType>", visitType)
 
-    console.log(request_URL)
+    logHelper.info(request_URL)
     gauge.message(request_URL)
     var prescriptionsVisitResponse = await getOpenMRSResponse(request_URL)
 
@@ -49,7 +51,7 @@ async function makeOpenProgramCall(patientUUID, programName, programEnrollmentId
         .replace("<programName>", programName)
         .replace("<programEnrollmentId>", programEnrollmentId)
 
-    console.log(request_URL)
+    logHelper.info(request_URL)
     gauge.message(request_URL)
     var prescriptionsVisitResponse = await getOpenMRSResponse(request_URL)
 

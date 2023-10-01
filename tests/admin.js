@@ -34,6 +34,7 @@ const csvConfig = require("./util/csvConfig");
 var date = require("./util/date");
 var taikoitr=require("./../../components/taikoInteraction.js")
 const gaugeHelper=require("./util/gaugeHelper")
+const logHelper=require("./util/logHelper")
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 
 
@@ -206,7 +207,7 @@ step("Upload <profile> data file", async function (profile) {
             await click(button("Upload"))
         }
         catch (e) {
-            console.error(e);
+            logHelper.error(e)
         }
         while (await text('IN_PROGRESS', near("Status"), toRightOf(profile.toLowerCase() + '.csv')).exists()) {
             await click(button("Refresh"));

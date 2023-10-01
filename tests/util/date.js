@@ -1,3 +1,4 @@
+const logHelper = require('./logHelper');
 
 function yesterday() {
     const today = new Date()
@@ -98,7 +99,7 @@ function getyyyymmddFormattedDate(date) {
     return `${yyyy.toString()}-${mm.toString()}-${dd.toString()}`;
 }
 function getDateFrommmddyyyy(dateString) {
-    console.log(dateString)
+    logHelper.info(dateString)
     var dateParts = dateString.split("/");//mm/dd/yyyy
 
     // month is 0-based, that's why we need dataParts[0] - 1

@@ -1,8 +1,10 @@
+const logHelper = require('./logHelper');
+
 function save(key,value){
     gauge.dataStore.scenarioStore.put(key,value);
     if(process.env.DEBUG==='true') 
     {
-        console.log(`${key} ===> ${value}`)
+        logHelper.info(key,value)
         print(key,value);
     }
 

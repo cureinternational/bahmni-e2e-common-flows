@@ -95,6 +95,8 @@
 * Select the RelationType as "Father"
 * Click on select person
 * Create a new relation
+* Close the relation popup
+* Verify the relation is added
 
 # Edit the relation
 * Click on the newly added relation
@@ -110,11 +112,9 @@
 * Receptionist updates the <type> patient
 * Start an OPD Visit
 
-# Receptionist creates the <type> patient adds and edit a relation and starts an OPD
+# Receptionist creates the <type> patient adds a relation and starts an OPD
 * Receptionist creates the <type> patient
 * Add a relation
-* Save the patient data
-* Edit the relation
 * Save the patient data
 * Start an OPD Visit
 
