@@ -55,6 +55,11 @@
 * Save data
 * Verify no error displayed on page
 
+# Doctor updates <medications> as non ipd drug
+* Open "Medications" Tab
+* Doctor updates medicines <medications>
+* Save data
+* Verify no error displayed on page
 # Doctor prescribes radiology test <tests>
 * Open "Orders" Tab
 * Doctor prescribe tests <tests>

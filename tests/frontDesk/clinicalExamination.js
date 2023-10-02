@@ -38,6 +38,7 @@ var certainty='Certainty'
 var urgentBtnElement='//button[@title="Urgent"]'
 var notesBtnElement='//i[contains(@class,"fa fa-file-text-o")]'
 var okBtn='OK'
+var patientDashboardElement="//a[@ng-click='gotoPatientDashboard()']"
 
 step("click radiology",async function(){
     await taikoInteraction.Click(radiology,'text')
@@ -105,6 +106,21 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
     }
 }
 );
+
+step("Doctor updates medicines <medications>", async function (prescriptionNames) {
+    var prescriptionsList = prescriptionNames.split(',')
+    var prescriptionsCount = prescriptionsList.length
+    for (var i = 0; i < prescriptionsCount; i++) {
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
+        var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+        var drugName = medicalPrescriptions.drug_name;
+           if(medicalPrescriptions.isIPD=='true')
+           {
+            await taikoInteraction.Click(ipd,'button',toRightOf(drugName))
+           }
+    }
+}
+)
 
 step("Doctor captures consultation notes <notes>", async function (notes) {
     gaugeHelper.save("consultationNotes", notes)
@@ -180,4 +196,9 @@ step("Verify the patient is consulted",async function(){
     var encounterTimeElement=`//a[contains(text(),'${patientId}')]/ancestor::tr/td[9]`
     var encounterTime=await taikoElement.getText($(encounterTimeElement))
     await taikoAssert.assertNotEmpty(encounterTime)
+})
+
+step("Goto patient clinical dashboard",async function(){
+    await taikoInteraction.Click(patientDashboardElement,'xpath')
+    await taikoHelper.wait(1000)
 })
