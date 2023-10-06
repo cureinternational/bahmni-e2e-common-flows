@@ -1,0 +1,36 @@
+{
+    "ObservationFormName": "Orthopaedic Operative Report",
+    "ObservationClinicalFormName":"Orthopaedic Operative Report",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Pre-op Diagnosis same as Post-op?",
+            "value": "Yes"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Consultant",
+            "value": "Tim Nunn"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Surgeon",
+            "value": "Laurence Wicks"
+        },
+        {
+            "type": "Button",
+            "label": "Role",
+            "value": "Performed"
+        },
+        {
+            "type": "Button",
+            "label": "Was a Surgical Trainee Present ?",
+            "value": "Yes"
+        },
+        {
+            "type": "Button",
+            "label": "Planned Return to Operating Room",
+            "value": "No"
+        }
+    ]
+}

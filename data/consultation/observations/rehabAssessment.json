@@ -1,0 +1,41 @@
+{
+    "ObservationFormName": "Rehab Assessment",
+    "ObservationClinicalFormName":"Rehab Assessment",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Referred By",
+            "value": "Tim Nunn"
+        },
+        {
+            "type": "Button",
+            "label": "Consent Granted For Physiotherapy",
+            "value": "Yes"
+        },
+        {
+            "type": "TextArea",
+            "label": "Rehab Diagnosis",
+            "value": "automation rehab diagnosis comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Short-term Goals",
+            "value": "automation test short term goals comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Long-term Goals",
+            "value": "automation test long term goals comments"
+        },
+        {
+            "type": "Button",
+            "label": "Health Education Completed?",
+            "value": "No"
+        },
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "automation test treatment plan comments"
+        }
+    ]
+}

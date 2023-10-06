@@ -123,6 +123,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                         await scrollTo(text(observationFormName, toRightOf("History and Examination")))
                     else
                         await scrollTo(text(observationFormName))
+                    await scrollTo(text(configuration.label))
                     await click(button(configuration.value), toRightOf(configuration.label))
                 }
                 break;
@@ -199,13 +200,38 @@ async function validateFormFromFile(configurations) {
     }
 }
 
-async function validateNewFormFromFile(formName) {
-    taikoAssert.assertExists(text(formName))
+async function validateNewFormFromFile(configurations) {
+    for (var configuration of configurations) {
+        var label = configuration.label
+        var value = configuration.value
+        if (configuration.short_name !== undefined)
+            label = configuration.short_name.trim();
+        if (configuration.value_view !== undefined)
+            value = configuration.value_view.trim();
+        switch (configuration.type) {
+            case 'Group':
+                await validateNewFormFromFile(value)
+                break;
+            case 'Date':
+                var dateFormatted = date.addDaysAndReturnDateInShortFormat(value)
+                assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${dateFormatted}"]`).exists(), dateFormatted + " To Right of " + label + " is not exist.")
+                break;
+            case 'DateTime':
+                var dateFormatted = date.addDaysAndReturnDateInShortFormat(value.split(",")[0])
+                assert.ok((text(`${dateFormatted}]`)).exists(), dateFormatted + " To Right of " + label + " is not exist.")
+                break;
+            case 'TypeDropdown':
+                await verifyDropDown(label, value)
+                break;
+
+            default:
+                assert.ok(await text(value).exists())
+        }
+    }
 }
 
-async function verifyDropDown(value){
-    var firstName=value.split(' ')
-    assert.ok(await text(firstName[0]).exists())
+async function verifyDropDown(label,value){
+    assert.ok(await text(value).exists(),toRightOf(label))
 }
 async function wait(time) {
     await waitFor(time)

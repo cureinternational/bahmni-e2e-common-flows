@@ -4,28 +4,23 @@
     "ObservationFormDetails": [
         {
             "type": "Input",
-            "label": "Arterial Blood Oxygen Saturation (Pulse Oximeter)",
-            "value": "96"
+            "label": "Pulse (beats/min)",
+            "value": "75"
         },
         {
             "type": "Input",
             "label": "Respiratory Rate",
-            "value": "15"
+            "value": "16"
         },
         {
             "type": "Input",
-            "label": "Temperature (F)",
-            "value": "96"
+            "label": "Temperature (C)",
+            "value": "36"
         },
         {
             "type": "Input",
             "label": "Systolic Blood Pressure (mmHg)",
-            "value": "110"
-        },
-        {
-            "type": "Input",
-            "label": "Diastolic Blood Pressure (mmHg)",
-            "value": "70"
+            "value": "120"
         },
         {
             "type": "Button",

@@ -1,0 +1,31 @@
+{
+    "ObservationFormName": "Rehab Referral",
+    "ObservationClinicalFormName":"Rehab Referral",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Referral Goals",
+            "value": "Pre-Op"
+        },
+        {
+            "type": "Button",
+            "label": "Patient Status",
+            "value": "Outpatient"
+        },
+        {
+            "type": "Button",
+            "label": "Ambulation/Mobilization",
+            "value": "Walker"
+        },
+        {
+            "type": "Button",
+            "label": "Cast Type",
+            "value": "Plaster"
+        },
+        {
+            "type": "Button",
+            "label": "Cast Instructions",
+            "value": "Remove"
+        }
+    ]
+}

@@ -94,16 +94,12 @@ step("Select patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
     var patientNameElement=`//a[text()='${patientName}']`
-    var patientIdArr=patientIdentifierValue.split("")
-    for(let i=0;i<patientIdArr.length;i++)
-    {
-        await taikoInteraction.Write(patientIdArr[i],"xpath",searchbox)
+        await taikoInteraction.Write(firstName,"xpath",searchbox)
+        await taikoInteraction.ScrollTo($(patientNameElement))
         if(await taikoElement.isExists($(patientNameElement)))
         {
             await taikoInteraction.EvaluateClick($(patientNameElement))
-            break;
         }
-    }    
 });
 
 step("Select service <service>", async function (serviceName) {

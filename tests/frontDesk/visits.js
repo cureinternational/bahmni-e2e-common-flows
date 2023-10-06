@@ -38,6 +38,8 @@ var labTest = gaugeHelper.get("LabTest")
 var labResults='#Lab-Results'
 var errorElement='//DIV[@class="message-container error-message-container"]'
 var formClose='.ngdialog-close'
+var newformClose='//button[@aria-label="close"]'
+var formLink='a.form-link'
 
 step("Click Start IPD Visit", async function () {
     await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
@@ -189,5 +191,7 @@ step("Validate new obs <form> on the patient clinical dashboard", async function
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
     await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(1000)
-    await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationClinicalFormName)
+    await taikoInteraction.Click(formLink,'xpath',toRightOf(obsFormValues.ObservationClinicalFormName))
+    await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationFormDetails,obsFormValues.ObservationClinicalFormName)
+    await taikoInteraction.Click(newformClose,'xpath')
 });

@@ -1,0 +1,26 @@
+{
+    "ObservationFormName": "Paediatric Assessment",
+    "ObservationClinicalFormName":"Paediatric Assessment",
+    "ObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Birth Delivery History",
+            "value": "automation test delivery history"
+        },
+        {
+            "type": "TextArea",
+            "label": "Breast Feeding and Sunlight Exposure",
+            "value": "automation test Sunlight Exposure comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Assessment",
+            "value": "automation test assessment comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "automation test treatment plan comments"
+        }
+    ]
+}

@@ -25,7 +25,7 @@ step("Click the order <order>", async function (order) {
 
  step("Verify the Radiologist Name",async function(){  
     var radiologist=process.env.radiologist
-    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoElement.waitToExists(text(radiologist))
     await taikoassert.assertExists(text(radiologist))
  })
 

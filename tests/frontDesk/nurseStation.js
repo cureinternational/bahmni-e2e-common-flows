@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const {click,write,dropDown,into,textBox,below,within,text,$,link} = require('taiko');
+const {click,write,dropDown,into,textBox,below,within,text,$,button} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
@@ -26,6 +26,7 @@ var save='Save'
 var historyAndExamination='History and Examination'
 var generalWard='General Ward'
 var generalWardRoom='General Ward room'
+var obsSearchElement='input#templateSearch'
 
 step("Doctor opens admission tab", async function () {
 	await taikoHelper.repeatUntilNotFound(overlay)
@@ -107,11 +108,15 @@ step("Enter Form Values <observationFormFile>", async function (observationFormF
 	var observationFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${observationFormFile}.json`))
 	gaugeHelper.save(observationFormValues.ObservationFormName, observationFormValues)
 	await taikoHelper.repeatUntilNotFound($(overlay))
-	if (!await taikoElement.isPresent(link(observationFormValues.ObservationFormName))) {
-		await taikoInteraction.Click(addNewObsForm,'text')
+	var shortformName=observationFormValues.ObservationFormName.split(' ')
+	await taikoInteraction.Click(addNewObsForm,'button')
+	await taikoInteraction.Write(shortformName[0],'xpath',obsSearchElement)
+	if (await taikoElement.elementEnabled(button(observationFormValues.ObservationFormName))) 
+	{
 		await taikoInteraction.Click(observationFormValues.ObservationFormName,'button')
-	} else {
-		await taikoInteraction.Click(observationFormValues.ObservationFormName,'link')
+	} else 
+	{
+		await taikoInteraction.Click(observationFormValues.ObservationFormName,'text')
 	}
 	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoHelper.executeConfigurations(observationFormValues.ObservationFormDetails, observationFormValues.ObservationFormName)

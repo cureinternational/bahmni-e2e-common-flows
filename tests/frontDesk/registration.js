@@ -78,6 +78,10 @@ var relationLastNameElement="//input[@name='lastName']"
 var relationBirthDateElement='//input[@name="birthdate"]'
 var closeRelationPopup='//div[@class="add-person-iframe"]/child::span[@class="close"]'
 var implicitTimeOut=parseInt(process.env.implicitTimeOut)
+var relation=process.env.relationName
+var relationNameElement='//input[@name="name"]'
+var search='Search'
+var name='Name'
 
 step("Open <moduleName> module", async function (moduleName) {
     await taikoInteraction.Click(moduleName,'text')
@@ -440,7 +444,7 @@ step("Open Visit attributes",async function()
 step("Open Nutritional page",async function(){
     await taikoHelper.repeatUntilFound(link(nutrionalPage))
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoInteraction.Click(nutrionalPage,'text')
+    await taikoInteraction.Click(nutrionalPage,'link')
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/registration/)
     await taikoElement.waitToExists(button(save))
@@ -517,6 +521,12 @@ step('Add the phone number',async function(){
     await taikoInteraction.Write(phoneNumber,'default',phoneNumberValue)
 })
 
+step("Select the relation",async function(){
+    gaugeHelper.save('relationName',relation)
+    await taikoInteraction.Write(relation,'xpath',relationNameElement)
+    await taikoInteraction.Click(search,'button')
+    await taikoInteraction.Click(relation,'text',below(name))
+})
 step('Update the relation',async function(){
     await taikoInteraction.Click(update,'text')
 })
@@ -528,6 +538,7 @@ step("Close the relation popup", async function () {
 
 step("Verify the relation is added", async function () {
     var relationName=gaugeHelper.get("relationName")
+    await taikoHelper.wait(1000)
     await taikoElement.waitToExists(link(relationName))
 })
 

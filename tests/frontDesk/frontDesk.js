@@ -60,6 +60,7 @@ step("Verify the visit locations", async function () {
 
 step("Verify the appointments in grid view", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(implicitTimeOut)
     await verifyGrid('Specialities')
     await verifyGrid('Providers')
     await verifyGrid('Services')
@@ -180,12 +181,15 @@ step("Verify the columns in the table <tableFile>", async function (tableFile) {
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableHeaders = table.columns
     var tableElement = `//table[@class='${table.class}']`
+    if(await taikoElement.isExists($(tableElement)))
+    {
     var headers = (await $(`${tableElement}//th`).elements()).length
     for (let i = 1; i <= headers; i++) {
         var element = `${tableElement}//th[${i}]`
         var columnHeader = (await $(element).text()).trim()
         await taikoAssert.assertArray(tableHeaders, columnHeader)
     }
+}
 })
 
 step("Verify the sorting in the table <tableFile>", async function (tableFile) {

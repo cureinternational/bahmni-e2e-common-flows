@@ -94,8 +94,7 @@
 * click on Relationships
 * Select the RelationType as "Father"
 * Click on select person
-* Create a new relation
-* Close the relation popup
+* Select the relation
 * Verify the relation is added
 
 # Edit the relation

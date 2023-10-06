@@ -151,7 +151,7 @@ step("Doctor advises discharging the patient", async function () {
 });
 
 step("Open <tabName> Tab", async function (tabName) {
-    await taikoInteraction.Click(tabName,'link')
+    await taikoInteraction.Click(tabName,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
