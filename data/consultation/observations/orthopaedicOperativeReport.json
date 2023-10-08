@@ -10,7 +10,7 @@
         {
             "type": "TypeDropdown",
             "label": "Consultant",
-            "value": "Tim Nunn"
+            "value": "Timothy Nunn"
         },
         {
             "type": "TypeDropdown",
@@ -26,6 +26,22 @@
             "type": "Button",
             "label": "Was a Surgical Trainee Present ?",
             "value": "Yes"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "CURE Orthopaedic Procedures",
+            "value": "23195 Resection humeral head"
+        },
+        {
+            "type": "Button",
+            "label": "Laterality",
+            "value": "Left"
+        },
+        {
+            "type": "TextArea",
+            "label": "Operation Summary",
+            "value": "automation summary notes",
+            "below":"Site"
         },
         {
             "type": "Button",

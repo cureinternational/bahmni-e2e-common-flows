@@ -2,11 +2,7 @@ const logHelper = require('./logHelper');
 
 function save(key,value){
     gauge.dataStore.scenarioStore.put(key,value);
-    if(process.env.DEBUG==='true') 
-    {
-        print(key,value);
-    }
-
+    print(key,value);
 }
 
 function get(key){
@@ -14,6 +10,8 @@ function get(key){
 }
 
 function print(key,value){
+    if(process.env.DEBUG==='true') 
+    {
     if(typeof value=='object')
     {
     var jsonvalue=JSON.stringify(value)
@@ -21,8 +19,10 @@ function print(key,value){
     }
     else
     {
+    console.log(`${key} =====>>>>> ${value}`)
     gauge.message(`${key} ${value}`)
     }
+    }   
 }
 
 module.exports = {

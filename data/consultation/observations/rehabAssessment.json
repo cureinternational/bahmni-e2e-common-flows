@@ -5,7 +5,7 @@
         {
             "type": "CustomDropdown",
             "label": "Referred By",
-            "value": "Tim Nunn"
+            "value": "Timothy Nunn"
         },
         {
             "type": "Button",

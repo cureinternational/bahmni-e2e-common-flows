@@ -101,15 +101,23 @@ async function selectEntriesTillIterationEnds(entrySequence) {
 
 async function executeConfigurations(configurations, observationFormName, isNotObsForm) {
     for (var configuration of configurations) {
+        await wait(1000)
         switch (configuration.type) {
             case 'Group':
                 await executeConfigurations(configuration.value, observationFormName, isNotObsForm)
                 break;
             case 'TextArea':
-                await write(configuration.value, into($("//textarea", toRightOf(configuration.label))))
+                if(configuration.below!==undefined)
+                {
+                await write(configuration.value, into(textBox(toRightOf(configuration.label),below(configuration.below))))
+                }
+                else
+                {
+                await write(configuration.value, into(textBox(toRightOf(configuration.label))))
+                }
                 break;
             case 'Input':
-                await write(configuration.value, into($("//input", toRightOf(configuration.label))))
+                await write(configuration.value, into(textBox(toRightOf(configuration.label))))
                 break;
             case 'TextBox':
                 if (configuration.unit === undefined)
@@ -118,14 +126,16 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     await write(configuration.value, into(textBox(toRightOf(configuration.label + " " + configuration.unit))))
                 break;
             case 'Button':
-                {
                     if (!isNotObsForm)
+                    {
                         await scrollTo(text(observationFormName, toRightOf("History and Examination")))
+                    }
                     else
+                    {
                         await scrollTo(text(observationFormName))
+                    }
                     await scrollTo(text(configuration.label))
                     await click(button(configuration.value), toRightOf(configuration.label))
-                }
                 break;
             case 'Date':
                 var dateValue = date.addDaysAndReturnDateInDDMMYYYY(configuration.value)

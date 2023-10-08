@@ -15,7 +15,7 @@
         {
             "type": "TypeDropdown",
             "label": "Surgeon",
-            "value": "Tim Nunn"
+            "value": "Timothy Nunn"
         },
         {
             "type": "TypeDropdown",

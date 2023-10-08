@@ -4,11 +4,6 @@
     "ObservationFormDetails": [
         {
             "type": "TextArea",
-            "label": "Birth Delivery History",
-            "value": "automation test delivery history"
-        },
-        {
-            "type": "TextArea",
             "label": "Breast Feeding and Sunlight Exposure",
             "value": "automation test Sunlight Exposure comments"
         },

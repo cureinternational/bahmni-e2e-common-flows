@@ -6,7 +6,6 @@ function info(key,message) {
         if(typeof key=='object')
         {
             var errorJson=JSON.stringify(key)
-            console.info(errorJson,message)
             gauge.message(`${errorJson} ${message}`)
         }
         else

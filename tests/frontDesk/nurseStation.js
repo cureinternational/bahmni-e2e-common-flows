@@ -27,6 +27,7 @@ var historyAndExamination='History and Examination'
 var generalWard='General Ward'
 var generalWardRoom='General Ward room'
 var obsSearchElement='input#templateSearch'
+var implicitWaitTime=parseInt(process.env.implicitTimeOut)
 
 step("Doctor opens admission tab", async function () {
 	await taikoHelper.repeatUntilNotFound(overlay)
@@ -122,6 +123,7 @@ step("Enter Form Values <observationFormFile>", async function (observationFormF
 	await taikoHelper.executeConfigurations(observationFormValues.ObservationFormDetails, observationFormValues.ObservationFormName)
 	await taikoInteraction.Click(save,'text')
 	await taikoHelper.repeatUntilNotFound($(overlay))
+	await taikoHelper.wait(implicitWaitTime)
 })
 
 step("Click History and Examination", async function () {

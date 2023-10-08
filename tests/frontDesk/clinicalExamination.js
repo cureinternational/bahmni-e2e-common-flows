@@ -39,6 +39,7 @@ var urgentBtnElement='//button[@title="Urgent"]'
 var notesBtnElement='//i[contains(@class,"fa fa-file-text-o")]'
 var okBtn='OK'
 var patientDashboardElement="//a[@ng-click='gotoPatientDashboard()']"
+var implicitWaitTime=parseInt(process.env.implicitTimeOut)
 
 step("click radiology",async function(){
     await taikoInteraction.Click(radiology,'text')
@@ -151,6 +152,7 @@ step("Doctor advises discharging the patient", async function () {
 });
 
 step("Open <tabName> Tab", async function (tabName) {
+    await taikoHelper.wait(implicitWaitTime)
     await taikoInteraction.Click(tabName,'text')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
