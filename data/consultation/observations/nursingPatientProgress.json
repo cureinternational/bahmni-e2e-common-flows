@@ -1,0 +1,28 @@
+{
+    "ObservationFormName": "Nursing Patient Progress Notes",
+    "ObservationClinicalFormName":"Nursing Patient Progress Notes",
+    "ObservationFormDetails": [
+        {
+            "type": "DateTime",
+            "label": "Date and Time",
+            "value": "-1,09:30AM"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Nurse",
+            "value": "Other Nurse"
+        },
+        {
+            "type": "TextArea",
+            "label": "Other Nurse Name",
+            "value": "automation other nurse name test",
+            "below":"Nurse"
+        },
+        {
+            "type": "TextArea",
+            "label": "Medical Orders",
+            "value": "automation medical order test",
+            "below":"Other Nurse Name"
+        }
+    ]
+}
