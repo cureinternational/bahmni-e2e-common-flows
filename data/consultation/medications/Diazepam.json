@@ -1,9 +1,11 @@
 {
-    "drug_name": "Diazepam 5 mg",
+    "drug_name": "Diazepam 5 mg Tablet",
     "units": "mg",
     "frequency": "Every 6 hours",
     "dose": "1",
     "duration": "2",
     "notes": "Every 6 hours as needed for anxiety",
-    "isIPD":"true"
+    "isIPD":"true",
+    "startTime":"08:00",
+    "perDaySlots":"true"
 }

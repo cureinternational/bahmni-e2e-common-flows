@@ -440,7 +440,7 @@ step("Open Visit attributes",async function()
 step("Open Nutritional page",async function(){
     await taikoHelper.repeatUntilFound(link(nutrionalPage))
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoInteraction.Click(nutrionalPage,'text')
+    await taikoInteraction.Click(nutrionalPage,'link')
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/registration/)
     await taikoElement.waitToExists(button(save))
