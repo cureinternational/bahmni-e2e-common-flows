@@ -1,5 +1,5 @@
 "use strict";
-const {toRightOf,textBox,dropDown,below,$,text} = require('taiko');
+const {toRightOf,textBox,dropDown,below,$,text, button, within} = require('taiko');
 var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
@@ -40,6 +40,8 @@ var notesBtnElement='//i[contains(@class,"fa fa-file-text-o")]'
 var okBtn='OK'
 var patientDashboardElement="//a[@ng-click='gotoPatientDashboard()']"
 var implicitWaitTime=parseInt(process.env.implicitTimeOut)
+var addNewObservation='Add New Obs Form'
+var section='//h2[contains(text(),"Selected Orders")]'
 
 step("click radiology",async function(){
     await taikoInteraction.Click(radiology,'text')
@@ -57,6 +59,7 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
     gaugeHelper.save("LabTest", testPrescription.test)
     await taikoHelper.repeatUntilFound(text(testPrescription.test))
     await taikoInteraction.Click(testPrescription.test, 'text')
+    await taikoInteraction.ScrollTo(text(testPrescription.heading))
     await taikoInteraction.Click(urgentBtnElement,'xpath',toRightOf(testPrescription.test))
     await taikoInteraction.Click(notesBtnElement,'xpath',toRightOf(testPrescription.test))
     for(let i=0;i<notesList.length;i++)
@@ -132,7 +135,8 @@ step("Doctor captures consultation notes <notes>", async function (notes) {
 });
 
 step("Doctor clicks consultation", async function () {
-    await taikoInteraction.Click(consultation,'text')
+    await taikoInteraction.Click(consultation,'link')
+    await taikoHelper.wait(3000)
 });
 
 step("Choose Disposition", async function () {

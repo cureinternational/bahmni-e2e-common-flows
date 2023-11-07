@@ -1,5 +1,5 @@
 "use strict";
-const {waitFor,dropDown,$,text, switchTo, closeTab} = require('taiko');
+const {waitFor,dropDown,$,text, switchTo, closeTab,toRightOf} = require('taiko');
 var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
 const gaugeHelper = require("./../util/gaugeHelper")
@@ -150,7 +150,7 @@ step("Verify the ipd dashboard", async function () {
     await verifyDisplayControl('Allergies')
     await verifyDisplayControl('Diagnosis')
     await verifyDisplayControl('Nutritional Values')
-    await verifyDisplayControl('Forms')
+    await verifyDisplayControl('Observation Forms')
     await verifyDisplayControl('Vitals')
     await verifyDisplayControl('Lab Results')
     await verifyDisplayControl('SF-12 WHODAS Score')
@@ -231,3 +231,39 @@ function verifyColumnSorting(sortByData, sortByType, sortByOrder) {
 function sortDates(datesArray) {
     return datesArray.sort((date1, date2) => new Date(date1) - new Date(date2));
 }
+
+step("Click on Add to drug chart link for the medication <drug>", async function (drug) {
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${drug}.json`
+    var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+    var drugName = medicalPrescriptions.drug_name
+    await taikoInteraction.Click('Add to Drug Chart', 'text', toRightOf(drugName))
+})
+
+step("Enter the start time for the medication <drug>", async function (drug) {
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${drug}.json`
+    var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+    var startTime = medicalPrescriptions.startTime
+    var element = `//div[@class="bx--time-picker__input"]`
+    await taikoInteraction.Click(`${element}`, 'xpath')
+    await taikoInteraction.Write(startTime,'into',{"placeholder":"hh:mm"})
+    await taikoHelper.repeatUntilNotFound($(overlay))
+})
+
+step("Click on save", async function () {
+    var element = '//button[contains(text(),"Save")]'
+    await taikoInteraction.Click(element, 'xpath')
+})
+
+step("Click on <tabType> tab", async function (tabType) {
+    var tab = `//a[contains(text(),"${tabType}") and @ng-click="showDashboard(dashboard)"]`
+    await taikoInteraction.Click(`${tab}`,'xpath')
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(5000)
+})
+
+step("Verify if the medication <medicine> is present", async function (medicine) {
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${medicine}.json`
+    var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+    var drugName = medicalPrescriptions.drug_name
+    await taikoElement.isPresent(text(drugName))
+})

@@ -10,7 +10,8 @@
         {
             "type": "TextArea",
             "label": "Procedure",
-            "value": "admission order procedure"
+            "value": "admission order procedure",
+            "above":"Surgeon"
         },
         {
             "type": "TypeDropdown",
@@ -20,7 +21,7 @@
         {
             "type": "TypeDropdown",
             "label": "Assisting Surgeon",
-            "value": "Laurence Wicks"
+            "value": "Timothy Nunn"
         },
         {
             "type": "Date",
@@ -29,12 +30,12 @@
         },
         {
             "type": "Input",
-            "label": "Hour(s)",
+            "label": "Hours",
             "value": "1"
         },
         {
             "type": "Input",
-            "label": "Minute(s)",
+            "label": "Minutes",
             "value": "30"
         },
         {

@@ -552,3 +552,13 @@ step("Verify the patient present in search results", async function () {
     var patientId=gaugeHelper.get("patientIdentifier")
     await taikoElement.isExists(text(patientId))
 })
+
+step("Enter Nutritional values",async function(){
+    var weight=faker.random.numeric(2)
+    var height=faker.random.numeric(2)
+    var muac=faker.random.numeric(2)
+    gaugeHelper.save('patientWeight',weight)
+    await taikoInteraction.Write(height,'into',toRightOf('HEIGHT (Cm)'))
+    await taikoInteraction.Write(weight,'into',toRightOf('WEIGHT (Kg)'))
+    await taikoInteraction.Write(muac,'into',toRightOf('MUAC (Cm)'))
+})

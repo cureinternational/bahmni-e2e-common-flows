@@ -1,4 +1,4 @@
-const { button, toRightOf, textBox, into, write, press, click, timeField, below, scrollTo, text, evaluate, $, checkBox, waitFor, image, within, dropDown } = require('taiko');
+const { button, toRightOf, textBox, into, write, press, click, timeField, below, scrollTo, text, evaluate, $, checkBox, waitFor, image, within, dropDown, above } = require('taiko');
 var date = require("./date");
 var assert = require("assert");
 const { time, log } = require('console');
@@ -111,6 +111,10 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 {
                 await write(configuration.value, into(textBox(toRightOf(configuration.label),below(configuration.below))))
                 }
+                else if(configuration.above!==undefined)
+                {
+                await write(configuration.value, into(textBox(toRightOf(configuration.label),above(configuration.above))))
+                }
                 else
                 {
                 await write(configuration.value, into(textBox(toRightOf(configuration.label))))
@@ -126,14 +130,6 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     await write(configuration.value, into(textBox(toRightOf(configuration.label + " " + configuration.unit))))
                 break;
             case 'Button':
-                    if (!isNotObsForm)
-                    {
-                        await scrollTo(text(observationFormName, toRightOf("History and Examination")))
-                    }
-                    else
-                    {
-                        await scrollTo(text(observationFormName))
-                    }
                     await scrollTo(text(configuration.label))
                     await click(button(configuration.value), toRightOf(configuration.label))
                 break;
@@ -224,7 +220,7 @@ async function validateNewFormFromFile(configurations) {
                 break;
             case 'Date':
                 var dateFormatted = date.addDaysAndReturnDateInShortFormat(value)
-                assert.ok(await $(`//LABEL[contains(normalize-space(), "${label}")]/../following-sibling::SPAN/PRE[normalize-space() = "${dateFormatted}"]`).exists(), dateFormatted + " To Right of " + label + " is not exist.")
+                assert.ok((text(`${dateFormatted}]`)).exists(), dateFormatted + " To Right of " + label + " is not exist.")
                 break;
             case 'DateTime':
                 var dateFormatted = date.addDaysAndReturnDateInShortFormat(value.split(",")[0])

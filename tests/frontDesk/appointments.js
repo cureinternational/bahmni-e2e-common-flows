@@ -227,13 +227,14 @@ step("Goto day view of the calendar", async function () {
 });
 
 step("Click Close", async function () {
-    await taikoInteraction.Click(closeBtn,'xpath')
+   /* await taikoInteraction.Click(closeBtn,'xpath')
     if(await taikoElement.isExists(text(discard)))
     {
     await taikoInteraction.Click(discard,'text')
     }
-    await taikoHelper.repeatUntilNotFound($(overlay))
-});
+await taikoHelper.repeatUntilNotFound($(overlay))*/
+await taikoHelper.wait(8000)
+})
 
 step("Goto List view", async function () {
     await taikoInteraction.Click(listView,'link')

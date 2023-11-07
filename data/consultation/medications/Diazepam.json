@@ -5,5 +5,7 @@
     "dose": "1",
     "duration": "2",
     "notes": "Every 6 hours as needed for anxiety",
-    "isIPD":"true"
+    "isIPD":"true",
+    "startTime":"08:00",
+    "perDaySlots":"true"
 }

@@ -24,7 +24,7 @@
         },
         {
             "type": "Button",
-            "label": "Was a Surgical Trainee Present ?",
+            "label": "Was a Surgical Trainee Present?",
             "value": "Yes"
         },
         {

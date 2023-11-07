@@ -40,6 +40,7 @@ var errorElement='//DIV[@class="message-container error-message-container"]'
 var formClose='.ngdialog-close'
 var newformClose='//button[@aria-label="close"]'
 var formLink='a.form-link'
+var patientDashboard='[ng-click="gotoPatientDashboard()"]'
 
 step("Click Start IPD Visit", async function () {
     await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
@@ -92,6 +93,7 @@ step("verify name with id", async function () {
 
 step("Verify medical prescription in patient clinical dashboard", async function () {
     await taikoHelper.repeatUntilNotFound($(dashboardLoader))
+    await taikoInteraction.ScrollTo($(treatments))
     var prescriptionCount = gaugeHelper.get("prescriptionsCount")
     for (var i = 0; i < prescriptionCount; i++) {
         var prescriptionFile = gaugeHelper.get("prescriptions" + i)
@@ -99,7 +101,8 @@ step("Verify medical prescription in patient clinical dashboard", async function
         assert.ok(await text(medicalPrescriptions.drug_name, within($(treatments))).exists())
         if(medicalPrescriptions.rule!=undefined)
         {
-        assert.ok(await text(`${medicalPrescriptions.perDay}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
+        var weight=gaugeHelper.get('patientWeight')
+        assert.ok(await text(`${weight} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
         }
         else
         {
@@ -194,4 +197,9 @@ step("Validate new obs <form> on the patient clinical dashboard", async function
     await taikoInteraction.Click(formLink,'xpath',toRightOf(obsFormValues.ObservationClinicalFormName))
     await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationFormDetails,obsFormValues.ObservationClinicalFormName)
     await taikoInteraction.Click(newformClose,'xpath')
+});
+
+step("Goto patient dashboard", async function () {
+    await taikoInteraction.Click(patientDashboard,'xpath')
+    await taikoHelper.repeatUntilNotFound($(overlay))
 });
