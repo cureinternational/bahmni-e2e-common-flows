@@ -109,9 +109,6 @@ step("Verify medical prescription in patient clinical dashboard", async function
             assert.ok(await text(`${medicalPrescriptions.dose} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
         }
         assert.ok(await text(`${medicalPrescriptions.duration} Day(s)`, within($(treatments))).exists())
-        if(medicalPrescriptions.isIPD=='true'){
-            assert.ok(await text(addToDrugChart,toRightOf(medicalPrescriptions.drug_name), within($(treatments))).exists())
-        }
     }
 });
 

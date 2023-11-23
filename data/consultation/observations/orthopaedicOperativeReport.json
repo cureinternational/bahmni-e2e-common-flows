@@ -29,7 +29,7 @@
         },
         {
             "type": "TypeDropdown",
-            "label": "CURE Orthopaedic Procedures",
+            "label": "CURE Orthopedic Procedures",
             "value": "23195 Resection humeral head"
         },
         {
