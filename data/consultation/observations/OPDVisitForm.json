@@ -1,0 +1,62 @@
+{
+    "ObservationFormName": "OPD Visit Form",
+    "ObservationClinicalFormName":"OPD Visit Form",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",   
+            "label": "Speciality",
+            "value": "ENT"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Seen By",
+            "value": "Timothy Nunn"
+        },
+        {   
+            "type": "TextArea",
+            "label": "Medical Alert",
+            "value": "Medical Alert"
+        },
+        {
+            "type": "TextArea",
+            "label": "Reminder",
+            "value": "Reminder for OPD visit form"
+        },
+        {   
+            "type": "CustomDropdown",
+            "label": "History and Examinations",
+            "value": "Past History"
+        },
+        {
+            "type": "Group",
+            "label": "X-ray Interpretation",
+            "value": [
+                {
+                    "type":"Button",
+                    "label":"X-ray Interpretation",
+                    "value":"NAD"
+                }
+            ]
+        },
+        {   
+            "type": "TextArea",
+            "label": "Labs Comments",
+            "value": "Lab Comments for OPD visit form"
+        },
+        {   
+            "type": "TextArea",
+            "label": "Summary / Impression",            
+            "value": "Summary Impression for OPD visit form"
+        },
+        {   
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "Treatment Plan for OPD visit form"
+        },
+        {   
+            "type": "Button",
+            "label": "Outcome",
+            "value": "Admission"
+        }
+    ]
+}

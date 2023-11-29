@@ -1,0 +1,26 @@
+{
+    "ObservationFormName": "Radiology Study Report",
+    "ObservationClinicalFormName":"Radiology Study Report",
+    "ObservationFormDetails": [
+        {
+            "type": "Date",
+            "label": "Date of Study",
+            "value": "-2"
+        },
+        {
+            "type": "Date",
+            "label": "Date of Report",
+            "value": "-1"
+        },
+        {
+            "type": "TextArea",
+            "label": "Study Site, Projections and Comment",
+            "value": "Radiology site, projections and comment"
+        },
+        {
+            "type": "TextArea",
+            "label": "Study Findings",
+            "value": "Radiology findings"
+        }
+    ]
+}

@@ -152,7 +152,19 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 var dropDownLabel=configuration.label
                 var dropDownValue=configuration.value
                 var selectElement='//div[contains(text(),"Select")]'
-                await taikoInteraction.Click(selectElement,'xpath',toRightOf(dropDownLabel))
+                // if(configuration.below!==undefined)
+                // {
+                //     await click('Select', below(configuration.below).rightOf(dropDownLabel))
+                // }
+                // // else if(configuration.above!==undefined)
+                // // {
+                // //     await Click(selectElement, 'xpath', above(configuration.above).toRightOf(dropDownLabel))
+                // // }
+                // else
+                // {
+                //     await Click(selectElement, 'xpath', toRightOf(dropDownLabel))
+                // }
+                await taikoInteraction.Click(selectElement, 'xpath', toRightOf(dropDownLabel))
                 var element=`//div[contains(text(),"${dropDownValue}")]`
                 await taikoInteraction.Click(element,'xpath',toRightOf(dropDownLabel))
                 break;
@@ -214,7 +226,7 @@ async function validateNewFormFromFile(configurations) {
             label = configuration.short_name.trim();
         if (configuration.value_view !== undefined)
             value = configuration.value_view.trim();
-        switch (configuration.type) {
+        switch (configuration.type) { 
             case 'Group':
                 await validateNewFormFromFile(value)
                 break;
@@ -229,6 +241,7 @@ async function validateNewFormFromFile(configurations) {
             case 'TypeDropdown':
                 await verifyDropDown(label, value)
                 break;
+            case 'TemplatisedDropdown':
 
             default:
                 assert.ok(await text(value).exists())
