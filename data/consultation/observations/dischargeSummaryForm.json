@@ -41,7 +41,7 @@
             "type": "Date",
             "label": "Follow Up Date",            
             "value": "Radiology site, projections and comment"
-        },
+        }, 
         {   
             "type": "CustomDropdown",
             "label": "Orders for Follow-Up Clinic",
