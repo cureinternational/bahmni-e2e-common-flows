@@ -39,5 +39,13 @@
                 }
             ]
         }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Acknowledged by staff",
+            "value": "Edited automation comments",
+            "below":"Physician's Name"
+        }
     ]
 }

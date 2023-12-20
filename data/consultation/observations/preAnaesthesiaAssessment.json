@@ -17,5 +17,13 @@
             "label": "Respiratory disorders",
             "value": "Yes"
         }
+    ],
+    "EditObservationFormDetails":[
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "Edited automation test comments",
+            "below":"Other notes to be captured"
+        }
     ]
 }

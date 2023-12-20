@@ -195,7 +195,7 @@
 # Nurse saves the medication <medicine> timing
 * Click on Add to drug chart link for the medication <medicine>
 * Enter the start time for the medication <medicine>
-* Click on save
+* Click on drug chart save
 
 # Verify if the medication <medicine> is present in drug chart modal
 * Click on "Drug Chart" tab 

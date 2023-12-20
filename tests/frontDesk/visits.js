@@ -7,6 +7,7 @@ var fileExtension = require("../util/fileExtension")
 var assert = require('assert');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
+const taikoElement = require('../../../components/taikoElement.js');
 
 var startOpdVisit='Start OPD Visit'
 var submitBtn='.submit-btn-container'
@@ -41,6 +42,11 @@ var formClose='.ngdialog-close'
 var newformClose='//button[@aria-label="close"]'
 var formLink='a.form-link'
 var patientDashboard='[ng-click="gotoPatientDashboard()"]'
+var save='Save'
+var implicitWaitTime=parseInt(process.env.implicitTimeOut)
+var ipdToggle=process.env.enableIPDfeature
+
+
 
 step("Click Start IPD Visit", async function () {
     await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
@@ -92,6 +98,8 @@ step("verify name with id", async function () {
 });
 
 step("Verify medical prescription in patient clinical dashboard", async function () {
+if(ipdToggle=='true')
+{
     await taikoHelper.repeatUntilNotFound($(dashboardLoader))
     await taikoInteraction.ScrollTo($(treatments))
     var prescriptionCount = gaugeHelper.get("prescriptionsCount")
@@ -110,10 +118,14 @@ step("Verify medical prescription in patient clinical dashboard", async function
         }
         assert.ok(await text(`${medicalPrescriptions.duration} Day(s)`, within($(treatments))).exists())
     }
-});
+}
+}
+);
 
 step("Verify medical prescription is updated as non ipd for <medications>",async function(prescriptionNames)
 {
+    if(ipdToggle=='true')
+    {
     var prescriptionsList = prescriptionNames.split(',')
     var prescriptionsCount = prescriptionsList.length
     for (var i = 0; i < prescriptionsCount; i++) {
@@ -123,6 +135,7 @@ step("Verify medical prescription is updated as non ipd for <medications>",async
         var stoppedDrugElement=`//span[contains(text(),"${drugName}")]/parent::td[@class="drug strike-text"]`
         await taikoAssert.assertExists($(stoppedDrugElement))
     }
+}
 })
 step("Verify vitals", async function () {
     var vitalFormValues = gaugeHelper.get("Vitals")
@@ -190,8 +203,9 @@ step("Validate new obs <form> on the patient clinical dashboard", async function
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
     await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoHelper.wait(1000)
-    await taikoInteraction.Click(formLink,'xpath',toRightOf(obsFormValues.ObservationClinicalFormName))
+    await taikoElement.waitToExists(text(obsFormValues.ObservationClinicalFormName))
+    var formLinkElement='//span[text()="'+obsFormValues.ObservationClinicalFormName+'"]/following-sibling::span/a'
+    await taikoInteraction.Click(formLinkElement,'xpath')
     await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationFormDetails,obsFormValues.ObservationClinicalFormName)
     await taikoInteraction.Click(newformClose,'xpath')
 });
@@ -200,3 +214,13 @@ step("Goto patient dashboard", async function () {
     await taikoInteraction.Click(patientDashboard,'xpath')
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
+
+step("Edit new obs <form> on the patient clinical dashboard",async function(formPath){
+    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(1000)
+    var editForm='//span[text()="'+obsFormValues.ObservationClinicalFormName+'"]/parent::div/descendant::i'
+    await taikoInteraction.Click(editForm,'xpath')
+    await taikoHelper.executeConfigurations(obsFormValues.EditObservationFormDetails, obsFormValues.ObservationFormName)
+    await taikoInteraction.Click(save,'text')
+})

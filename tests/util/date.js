@@ -105,6 +105,14 @@ function getDateFrommmddyyyy(dateString) {
     // month is 0-based, that's why we need dataParts[0] - 1
     return new Date(+dateParts[2], dateParts[0] - 1, +dateParts[1]);
 }
+function getDateFromddmmyyyy(dateString) {
+    logHelper.info(dateString)
+    var dateParts = dateString.split("/");//dd/mm/yyyy
+    // month is 0-based, that's why we need dataParts[1] - 1
+
+     return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+     ;
+}
 function nextYear() {
     var nextYear = new Date();
     nextYear.setFullYear(nextYear.getFullYear() + 1);
@@ -148,6 +156,7 @@ module.exports = {
     tomorrow: tomorrow,
     nextYear: nextYear,
     getDateFrommmddyyyy: getDateFrommmddyyyy,
+    getDateFromddmmyyyy:getDateFromddmmyyyy,
     getShortNameOfMonth: getShortNameOfMonth,
     getyyyymmddFormattedDate: getyyyymmddFormattedDate,
     getDateYearsAgo: getDateYearsAgo,

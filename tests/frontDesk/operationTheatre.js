@@ -19,7 +19,7 @@ step("Verify the presence of calendar", async function () {
 });
 
 step('Add note verify the note',async function(){
-    var textFound=await taikoElement.isNotExists($(savedNotesElement))
+    var textFound=await taikoElement.isNotExists($(deleteNotesElement))
     if(textFound)
     {
     await taikoInteraction.Click(notesTabElement,'xpath')

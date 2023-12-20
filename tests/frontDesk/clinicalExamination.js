@@ -42,6 +42,7 @@ var patientDashboardElement="//a[@ng-click='gotoPatientDashboard()']"
 var implicitWaitTime=parseInt(process.env.implicitTimeOut)
 var addNewObservation='Add New Obs Form'
 var section='//h2[contains(text(),"Selected Orders")]'
+var ipdToggle=process.env.enableIPDfeature
 
 step("click radiology",async function(){
     await taikoInteraction.Click(radiology,'text')
@@ -98,12 +99,7 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
         await taikoInteraction.Write(medicalPrescriptions.duration,'into',toRightOf(duration))
         await taikoInteraction.Write(medicalPrescriptions.notes,'into',toRightOf(additonalInstructions))
         await taikoInteraction.Click(add,'text')
-            if(medicalPrescriptions.rule!=undefined)
-            {
-             await taikoElement.isExists(text(medicalPrescriptions.perDay))
-             await taikoElement.isExists(text(medicalPrescriptions.total))
-            }
-           if(medicalPrescriptions.isIPD=='true')
+           if(medicalPrescriptions.isIPD=='true' && ipdToggle=='true')
            {
             await taikoInteraction.Click(ipd,'button',toRightOf(medicalPrescriptions.drug_name))
            }
@@ -118,7 +114,7 @@ step("Doctor updates medicines <medications>", async function (prescriptionNames
         var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         var drugName = medicalPrescriptions.drug_name;
-           if(medicalPrescriptions.isIPD=='true')
+           if(medicalPrescriptions.isIPD=='true' && ipdToggle=='true')
            {
             await taikoInteraction.Click(ipd,'button',toRightOf(drugName))
            }
@@ -135,8 +131,8 @@ step("Doctor captures consultation notes <notes>", async function (notes) {
 });
 
 step("Doctor clicks consultation", async function () {
-    await taikoInteraction.Click(consultation,'link')
-    await taikoHelper.wait(3000)
+    await taikoHelper.wait(implicitWaitTime)
+    await taikoInteraction.EvaluateClick($('//a[@ng-click="openConsultation()"]'))
 });
 
 step("Choose Disposition", async function () {

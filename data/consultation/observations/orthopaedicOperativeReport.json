@@ -48,5 +48,13 @@
             "label": "Planned Return to Operating Room",
             "value": "No"
         }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Implants Used",
+            "value": "edited automation implants used notes",
+            "below":"Operation Note"
+        }
     ]
 }

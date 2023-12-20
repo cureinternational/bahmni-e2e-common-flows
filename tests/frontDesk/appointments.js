@@ -12,7 +12,7 @@ const taikoAssert = require('../../../components/taikoAssert.js');
 var addNewAppointment = 'Add new appointment'
 var patientNameId='Patient Name or ID'
 var lastName = gaugeHelper.get("patientLastName")
-var searchbox='//input[@role="searchbox"]'
+var searchbox='//input[@id="PatientSearch"]'
 var service='Service'
 var appointmentCategorySearch='appointment-category-search'
 var specialitySearch='speciality-search'
@@ -93,8 +93,8 @@ step("Select patient", async function () {
     var lastName = gaugeHelper.get("patientLastName")
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientName = `${firstName} ${lastName} (${patientIdentifierValue})`
-    var patientNameElement=`//a[text()='${patientName}']`
-        await taikoInteraction.Write(firstName,"xpath",searchbox)
+    var patientNameElement=`//div[text()='${patientName}']`
+        await taikoInteraction.Write(patientIdentifierValue,"xpath",searchbox)
         await taikoInteraction.ScrollTo($(patientNameElement))
         if(await taikoElement.isExists($(patientNameElement)))
         {
@@ -173,8 +173,8 @@ step("Close the appointment popup",async function(){
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
     await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`))
     await taikoHelper.repeatUntilNotFound($(overlay))
-    gaugeHelper.save("appointmentStartDate", date.getDateFrommmddyyyy(await textBox({ placeHolder: "mm/dd/yyyy" }).value()))
-    gaugeHelper.save("startDate", await textBox({ placeHolder: "mm/dd/yyyy" }).value())
+    gaugeHelper.save("appointmentStartDate", date.getDateFromddmmyyyy(await textBox({ placeHolder: "dd/mm/yyyy" }).value()))
+    gaugeHelper.save("startDate", await textBox({ placeHolder: "dd/mm/yyyy" }).value())
     gaugeHelper.save("startTime", await textBox({ placeHolder: "hh:mm" }).value())
     gaugeHelper.save("AM", await dropDown(below('Start Time')).value())
     gauge.message(`Appointment start date ${gaugeHelper.get("startDate")}`)
@@ -183,7 +183,7 @@ step("Open calender at time <appointmentTime>", async function (appointmentTime)
 });
 
 step("put <appointmentDate> as appointment date", async function (appointmentDate) {
-    gaugeHelper.save("appointmentStartDate", date.getDateFrommmddyyyy(appointmentDate))
+    gaugeHelper.save("appointmentStartDate", date.getDateFromddmmyyyy(appointmentDate))
 });
 
 
@@ -246,6 +246,7 @@ step("select the Regular appointment option", async function () {
 
 step("select appointment status as <status>",async function(status){
     var appointMentStatus=`//span[text()="${status}"]`
+    await taikoInteraction.ScrollTo($(appointMentStatus))
     await taikoInteraction.Click(appointMentStatus,'xpath')
 })
 
@@ -350,10 +351,19 @@ step("Create a service if it does not exist", async function () {
     await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
+step("Search patient in appointment list", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+    var patientFirstName = gaugeHelper.get("patientFirstName")
+    var patientLastName = gaugeHelper.get("patientLastName")
+    var patientName = `${patientFirstName} ${patientLastName} (${patientIdentifierValue})`
+    var patientNameElement=`//a[text()='${patientName}']`
+    await taikoInteraction.Write(patientIdentifierValue,"into",{ placeHolder: "Patient Name or ID" })
+    await taikoInteraction.Click(patientNameElement,'xpath')
+})
 step("Verify the appointment is present in waitlist", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     var patientIdElement="//A[text()='" +patientIdentifierValue+ "']"
-    await taikoassert.assertExists($(patientIdElement))
+    await taikoElement.waitToExists($(patientIdElement))
 });
 
 step("Manage locations", async function () {
@@ -428,18 +438,19 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
 
  step('Enter the appointment date',async function(){
     let appointmentDate = gaugeHelper.get("startDate");
-    await taikoInteraction.Write(appointmentDate,"into",{placeholder:"mm/dd/yyyy"})
+    await taikoInteraction.Write(appointmentDate,"into",{placeholder:"dd/mm/yyyy"})
  })
 
  step("check the date for holiday on <holidayDate>",async function(holidayDate){
-    await taikoInteraction.Write(holidayDate,"into",{placeholder:"mm/dd/yyyy"})
+    await taikoInteraction.Write(holidayDate,"into",{placeholder:"dd/mm/yyyy"})
     await taikoInteraction.pressEnter()
     var text=await taikoElement.getText($(holidayDateElement))
     taikoAssert.assertEquals(text,holidayText)
     await taikoInteraction.Write('','into',below(startTime))
  })
  step("Verify the conflict message",async function(){
-    await taikoassert.assertExists(text(conflictMessage))
+    var conflictMessageElement=`//span[contains(text(),"${conflictMessage}")]`
+    await taikoElement.waitToExists($(conflictMessageElement))
  }) 
 
  step("Check and Save anyway",async function(){

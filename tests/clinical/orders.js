@@ -48,6 +48,7 @@ step("Click the order <order>", async function (order) {
    await taikoHelper.wait(1000)
    await taikoBrowserAction.switchTab(/lab/)
    await taikoBrowserAction.switchTab(/Lab Entry/)
+   await taikoBrowserAction.reloadPage()
    await taikoElement.waitToExists(text(patientFirstName))
    await taikoAssert.assertExists(text(labOrder.test))
  })

@@ -101,7 +101,6 @@ async function selectEntriesTillIterationEnds(entrySequence) {
 
 async function executeConfigurations(configurations, observationFormName, isNotObsForm) {
     for (var configuration of configurations) {
-        await wait(1000)
         switch (configuration.type) {
             case 'Group':
                 await executeConfigurations(configuration.value, observationFormName, isNotObsForm)
@@ -109,14 +108,17 @@ async function executeConfigurations(configurations, observationFormName, isNotO
             case 'TextArea':
                 if(configuration.below!==undefined)
                 {
+                await scrollTo(textBox(toRightOf(configuration.label),below(configuration.below)))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label),below(configuration.below))))
                 }
                 else if(configuration.above!==undefined)
                 {
+                await scrollTo(textBox(toRightOf(configuration.label),below(configuration.above)))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label),above(configuration.above))))
                 }
                 else
                 {
+                await scrollTo(textBox(toRightOf(configuration.label)))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label))))
                 }
                 break;
@@ -174,6 +176,67 @@ async function selectDropDown(locator,value){
     await wait(1000)
     await taikoInteraction.Click(element,'xpath')
 }
+
+async function clearConfigurations(configurations){
+    for (var configuration of configurations) {
+        await wait(1000)
+        switch (configuration.type) {
+            case 'TextArea':
+                if(configuration.below!==undefined)
+                {
+                    await click(textBox(toRightOf(configuration.label),below(configuration.below)))
+                    await taikoInteraction.Clear(toRightOf(configuration.label),below(configuration.below))
+                }
+                else if(configuration.above!==undefined)
+                {
+                    await click(textBox(toRightOf(configuration.label),above(configuration.above)))
+                    await taikoInteraction.Clear(toRightOf(configuration.label),above(configuration.above))
+                }
+                else
+                {
+                    await taikoInteraction.Click((toRightOf(configuration.label),'textbox'))
+                    await taikoInteraction.Clear(toRightOf(configuration.label))
+                }
+            break;
+            case 'Input':
+                await taikoInteraction.Clear(toRightOf(configuration.label))
+            break;
+            case 'TextBox':
+                if (configuration.unit === undefined)
+                    await taikoInteraction.Clear(toRightOf(configuration.label))
+                else
+                    await taikoInteraction.Clear(toRightOf(configuration.label + " " + configuration.unit))
+            break;
+            case 'Button':
+            break;
+            case 'Date':
+        
+            break;
+            case 'DateTime':
+
+            break;
+            case 'TypeDropdown':
+                var dropDownLabel=configuration.label
+                await unselectDropDown(dropDownLabel)
+            break;
+            case 'CustomDropdown':
+                var dropDownLabel=configuration.label
+                await taikoInteraction.Click('//span[@title="Clear value"]','xpath',toRightOf(dropDownLabel))
+                var selectElement='//div[contains(text(),"Select")]'
+                await taikoInteraction.Click(selectElement,'xpath',toRightOf(dropDownLabel))
+            break;
+            case 'Dropdown':
+            break;
+            default:
+            logHelper.info("Unhandled " + configuration.label + ":" + configuration.value)
+        }
+    }
+}
+
+async function unselectDropDown(locator){
+    await taikoInteraction.Click('//span[@class="Select-clear"]','xpath',toRightOf(locator))
+}
+
 async function validateFormFromFile(configurations) {
     for (var configuration of configurations) {
         var label = configuration.label
@@ -247,6 +310,7 @@ module.exports = {
     selectEntriesTillIterationEnds: selectEntriesTillIterationEnds,
     verifyConfigurations: verifyConfigurations,
     executeConfigurations: executeConfigurations,
+    clearConfigurations:clearConfigurations,
     repeatUntilNotFound: repeatUntilNotFound,
     repeatUntilFound: repeatUntilFound,
     repeatUntilEnabled: repeatUntilEnabled,

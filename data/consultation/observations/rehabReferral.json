@@ -27,5 +27,13 @@
             "label": "Cast Instructions",
             "value": "Remove"
         }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Additional Comments",
+            "value": "Edited automation comments",
+            "below":"Cast Instructions"
+        }
     ]
 }

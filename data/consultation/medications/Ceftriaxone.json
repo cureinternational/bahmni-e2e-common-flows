@@ -6,7 +6,5 @@
     "dose": "1",
     "duration": "2",
     "notes": "Every 12 hours for 5 days",
-    "isIPD":"true",
-    "perDay": "70 mg",
-    "total":"280 mg"
+    "isIPD":"true"
 }

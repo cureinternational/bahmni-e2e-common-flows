@@ -37,5 +37,13 @@
             "label": "Treatment Plan",
             "value": "automation test treatment plan comments"
         }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Impairments (Body Function)",
+            "value": "Edited automation test comments",
+            "below":"Impairments (Body Structure)"
+        }
     ]
 }

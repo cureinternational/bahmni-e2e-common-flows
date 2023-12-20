@@ -10,7 +10,9 @@ function info(key,message) {
         }
         else
         {
+            if(message!=undefined)
             console.info(key,message)
+            gauge.message(`${key} ${message}`)
         }
     }
 }
@@ -26,8 +28,11 @@ function error(key,message) {
         }
         else
         {
+            if(message!=undefined)
+            {
             console.error(key,message)
             gauge.message(`${key} ${message}`)
+            }
         }
     }
 }

@@ -17,12 +17,14 @@
             "label": "Other Nurse Name",
             "value": "automation other nurse name test",
             "below":"Nurse"
-        },
+        }
+    ],
+    "EditObservationFormDetails": [
         {
             "type": "TextArea",
             "label": "Medical Orders",
-            "value": "automation medical order test",
-            "below":"Other Nurse Name"
+            "value": "edited automation medical order test",
+            "below":"Notes"
         }
     ]
 }

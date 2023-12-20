@@ -198,18 +198,20 @@
 * Search and select provider
 * Search and select location
 * select the Regular appointment option
-* check the date for holiday on "12/24/2023"
+* check the date for holiday on "24/12/2023"
 * select appointment status as "Waitlist"
 * Check and Save
 * wait for "1000"
 * Click Close
 * Select awaiting appointments  
+* Search patient in appointment list
 * Verify the appointment is present in waitlist
 * Click on home page
 
 # Receptionist cancels the newly created waitlist appointment
 * Open "Appointment scheduling" module
 * Select awaiting appointments 
+* Search patient in appointment list
 * Click patient name from waitlist
 * Click Cancel
 * Click yes

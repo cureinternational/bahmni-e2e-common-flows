@@ -67,11 +67,14 @@
             "type": "Button",
             "label": "Physician Orders on Admission",
             "value": "Remove Cast"
-        },
+        }
+    ],
+    "EditObservationFormDetails": [
         {
             "type": "TextArea",
             "label": "Comments",
-            "value": "automation test comments"
+            "value": "edited automation test comments",
+            "below":"Physician Orders on Admission"
         }
     ]
 }

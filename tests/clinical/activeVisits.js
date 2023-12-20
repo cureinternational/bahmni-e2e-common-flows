@@ -3,6 +3,7 @@ const {text,$} = require('taiko');
 const gaugeHelper = require("../util/gaugeHelper");
 const taikoInteraction = require("../../../components/taikoInteraction.js");
 const taikoassert= require("../../../components/taikoAssert.js");
+const taikoElement = require('../../../components/taikoElement.js');
 var tab='//li[contains(@class,"tab-item")]'
 var speciliatyList=process.env.specialityList.split(',')
 var myPatients='My Patients'

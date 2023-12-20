@@ -9,7 +9,7 @@ const taikoassert=require('../../../components/taikoAssert.js')
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='SAVE'
 var img='//select/../img'
-var imgElement='//div[@class="image-container"]//img'
+var imgElement='//div[@class="file"]//img'
 var imgConcept='//a[@class="img-concept"]'
 var slide='//img[@class="slide"]'
 var closeBtn='.dialog-close-btn'

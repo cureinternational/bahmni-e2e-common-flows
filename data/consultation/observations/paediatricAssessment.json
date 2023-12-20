@@ -5,17 +5,28 @@
         {
             "type": "TextArea",
             "label": "Breast Feeding and Sunlight Exposure",
+            "below":"Birth Delivery History",
             "value": "automation test Sunlight Exposure comments"
         },
         {
             "type": "TextArea",
             "label": "Assessment",
+            "below":"Central Nervous System",
             "value": "automation test assessment comments"
         },
         {
             "type": "TextArea",
             "label": "Treatment Plan",
+            "below":"Assessment",
             "value": "automation test treatment plan comments"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "below":"Treatment Plan",
+            "value": "edited automation test comments"
         }
     ]
 }

@@ -27,5 +27,12 @@
             "label": "Body Position",
             "value": "Sitting"
         }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "Input",
+            "label": "Temperature (C)",
+            "value": "1"
+        }
     ]
 }
