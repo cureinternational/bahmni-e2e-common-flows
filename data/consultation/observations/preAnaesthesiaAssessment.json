@@ -5,17 +5,20 @@
         {
             "type": "Button",
             "label": "Prematurity / time on a ventilator",
-            "value": "Yes"
+            "value": "Yes",
+            "above":"Did you check for Allergies?"
         },
         {
             "type": "Button",
             "label": "Did you check for Allergies?",
-            "value": "Yes"
+            "value": "Yes",
+            "above":"Respiratory disorders"
         },
         {
             "type": "Button",
             "label": "Respiratory disorders",
-            "value": "Yes"
+            "value": "Yes",
+            "above":"Smoking Status"
         }
     ],
     "EditObservationFormDetails":[

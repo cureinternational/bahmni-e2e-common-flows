@@ -60,7 +60,6 @@ step("Check if <appName> app is opened", async function (appName) {
         return
     gauge.message("App name exists")
     await taikoInteraction.Click(appName.toUpperCase())
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("wait for overlay to disappear", async function () {
@@ -68,7 +67,6 @@ step("wait for overlay to disappear", async function () {
 });
 
 step("wait for overlay and Saved to disappear", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await waitFor(async () => !(await text("Saved", within('.message-text')).exists()));
 });
 

@@ -10,14 +10,14 @@ const logHelper = require('./logHelper');
 
 async function Click(type, value, relativeLocator) {
     const selector = getSelector(type, value);
-  
+
     if (typeof relativeLocator === 'undefined') {
       await click(selector);
     } else {
       await click(selector, relativeLocator);
     }
   }
-  
+
   function getSelector(type, value) {
     switch (type) {
       case 'link':
@@ -95,7 +95,6 @@ async function selectEntriesTillIterationEnds(entrySequence) {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier" + (entrySequence));
     await write(patientIdentifierValue)
     await press('Enter', { waitForNavigation: true, navigationTimeout: process.env.actionTimeout });
-    await taikoHelper.repeatUntilNotFound($(overlay))
 }
 
 
@@ -132,8 +131,21 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     await write(configuration.value, into(textBox(toRightOf(configuration.label + " " + configuration.unit))))
                 break;
             case 'Button':
+                if(configuration.below!==undefined)
+                {
+                    await scrollTo(text(configuration.label))
+                    await click(button(configuration.value), toRightOf(configuration.label),below(configuration.below))
+                }
+                else if(configuration.above!==undefined)
+                {
+                    await scrollTo(text(configuration.label))
+                    await click(button(configuration.value), toRightOf(configuration.label),above(configuration.above))
+                }
+                else
+                {
                     await scrollTo(text(configuration.label))
                     await click(button(configuration.value), toRightOf(configuration.label))
+                }
                 break;
             case 'Date':
                 var dateValue = date.addDaysAndReturnDateInDDMMYYYY(configuration.value)
@@ -153,10 +165,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
             case 'CustomDropdown':
                 var dropDownLabel=configuration.label
                 var dropDownValue=configuration.value
-                var selectElement='//div[contains(text(),"Select")]'
-                await taikoInteraction.Click(selectElement,'xpath',toRightOf(dropDownLabel))
-                var element=`//div[contains(text(),"${dropDownValue}")]`
-                await taikoInteraction.Click(element,'xpath',toRightOf(dropDownLabel))
+                await selectCustomDropDown(dropDownLabel, dropDownValue)
                 break;
             case 'Dropdown':
                 var dropDownLabel=configuration.label
@@ -170,13 +179,19 @@ async function executeConfigurations(configurations, observationFormName, isNotO
 }
 async function selectDropDown(locator,value){
     await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(locator))
-    await write(value, into(toRightOf(locator)))
+    await taikoInteraction.Write(value,'into',toRightOf(locator))
     var element=`//div[contains(text(),"${value}")]`
     await taikoElement.waitToExists($(element))
     await wait(1000)
     await taikoInteraction.Click(element,'xpath')
 }
 
+async function selectCustomDropDown(locator,value){
+    var selectElement='//div[contains(text(),"Select...")]'
+    await taikoInteraction.Click(selectElement,'xpath',toRightOf(locator))
+    var element=`//div[contains(text(),"${value}")]`
+    await taikoInteraction.Click(element,'xpath',toRightOf(locator))
+}
 async function clearConfigurations(configurations){
     for (var configuration of configurations) {
         await wait(1000)
@@ -210,7 +225,7 @@ async function clearConfigurations(configurations){
             case 'Button':
             break;
             case 'Date':
-        
+
             break;
             case 'DateTime':
 

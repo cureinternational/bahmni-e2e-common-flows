@@ -41,7 +41,7 @@
 * Search and select location
 * select the recurring appointment option
 * select Repeats every <days> days
-* select the End date as after <times> occurances                
+* select the End date as after <times> occurances
 * Check and Save
 * wait for "1000"
 * Click Close
@@ -191,26 +191,26 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Click Add New appointment
-* Select patient 
+* Select patient
 * Search and select category
 * Search and select speciality
 * Search and select service
 * Search and select provider
 * Search and select location
 * select the Regular appointment option
-* check the date for holiday on "24/12/2023"
+* check the date for holiday on "02/03/2024"
 * select appointment status as "Waitlist"
 * Check and Save
 * wait for "1000"
 * Click Close
-* Select awaiting appointments  
+* Select awaiting appointments
 * Search patient in appointment list
 * Verify the appointment is present in waitlist
 * Click on home page
 
 # Receptionist cancels the newly created waitlist appointment
 * Open "Appointment scheduling" module
-* Select awaiting appointments 
+* Select awaiting appointments
 * Search patient in appointment list
 * Click patient name from waitlist
 * Click Cancel

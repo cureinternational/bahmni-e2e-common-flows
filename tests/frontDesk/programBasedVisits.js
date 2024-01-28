@@ -29,7 +29,6 @@ var programList=process.env.programList.split(',')
 step("Click Start Special OPD Visit", async function() {
     await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
     await taikoInteraction.Click(startSpecialOpdVisit,'button',within($(submitBtn)))
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Begin new program enrollment", async function() {
@@ -58,14 +57,12 @@ step("Select other details id <id>, dr incharge <doctor> and treatment stage <st
 
 step("Enroll in program", async function() {
     await taikoInteraction.Click(enroll,'button')
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoElement.waitToExists(text(saved))
 });
 
 step("Open the program dashboard <program>", async function(program) {
     await taikoElement.waitToExists(text(`${program} Dashboard`))
     await taikoInteraction.Click(`${program} Dashboard`,'text',within($(dashboardLink)))
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Goto All sections", async function () {
@@ -76,7 +73,7 @@ step("Goto All sections", async function () {
 
 step("Verify the programs list",async function(){
     var tabLength=(await $(tab).elements()).length
-   
+
    for(let i=1;i<tabLength;i++)
    {
     var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`

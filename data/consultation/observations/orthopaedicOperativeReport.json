@@ -5,7 +5,8 @@
         {
             "type": "Button",
             "label": "Pre-op Diagnosis same as Post-op?",
-            "value": "Yes"
+            "value": "Yes",
+            "above":"Consultant Surgeon"
         },
         {
             "type": "TypeDropdown",
@@ -20,12 +21,14 @@
         {
             "type": "Button",
             "label": "Role",
-            "value": "Performed"
+            "value": "Performed",
+            "above":"Was a Surgical Trainee Present?"
         },
         {
             "type": "Button",
             "label": "Was a Surgical Trainee Present?",
-            "value": "Yes"
+            "value": "Yes",
+            "above":"CURE Orthopedic Procedures"
         },
         {
             "type": "TypeDropdown",
@@ -35,7 +38,8 @@
         {
             "type": "Button",
             "label": "Laterality",
-            "value": "Left"
+            "value": "Left",
+            "above":"Site"
         },
         {
             "type": "TextArea",
@@ -46,7 +50,8 @@
         {
             "type": "Button",
             "label": "Planned Return to Operating Room",
-            "value": "No"
+            "value": "No",
+            "above":"Planned Return Date to OR"
         }
     ],
     "EditObservationFormDetails": [

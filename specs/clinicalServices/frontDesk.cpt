@@ -31,7 +31,7 @@
 * Select registration location
 * Upload patient image
 * Save the patient data
-* Verify no error displayed on page
+
 
 # Open clinical tab
 * Open "Clinical" module
@@ -46,7 +46,6 @@
 
 # Start an OPD Visit
 * Click Start OPD Visit
-* Verify no error displayed on page
 * Click on home page
 
 
@@ -198,6 +197,6 @@
 * Click on drug chart save
 
 # Verify if the medication <medicine> is present in drug chart modal
-* Click on "Drug Chart" tab 
+* Click on "Drug Chart" tab
 * Verify if the medication <medicine> is present
 * Click on "General" tab

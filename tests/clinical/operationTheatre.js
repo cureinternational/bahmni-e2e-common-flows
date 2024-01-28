@@ -107,7 +107,6 @@ step("Enter reason for surgical block cancellation", async function() {
 
 step("Save OT data", async function() {
     await taikoInteraction.Click(save,'text')
-	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Enter Patient id / name", async function() {

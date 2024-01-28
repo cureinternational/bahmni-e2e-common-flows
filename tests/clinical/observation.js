@@ -24,11 +24,11 @@ var assessment='Assessment'
 var plan='Plan'
 var comments='Comments'
 var cancel='Cancel'
+const implicitWaitTime=parseInt(process.env.implicitTimeOut)
 
 step("Click Vitals", async function () {
     await taikoHelper.repeatUntilFound(text(vital))
     await taikoInteraction.Click(vitals,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.repeatUntilFound(text(pulse))
 
 });
@@ -38,15 +38,14 @@ step("Enter History and examination details <filePath>", async function (filePat
     var historyAndExaminationDetails = JSON.parse(fileExtension.parseContent(historyAndExaminationFile))
     gaugeHelper.save("historyAndExaminationDetails", historyAndExaminationDetails)
     var formNameElement=`'//button[contains(text(),"${historyAndExaminationDetails.ObservationFormName}")]'`
-    if (await taikoElement.isNotPresent($(formNameElement))) 
+    if (await taikoElement.isNotPresent($(formNameElement)))
     {
         await taikoInteraction.Click(addNewObsForm,'text')
         await taikoInteraction.Click(historyAndExaminationDetails.ObservationFormName,'button')
-	} else 
+	} else
     {
         await taikoInteraction.Click(historyAndExaminationDetails.ObservationFormName,'link')
 	}
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Write(historyAndExaminationDetails.History_Notes, 'into', historyNotes)
     await taikoInteraction.Click(historyAndExaminationDetails.Smoking_status,'text', toRightOf(smokingHistory));
     await taikoInteraction.Attach(reportjpg,$(report));
@@ -61,12 +60,11 @@ step("Enter Orthopaedic followup <filePath>", async function (filePath) {
     if (!await taikoElement.isPresent(link(followupdetails.ObservationFormName))) {
         await taikoInteraction.Click(addNewObsForm,'text')
         await taikoInteraction.Click(followupdetails.ObservationFormName,'button')
-	} 
-    else 
+	}
+    else
     {
         await taikoInteraction.Click(followupdetails.ObservationFormName,'link')
 	}
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Dropdown(toRightOf(author),followupdetails.author)
     await taikoInteraction.Write(followupdetails.comment, 'into',toRightOf(comment));
     await taikoInteraction.Write(followupdetails.objective, 'into',toRightOf(objective));
@@ -78,6 +76,7 @@ step("Enter Orthopaedic followup <filePath>", async function (filePath) {
 
 step("Click patient name", async function () {
     var firstName = gaugeHelper.get("patientFirstName")
+    await taikoHelper.wait(implicitWaitTime)
     var patientElement=`//div[@class='fc-title' and contains(text(),'${firstName}')]`
     await taikoInteraction.EvaluateClick($(patientElement))
     var btnstatus= await taikoElement.elementDisabled(button(cancel))
@@ -98,4 +97,4 @@ step("Should not find the patient's name", async function () {
 step("Click patient name from waitlist", async function () {
     var fullName = gaugeHelper.get("patientFullName")
     await taikoInteraction.Click(fullName,'text')
-});  
+});

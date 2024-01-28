@@ -60,7 +60,6 @@ step("Verify the visit locations", async function () {
 })
 
 step("Verify the appointments in grid view", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(implicitTimeOut)
     await verifyGrid('Specialities')
     await verifyGrid('Providers')
@@ -70,7 +69,6 @@ step("Verify the appointments in grid view", async function () {
 
 async function verifyGrid(gridName) {
     var table = `//h3[text()="${gridName}"]//parent::div//table`
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(2000)
     await taikoassert.assertExists($(table))
 }
@@ -88,11 +86,9 @@ step("Enter the patient id in search box", async function () {
 
 step("Verify the patient presence in the <wardType>", async function (wardType) {
     var ward = `//span[contains(text(),'${wardType}')]`
-    await taikoHelper.repeatUntilNotFound($(overlay))
     if (!await taikoElement.isPresent($('//input[@ng-model="searchText"]'))) {
         await taikoInteraction.Click(`${ward}`, 'xpath')
     }
-    await taikoHelper.repeatUntilNotFound($(overlay))
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Write(patientIdentifierValue, 'xpath', '//input[@ng-model="searchText"]')
     await taikoElement.isExists(text(patientIdentifierValue))
@@ -100,7 +96,6 @@ step("Verify the patient presence in the <wardType>", async function (wardType) 
 
 step("Admit the patient to ipd in <visitType> visit", async function (visitType) {
 
-    taikoHelper.repeatUntilNotFound($(overlay))
     await taikoElement.waitToExists(dropDown(patientMovementDropdown))
     await taikoHelper.wait(2000)
     await taikoInteraction.Dropdown(patientMovementDropdown, admitPatient)
@@ -115,7 +110,6 @@ step("Admit the patient to ipd in <visitType> visit", async function (visitType)
 })
 
 step("Search and select patient", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     var firstName = gaugeHelper.get("patientFirstName")
     var lastName = gaugeHelper.get("patientLastName")
     var patientName = `${firstName} ${lastName}`
@@ -133,12 +127,10 @@ step("Select a bed from <wardType>", async function (wardType) {
 
 step("Select the patient", async function () {
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Click(patientIdentifierValue, 'link')
 })
 
 step("Click on IPD", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoElement.waitToExists($(ipdElement))
     await taikoHelper.wait(1000)
     await taikoInteraction.Click(ipd, 'text')
@@ -172,7 +164,6 @@ step('Close the ADT page', async function () {
 })
 
 step("Verify the patient is not appearing", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
     assert.ok(text(noResultsFound).exists())
 })
 
@@ -252,7 +243,6 @@ step("Enter the start time for the medication <drug>", async function (drug) {
     var element = `//div[@class="bx--time-picker__input"]`
     await taikoInteraction.Click(`${element}`, 'xpath')
     await taikoInteraction.Write(startTime,'into',{"placeholder":"hh:mm"})
-    await taikoHelper.repeatUntilNotFound($(overlay))
 }
 })
 
@@ -267,7 +257,6 @@ step("Click on drug chart save", async function () {
 step("Click on <tabType> tab", async function (tabType) {
     //var tab = `//a[contains(text(),"${tabType}") and @ng-click="showDashboard(dashboard)"]`
    // await taikoInteraction.Click(`${tab}`,'xpath')
-    //await taikoHelper.repeatUntilNotFound($(overlay))
     //await taikoHelper.wait(5000)
 })
 

@@ -27,10 +27,9 @@ var historyAndExamination='History and Examination'
 var generalWard='General Ward'
 var generalWardRoom='General Ward room'
 var obsSearchElement='input#templateSearch'
-var implicitWaitTime=parseInt(process.env.implicitTimeOut)
+var implicitTime=parseInt(process.env.implicitTimeOut)
 
 step("Doctor opens admission tab", async function () {
-	await taikoHelper.repeatUntilNotFound(overlay)
 	await taikoInteraction.Click(toAdmit,'text')
 });
 
@@ -51,16 +50,13 @@ step("Allocate available bed", async function () {
 
 step("Click Assign", async function () {
 	await taikoInteraction.Click(assign,'text')
-	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Admit the patient", async function () {
 	await taikoInteraction.Click(admit,'text')
-	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Discharge the patient", async function () {
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoHelper.wait(2000)
 	await taikoElement.waitToExists(dropDown(patientMovementDropdown))
 	await taikoHelper.wait(2000)
@@ -83,7 +79,6 @@ step("Enter admitted patient details", async function () {
 	var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
 	await taikoInteraction.Write(patientIdentifierValue,'into',below(admitted))
 	await taikoInteraction.pressEnter()
-	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click Admit", async function () {
@@ -95,12 +90,10 @@ step("Click Discharge", async function () {
 });
 
 step("Click Discharge on popup", async function () {
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoInteraction.Click(discharge,'text',within($(dischargePopup)))
 });
 
 step("Click Admit on popup", async function () {
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoInteraction.Click(cancel,'text')
 	await taikoInteraction.Click(admit,'text')
 });
@@ -108,27 +101,23 @@ step("Click Admit on popup", async function () {
 step("Enter Form Values <observationFormFile>", async function (observationFormFile) {
 	var observationFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${observationFormFile}.json`))
 	gaugeHelper.save(observationFormValues.ObservationFormName, observationFormValues)
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	var shortformName=observationFormValues.ObservationFormName.split(' ')
 	await taikoInteraction.Click(addNewObsForm,'button')
 	await taikoInteraction.Write(shortformName[0],'xpath',obsSearchElement)
-	if (await taikoElement.elementEnabled(button(observationFormValues.ObservationFormName))) 
+	if (await taikoElement.elementEnabled(button(observationFormValues.ObservationFormName)))
 	{
 		await taikoInteraction.Click(observationFormValues.ObservationFormName,'button')
-	} else 
+	} else
 	{
 		await taikoInteraction.Click(observationFormValues.ObservationFormName,'text')
 	}
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoHelper.executeConfigurations(observationFormValues.ObservationFormDetails, observationFormValues.ObservationFormName)
 	await taikoInteraction.Click(save,'text')
-	await taikoHelper.repeatUntilNotFound($(overlay))
-	await taikoHelper.wait(implicitWaitTime)
+	await taikoHelper.wait(implicitTime)
 })
 
 step("Click History and Examination", async function () {
 	await taikoInteraction.Click(historyAndExamination,'link')
-	await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Select the general ward", async function () {

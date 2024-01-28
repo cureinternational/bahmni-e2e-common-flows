@@ -51,12 +51,10 @@ var ipdToggle=process.env.enableIPDfeature
 step("Click Start IPD Visit", async function () {
     await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
     await taikoInteraction.Click(startIpdVisit,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Click Start OPD Visit", async function () {
     await taikoInteraction.Click(`Start ${process.env.default_visit_type} visit`,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Select the newly created patient with network idle", async function () {
@@ -191,10 +189,8 @@ step("Verify no error displayed on page", async function () {
 step("Validate obs <form> on the patient clinical dashboard", async function (formPath) {
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
-    await taikoHelper.repeatUntilNotFound($(overlay))
     var viewFormElement="//SPAN[normalize-space()='" + obsFormValues.ObservationClinicalFormName.trim() + "']/..//i[@class='fa fa-eye']"
     await taikoInteraction.EvaluateClick($(viewFormElement))
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.validateFormFromFile(obsFormValues.ObservationFormDetails, obsFormValues.ObservationClinicalFormName)
     await taikoInteraction.Click(formClose,'xpath')
 });
@@ -202,25 +198,23 @@ step("Validate obs <form> on the patient clinical dashboard", async function (fo
 step("Validate new obs <form> on the patient clinical dashboard", async function (formPath) {
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
-    await taikoHelper.repeatUntilNotFound($(overlay))
-    await taikoElement.waitToExists(text(obsFormValues.ObservationClinicalFormName))
+    await taikoHelper.wait(3000)
     var formLinkElement='//span[text()="'+obsFormValues.ObservationClinicalFormName+'"]/following-sibling::span/a'
-    await taikoInteraction.Click(formLinkElement,'xpath')
+    await taikoInteraction.EvaluateClick($(formLinkElement))
     await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationFormDetails,obsFormValues.ObservationClinicalFormName)
     await taikoInteraction.Click(newformClose,'xpath')
 });
 
 step("Goto patient dashboard", async function () {
     await taikoInteraction.Click(patientDashboard,'xpath')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Edit new obs <form> on the patient clinical dashboard",async function(formPath){
     var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoHelper.wait(1000)
     var editForm='//span[text()="'+obsFormValues.ObservationClinicalFormName+'"]/parent::div/descendant::i'
     await taikoInteraction.Click(editForm,'xpath')
     await taikoHelper.executeConfigurations(obsFormValues.EditObservationFormDetails, obsFormValues.ObservationFormName)
     await taikoInteraction.Click(save,'text')
+    await taikoHelper.wait(implicitWaitTime)
 })

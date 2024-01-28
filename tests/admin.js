@@ -61,7 +61,6 @@ step("Open patient2 details by search", async function () {
     gauge.message(patientIdentifierValue)
     taikowrite.writeText(patientIdentifierValue)
     taikointeractions.pressEnter()
-    taikoHelper.repeatUntilNotFound($(overlay))
     taikoclick.clickLink(patientIdentifierValue)
 });
 
@@ -82,7 +81,7 @@ step("Create a form", async function () {
 step("Enter form name", async function () {
     var formName = users.randomName(10)
     gaugeHelper.save("FormName", formName)
-    taikowrite.writeIntoTextAreaBelow("Form Name")    
+    taikowrite.writeIntoTextAreaBelow("Form Name")
 });
 
 step("start creating a form", async function () {

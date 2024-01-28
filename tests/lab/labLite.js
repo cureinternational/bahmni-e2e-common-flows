@@ -21,6 +21,7 @@ var saveAndUpload='Save and Upload'
 var reportSuccessMessageElement='//H3[text()="Report successfully uploaded"]'
 var reportsTable='Reports Table'
 var labLiteSearch='//input[@role="searchbox"]'
+var closeNotification='//button[@title="closes notification"]'
 var implicitTimeOut = parseInt(process.env.implicitTimeOut)
 
 step("start patient search", async function () {
@@ -61,6 +62,9 @@ step("Select Lab Report in side panel", async function () {
 });
 
 step("Select today's date in Report Date Field", async function () {
+    if(await taikoElement.isExists($(closeNotification))){
+        await taikoInteraction.Click(closeNotification,'xpath')
+    }
     await taikoInteraction.Click(reportDate,'xpath')
     await taikoInteraction.Click(todayElement,'xpath')
 });

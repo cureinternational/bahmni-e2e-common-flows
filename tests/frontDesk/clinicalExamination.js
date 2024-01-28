@@ -33,7 +33,7 @@ var teleConsulation='Tele Consultation'
 var scheduled='Scheduled'
 var closeConsultation='[ng-click="closeTeleConsultation()"]'
 var diagnoses='Diagnoses'
-var order='Order'   
+var order='Order'
 var certainty='Certainty'
 var urgentBtnElement='//button[@title="Urgent"]'
 var notesBtnElement='//i[contains(@class,"fa fa-file-text-o")]'
@@ -131,7 +131,6 @@ step("Doctor captures consultation notes <notes>", async function (notes) {
 });
 
 step("Doctor clicks consultation", async function () {
-    await taikoHelper.wait(implicitWaitTime)
     await taikoInteraction.EvaluateClick($('//a[@ng-click="openConsultation()"]'))
 });
 
@@ -154,7 +153,6 @@ step("Doctor advises discharging the patient", async function () {
 step("Open <tabName> Tab", async function (tabName) {
     await taikoHelper.wait(implicitWaitTime)
     await taikoInteraction.Click(tabName,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
 });
 
 step("Save visit data", async function () {
@@ -163,7 +161,6 @@ step("Save visit data", async function () {
 
 step("Join teleconsultation", async function () {
     await taikoInteraction.Click(joinTeleconsultation,'text')
-    await taikoHelper.repeatUntilNotFound($(overlay))
     await taikoInteraction.Click(joinTeleconsultation,'button',toRightOf(scheduled))
     await taikoInteraction.Click(closeConsultation,'xpath')
 });

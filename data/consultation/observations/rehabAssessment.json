@@ -30,7 +30,8 @@
         {
             "type": "Button",
             "label": "Health Education Completed?",
-            "value": "No"
+            "value": "No",
+            "below":"Long-term Goals"
         },
         {
             "type": "TextArea",

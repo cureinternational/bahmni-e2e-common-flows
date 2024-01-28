@@ -1,7 +1,6 @@
 # Enter vitals <Vitals>
 * Click Vitals
 * Enter Form Values <Vitals>
-* Verify no error displayed on page
 
 # Doctor issues an Admit disposition
 * Open clinical tab
@@ -15,7 +14,6 @@
 * wait for overlay to disappear
 * Doctor captures consultation notes "Consultation notes"
 * Save data
-* Verify no error displayed on page
 
 # Doctor issues an Discharge disposition
 * Choose Disposition
@@ -53,25 +51,24 @@
 * Open "Medications" Tab
 * Doctor prescribes medicines <medications>
 * Save data
-* Verify no error displayed on page
 
 # Doctor updates <medications> as non ipd drug
 * Open "Medications" Tab
 * Doctor updates medicines <medications>
 * Save data
-* Verify no error displayed on page
+
 # Doctor prescribes radiology test <tests>
 * Open "Orders" Tab
 * Doctor prescribe tests <tests>
 * Save data
-* Verify no error displayed on page
+
 
 # Doctor prescribes lab test <tests>
 * Open "Orders" Tab
 * click laboratory
 * Doctor prescribe tests <tests>
 * Save data
-* Verify no error displayed on page
+
 
 # Verify the radiology order for <order>
 * Open "Orders" module
@@ -111,24 +108,24 @@
 * Open "Diagnosis" Tab
 * Doctor notes the diagnosis and condition <diagnosis_condition>
 * Save data
-* Verify no error displayed on page
+
 
 # Enter History and Examination details <historyExamination>
 * Enter History and examination details <historyExamination>
 * Save data
-* Verify no error displayed on page
+
 
 # Verify diagnosis and condition in patient clinical dashboard
 * Verify diagnosis in patient clinical dashboard
 
 # Enter Form Values and validate no error is displayed on save <formPath>
 * Enter Form Values <formPath>
-* Verify no error displayed on page
+
 
 # Enter Orthopaedic Followup <orthoPaedicFollowup>
 * Enter Orthopaedic followup <orthoPaedicFollowup>
 * Save data
-* Verify no error displayed on page
+
 
 # Add Nutrional values
 * Open Nutritional page

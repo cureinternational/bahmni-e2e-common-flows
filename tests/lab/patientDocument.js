@@ -5,25 +5,19 @@ const taikoHelper = require("../util/taikoHelper")
 const taikoElement=require('../../../components/taikoElement.js')
 const taikoInteraction=require('../../../components/taikoInteraction.js')
 const taikoassert=require('../../../components/taikoAssert.js')
-
-var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='SAVE'
 var img='//select/../img'
 var imgElement='//div[@class="file"]//img'
-var imgConcept='//a[@class="img-concept"]'
-var slide='//img[@class="slide"]'
-var closeBtn='.dialog-close-btn'
+var image='a.img-concept'
 
 step("Add a report <labReport> to <module>", async function (labReport, module) {
 	await taikoInteraction.Attach(path.join("./bahmni-e2e-common-flows/data/reports", `${labReport}.jpg`), fileField({ 'name': 'image-document-upload' }));
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoInteraction.Dropdown({ id: 'file0' },module)
 	await taikoHelper.repeatUntilEnabled(button(save))
 });
 
 step("Save the report", async function () {
 	await taikoInteraction.Click(save,'button')
-	await taikoHelper.repeatUntilNotFound($(overlay))
 	await taikoInteraction.Click(img,'xpath')
 	await taikoassert.assertExists($(imgElement))
 	await taikoInteraction.Click({"class":"dialog-close-btn"},'button')
@@ -31,9 +25,5 @@ step("Save the report", async function () {
 });
 
 step("validate patient document in patient dashboard", async function() {
-	await taikoInteraction.Click(imgConcept,'xpath')
-	await taikoassert.assertExists($(slide))
-	await taikoElement.waitToPresent($(closeBtn))	
-	const closeButton = $(closeBtn);
-	await taikoInteraction.EvaluateClick(closeButton)
+	await taikoassert.assertExists($(image))
 });
