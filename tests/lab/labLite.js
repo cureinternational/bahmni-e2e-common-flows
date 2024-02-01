@@ -66,7 +66,10 @@ step("Select today's date in Report Date Field", async function () {
         await taikoInteraction.Click(closeNotification,'xpath')
     }
     await taikoInteraction.Click(reportDate,'xpath')
-    await taikoInteraction.Click(todayElement,'xpath')
+    var currentDate=new Date()
+    var today=currentDate.getDate()
+    await taikoInteraction.Click(today.toString(),'text')
+
 });
 
 step("Select Doctor in side panel", async function () {

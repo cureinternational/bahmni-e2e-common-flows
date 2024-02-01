@@ -25,5 +25,6 @@ step("Save the report", async function () {
 });
 
 step("validate patient document in patient dashboard", async function() {
+	await taikoInteraction.ScrollTo($(image))
 	await taikoassert.assertExists($(image))
 });
