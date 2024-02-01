@@ -498,6 +498,7 @@ step("Select the relation",async function(){
     await taikoInteraction.Write(relation,'xpath',relationNameElement)
     await taikoInteraction.Click(search,'button')
     await taikoInteraction.Click(relation,'text',below(name))
+    await taikoHelper.wait(2000)
 })
 step('Update the relation',async function(){
     await taikoInteraction.Click(update,'text')

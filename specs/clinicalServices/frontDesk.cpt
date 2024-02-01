@@ -37,7 +37,6 @@
 * Open "Clinical" module
 * Select the newly created patient
 * Doctor clicks consultation
-* wait for overlay to disappear
 
 # Open clinical tab with all section
 * Open "Clinical" module
@@ -147,9 +146,7 @@
 * Start an IPD Visit
 
 # Save data
-* wait for overlay to disappear
 * Save visit data
-* wait for overlay to disappear
 
 # Verify the patient is present in <wardType>
 * Verify the patient presence in the <wardType>

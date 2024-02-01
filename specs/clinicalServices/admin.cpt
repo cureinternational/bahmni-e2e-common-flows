@@ -40,7 +40,6 @@
 * Open "Clinical" module
 * Goto All sections
 * Search the newly created patient
-* wait for overlay to disappear
 * validate patient document in patient dashboard
 
 # Filter patient

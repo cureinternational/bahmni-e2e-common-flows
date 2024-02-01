@@ -11,13 +11,11 @@
 
 # Doctor captures the consultation notes <consultationNotes> for newly created patient
 * Doctor clicks consultation
-* wait for overlay to disappear
 * Doctor captures consultation notes "Consultation notes"
 * Save data
 
 # Doctor issues an Discharge disposition
 * Choose Disposition
-* wait for overlay to disappear
 * Wait for message "The Disposition Note will also be removed" to disappear
 * Doctor advises discharging the patient
 * Save data
@@ -45,7 +43,6 @@
 # Goto All sections and search the newly created patient
 * Goto All sections
 * Search the newly created patient
-* wait for overlay to disappear
 
 # Doctor prescribes medications <medications>
 * Open "Medications" Tab

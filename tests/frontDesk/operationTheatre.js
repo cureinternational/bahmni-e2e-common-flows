@@ -3,6 +3,7 @@ const {$} = require('taiko');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
+const taikoHelper = require('../util/taikoHelper.js');
 
 var calendarElement='//input[contains(@class,"calendar-day-input")]'
 var notesTabElement='//div[@class="notesTab"]'
@@ -19,6 +20,7 @@ step("Verify the presence of calendar", async function () {
 });
 
 step('Add note verify the note',async function(){
+    await taikoHelper.wait(3000)
     var textFound=await taikoElement.isNotExists($(deleteNotesElement))
     if(textFound)
     {

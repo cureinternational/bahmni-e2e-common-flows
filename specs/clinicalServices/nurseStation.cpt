@@ -1,7 +1,6 @@
 # Doctor at ADT is able to view bed availability and assign bed to patient
 * Doctor opens admission tab
 * Select the newly created patient for IP Admission
-* wait for overlay to disappear
 * Select Patient Movement "Admit Patient"
 * Enter adt notes "Admission notes"
 * Admit the patient
@@ -12,7 +11,6 @@
 # Doctor at ADT gives discharge disposition
 * Goto All sections
 * Select the newly created patient for IP Discharge
-* wait for overlay to disappear
 * Select Patient Movement "Discharge Patient"
 * Enter adt notes "Discharge notes"
 * Discharge the patient
@@ -21,7 +19,6 @@
 * Open "Bed Management" module
 * Goto All sections
 * Search the newly created patient
-* wait for overlay to disappear
 * Select the general ward
 * Allocate available bed
 * Click Admit
