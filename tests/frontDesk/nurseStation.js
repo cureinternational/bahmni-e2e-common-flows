@@ -13,7 +13,7 @@ var availableBed='//*[@class="col available" or @class="bed AVAILABLE"]'
 var assign='Assign'
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var admit='Admit'
-var patientMovementDropdown='Patient Movement:'
+var patientMovementDropdown='Patient Movement'
 var dischargePatient='Discharge Patient'
 var discharge='Discharge'
 var all='All'
@@ -28,6 +28,8 @@ var generalWard='General Ward'
 var generalWardRoom='General Ward room'
 var obsSearchElement='input#templateSearch'
 var implicitTime=parseInt(process.env.implicitTimeOut)
+var sideMenu='//button[@data-testid="overflow-menu"]'
+var chooseOption='Choose an option'
 
 step("Doctor opens admission tab", async function () {
 	await taikoInteraction.Click(toAdmit,'text')
@@ -58,10 +60,13 @@ step("Admit the patient", async function () {
 
 step("Discharge the patient", async function () {
 	await taikoHelper.wait(2000)
-	await taikoElement.waitToExists(dropDown(patientMovementDropdown))
-	await taikoHelper.wait(2000)
-	await taikoInteraction.Dropdown(patientMovementDropdown,dischargePatient)
-	await taikoInteraction.Click(discharge,'text')
+	await taikoElement.waitToExists($(sideMenu))
+	await taikoInteraction.Click(sideMenu,'xpath')
+	await taikoHelper.wait(1000)
+	await taikoInteraction.Click(patientMovementDropdown,'text')
+	await taikoInteraction.Click(chooseOption,'text')
+	await taikoInteraction.Click(dischargePatient,'text')
+	await taikoInteraction.Click(save,'text')
 	await taikoHelper.wait(1000)
 });
 

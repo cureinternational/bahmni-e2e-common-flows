@@ -303,6 +303,7 @@ step("Click on active patients list", async function () {
     {
      await taikoInteraction.Click(activePatientList2,'xpath')
     }
+    await taikoHelper.wait(implicitTimeOut)
 });
 
 step("Open newly created patient details by search", async function () {

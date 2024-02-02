@@ -152,6 +152,7 @@
 * Verify the patient presence in the <wardType>
 * Select the patient
 * Discharge the patient
+* Click on IPD back button
 * Click on home page
 
 # Admit the patient in <wardType>

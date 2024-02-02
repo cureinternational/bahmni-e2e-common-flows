@@ -8,6 +8,7 @@ const taikoassert = require('../../../components/taikoAssert.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
+const taikoBrowserAction=require('../../../components/taikobrowserActions.js')
 
 var expectedLocationsList = process.env.registrationLocations.split(",")
 var locationOption = '//select[@id="location"]/option'
@@ -265,4 +266,12 @@ step("Verify if the medication <medicine> is present", async function (medicine)
    // var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
    // var drugName = medicalPrescriptions.drug_name
    // await taikoElement.isPresent(text(drugName))
+})
+
+step("Click on Patient Dashboard",async function(){
+    await taikoInteraction.Click('Patient Dashboard','link')
+})
+
+step("Click on IPD back button",async function(){
+    await taikoBrowserAction.navigateBack()
 })
