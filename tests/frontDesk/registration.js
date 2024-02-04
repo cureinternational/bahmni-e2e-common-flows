@@ -81,7 +81,7 @@ var implicitTimeOut=parseInt(process.env.implicitTimeOut)
 var relation=process.env.relationName
 var relationNameElement='//input[@name="name"]'
 var search='Search'
-var name='Name'
+var name='NAME'
 
 step("Open <moduleName> module", async function (moduleName) {
     await taikoInteraction.Click(moduleName,'text')
@@ -458,6 +458,7 @@ step("Select registration location",async function(){
 })
 
 step("click on Relationships", async function () {
+    await taikoHelper.wait(1000)
     await taikoInteraction.Click(relationShips,'text')
 })
 
@@ -466,7 +467,7 @@ step("Select the RelationType as <type>", async function (type) {
 })
 
 step("Click on select person", async function () {
-    await taikoInteraction.Click(selectPerson,'text')
+    await taikoInteraction.Click(selectPerson,'button')
 })
 
 step("Create a new relation", async function () {
@@ -479,8 +480,9 @@ step("Create a new relation", async function () {
     await taikoInteraction.Write(lastName,'default',relationLastNameElement)
     await taikoInteraction.Write('01/01/1980','default',relationBirthDateElement)
     await taikoInteraction.Dropdown(below(gender),'Male')
+    await taikoElement.waitToEnabled(button(register))
     await taikoInteraction.Click(register,'text')
-    await taikoHelper.wait(1000)
+    await taikoHelper.wait(implicitTimeOut)
 })
 
 step('Click on the newly added relation',async function(){
@@ -498,6 +500,7 @@ step("Select the relation",async function(){
     gaugeHelper.save('relationName',relation)
     await taikoInteraction.Write(relation,'xpath',relationNameElement)
     await taikoInteraction.Click(search,'button')
+    await taikoHelper.wait(2000)
     await taikoInteraction.Click(relation,'text',below(name))
     await taikoHelper.wait(2000)
 })
@@ -519,6 +522,7 @@ step("Verify the relation is added", async function () {
 step("Search the patient by phone number", async function () {
     var phoneNumber=gaugeHelper.get("patientMobileNumber")
     await taikoInteraction.Write(phoneNumber,'below','Phone Number')
+    await taikoInteraction.Write(phoneNumber,'into',{placeHolder:'Phone Number'})
     await taikoInteraction.pressEnter()
 })
 
