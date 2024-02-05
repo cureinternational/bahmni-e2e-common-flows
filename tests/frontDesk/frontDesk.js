@@ -140,16 +140,17 @@ step("Click on IPD", async function () {
 })
 
 step("Verify the ipd dashboard", async function () {
-    await taikoElement.waitToExists(text('Allergies'))
+    await taikoHelper.wait(implicitTimeOut)
+    await taikoElement.waitToExists(text('EQ-5D'))
     await verifyDisplayControl('Allergies')
     await verifyDisplayControl('Diagnosis')
     await verifyDisplayControl('Nutritional Values')
-    await verifyDisplayControl('Observation Forms')
+    await verifyDisplayControl('Observation Forms (Previous Version)')
     await verifyDisplayControl('Vitals')
     await verifyDisplayControl('Lab Results')
     await verifyDisplayControl('SF-12 WHODAS Score')
     await verifyDisplayControl('EQ-5D')
-    await verifyDisplayControl('Recent Radiology Orders')
+    await verifyDisplayControl('Recent Radiology Orders (The past 4 visits)')
 
 })
 

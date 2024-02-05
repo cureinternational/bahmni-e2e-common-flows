@@ -4,6 +4,7 @@ const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoHelper = require('../util/taikoHelper.js');
+const taikoBrowserAction=require('../../../components/taikobrowserActions.js')
 
 var calendarElement='//input[contains(@class,"calendar-day-input")]'
 var notesTabElement='//div[@class="notesTab"]'
@@ -19,16 +20,14 @@ step("Verify the presence of calendar", async function () {
     await taikoAssert.assertExists($(calendarElement))
 });
 
-step('Add note verify the note',async function(){
-    await taikoHelper.wait(3000)
+step('Add OT note',async function(){
+    await taikoBrowserAction.reloadPage()
     var textFound=await taikoElement.isNotExists($(deleteNotesElement))
     if(textFound)
     {
     await taikoInteraction.Click(notesTabElement,'xpath')
     await taikoInteraction.Write('automation test notes','xpath',textAreaElement)
     await taikoInteraction.Click(saveBtnElement,'xpath')
-    var text=await taikoElement.getText($(savedNotesElement))
-    await taikoAssert.assertEquals(text,'automation test notes')
     }
 });
 
@@ -38,4 +37,9 @@ step('Delete the note',async function(){
     await taikoInteraction.EvaluateClick($(deleteNotesElement))
     await taikoInteraction.EvaluateClick($(deleteNotesYes))
     }
+})
+
+step('Verify the OT note',async function(){
+    var text=await taikoElement.getText($(savedNotesElement))
+    taikoAssert.assertEquals(text,'automation test notes')
 })

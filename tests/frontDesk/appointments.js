@@ -8,6 +8,7 @@ const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoassert = require('../../../components/taikoAssert.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
+const taikoBrowserAction=require('../../../components/taikobrowserActions.js')
 
 var addNewAppointment = 'Add new appointment'
 var patientNameId='Patient Name or ID'
@@ -75,6 +76,7 @@ var holidayText='Date selected is a Public Holiday'
 step("View all appointments", async function () {
     var list=process.env.appointmentList
     await taikoInteraction.Click(list,'text')
+    await taikoBrowserAction.reloadPage()
 });
 
 step("Click Add New appointment", async function () {

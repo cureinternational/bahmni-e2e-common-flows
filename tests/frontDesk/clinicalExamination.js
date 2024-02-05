@@ -69,6 +69,7 @@ step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile)
         await taikoInteraction.Click(notesList[i].button, 'button')
     }
     await taikoInteraction.Click(okBtn,'button')
+    await taikoHelper.wait(2000)
 });
 
 
