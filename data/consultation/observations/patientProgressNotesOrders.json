@@ -5,7 +5,8 @@
         {
             "type": "DateTime",
             "label": "Date and Time",
-            "value": "-1,09:30AM"
+            "value": "-1,09:30AM",
+            "count":"1"
         },
         {
             "type": "Group",

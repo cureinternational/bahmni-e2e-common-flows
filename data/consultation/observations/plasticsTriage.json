@@ -1,0 +1,95 @@
+{
+    "ObservationFormName": "Plastics Triage",
+    "ObservationClinicalFormName":"Plastics Triage",
+    "ObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Description of Problem",
+            "value": "automated description of problem comments",
+            "above":"Symptom Duration"
+        },
+        {
+            "type": "Input",
+            "label": "Symptom Duration",
+            "value": "1"
+        },
+        {
+            "type": "Button",
+            "label": "Duration Units",
+            "value": "Hour(s)"
+        },
+        {
+            "type": "Button",
+            "label": "Deformity",
+            "value": "Other",
+            "above":"Describe any Functional Limitations"
+        },
+        {
+            "type": "Button",
+            "label": "Seizure",
+            "value": "Yes",
+            "above":"Swelling"
+        },
+        {
+            "type": "Button",
+            "label": "Swelling",
+            "value": "Yes - No Change",
+            "above":"Weight Loss"
+        },
+        {
+            "type": "Button",
+            "label": "Weight Loss",
+            "value": "No",
+            "above":"Recent Fever"
+        },
+        {
+            "type": "Button",
+            "label": "Recent Fever",
+            "value": "Yes",
+            "below":"Weight Loss"
+        },
+        {
+            "type": "Button",
+            "label": "Wound",
+            "value": "Yes",
+            "above":"Discoloration"
+        },
+        {
+            "type": "Button",
+            "label": "Discoloration",
+            "value": "Yes",
+            "above":"Recent Fracture"
+        },
+        {
+            "type": "Button",
+            "label": "Recent Fracture",
+            "value": "Yes",
+            "below":"Discoloration"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Site",
+            "value": "Tibia"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Pain Scale",
+            "value": "0 - No Pain",
+            "below":"side"
+        },
+        {
+            "type": "Button",
+            "label": "Did you check for Allergies?",
+            "value": "Yes",
+            "below":"Body Position"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Other Symptoms",
+            "value": "edited automation Other Symptoms notes",
+            "below":"Duration Units"
+        }
+    ]
+}

@@ -76,7 +76,6 @@ step("Enter Orthopaedic followup <filePath>", async function (filePath) {
 
 step("Click patient name", async function () {
     var firstName = gaugeHelper.get("patientFirstName")
-    await taikoHelper.wait(implicitWaitTime)
     var patientElement=`//div[@class='fc-title' and contains(text(),'${firstName}')]`
     await taikoInteraction.EvaluateClick($(patientElement))
     var btnstatus= await taikoElement.elementDisabled(button(cancel))

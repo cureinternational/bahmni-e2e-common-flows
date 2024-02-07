@@ -1,0 +1,88 @@
+{
+    "ObservationFormName": "Operation Room Record",
+    "ObservationClinicalFormName":"Operation Room Record",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Speciality",
+            "value": "Plastic",
+            "above":"Anaesthesia Start Time"
+        },
+        {
+            "type": "DateTime",
+            "label": "Anaesthesia Start Time",
+            "value": "0,0",
+            "above":"Surgical Start Time",
+            "count":"1"
+        },
+        {
+            "type": "DateTime",
+            "label": "PACU Transfer Time",
+            "value": "0,0",
+            "above":"Operation Room",
+            "count":"5"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Operation Room",
+            "value": "1",
+            "above":"Intraoperative Nursing Diagnosis"
+        },
+        {
+            "type": "Button",
+            "label": "ID Band",
+            "value": "Yes",
+            "above":"Procedure “Time Out”"
+        },
+        {
+            "type": "Button",
+            "label": "Procedure “Time Out”",
+            "value": "Yes",
+            "above":"Operative Permit Signed"
+        },
+        {
+            "type": "Button",
+            "label": "Operative Permit Signed",
+            "value": "Yes",
+            "above":"Skin Condition"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Patient’s Position",
+            "value": "Prone",
+            "below":"Scrub Nurse"
+        },
+        {
+            "type": "Button",
+            "label": "Arms Padded And Tucked",
+            "value": "Right",
+            "above":"Safety Belt"
+        },
+        {
+            "type": "Button",
+            "label": "Safety Belt",
+            "value": "Yes",
+            "above":"Prep Area"
+        },
+        {
+            "type": "Button",
+            "label": "Urinary Catheter",
+            "value": "Yes",
+            "below":"Cut Range"
+        },
+        {
+            "type": "Button",
+            "label": "Dressing",
+            "value": "Yes",
+            "above":"EBL (ml)"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Report To",
+            "value": "edited automation Report To notes",
+            "below":"Grounding Pad Site"
+        }
+    ]
+}

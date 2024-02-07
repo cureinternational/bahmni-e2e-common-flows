@@ -1,0 +1,32 @@
+{
+    "ObservationFormName": "OPD Visit Form",
+    "ObservationClinicalFormName":"OPD Visit Form",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Speciality",
+            "value": "Plastic",
+            "above":"Anaesthesia Start Time"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Seen By",
+            "value": "Timothy Nunn",
+            "above":"Medical Alert"
+        },
+        {
+            "type": "Button",
+            "label": "Outcome",
+            "value": "Admission",
+            "below":"Treatment Plan"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "edited automation Treatment Plan notes",
+            "below":"Summary / Impression"
+        }
+    ]
+}

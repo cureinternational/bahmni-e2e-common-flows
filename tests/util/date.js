@@ -50,6 +50,24 @@ function addDaysAndReturnDateInDDMMYYYY(intDays) {
     return ddmmyyyy(new Date().setDate(new Date().getDate() + parseInt(intDays)))
 }
 
+function getCurrentTimeFormatted() {
+    const currentDate = new Date();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+
+    // Pad single-digit hours and minutes with leading zeros
+    const finalformattedHours=(hours < 12) ? hours : hours-12;
+    const formattedHours = (finalformattedHours < 10) ? `0${finalformattedHours}` : finalformattedHours;
+    const formattedMinutes = (minutes < 10) ? `0${minutes}` : minutes;
+
+    // Determine if it's AM or PM
+    const period = (hours < 12) ? 'AM' : 'PM';
+
+    // Format the time as "hh:mmAM/PM"
+    const formattedTime = `${formattedHours}:${formattedMinutes}${period}`;
+
+    return formattedTime;
+  }
 
 function getDateYearsAgo(numberOfYearsAgo) {
     const today = new Date()
@@ -171,5 +189,6 @@ module.exports = {
     addDaysAndReturnDateInDDMMYYYY: addDaysAndReturnDateInDDMMYYYY,
     getDateInShortFormat: getDateInShortFormat,
     addDaysAndReturnDateInShortFormat: addDaysAndReturnDateInShortFormat,
-    calculate_age: calculate_age
+    calculate_age: calculate_age,
+    getCurrentTimeFormatted,getCurrentTimeFormatted
 }

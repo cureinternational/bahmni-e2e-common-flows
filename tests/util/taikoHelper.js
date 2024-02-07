@@ -100,7 +100,9 @@ async function selectEntriesTillIterationEnds(entrySequence) {
 
 async function executeConfigurations(configurations, observationFormName, isNotObsForm) {
     for (var configuration of configurations) {
-        switch (configuration.type) {
+        await taikoElement.waitToExists(text(configuration.label))
+        switch (configuration.type)
+        {
             case 'Group':
                 await executeConfigurations(configuration.value, observationFormName, isNotObsForm)
                 break;
@@ -122,6 +124,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 }
                 break;
             case 'Input':
+                await scrollTo(textBox(toRightOf(configuration.label)))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label))))
                 break;
             case 'TextBox':
@@ -152,20 +155,33 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 await write(dateValue, into(timeField(toRightOf(configuration.label))))
                 break;
             case 'DateTime':
-                var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
-                var timeValue=configuration.value.split(",")[1]
-                await write(dateValue, into(timeField(toRightOf(configuration.label))))
-                await write(timeValue,$('//input[@type="time"]'))
+                if(configuration.above!=undefined)
+                {
+                    var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                    var timeValue=date.getCurrentTimeFormatted()
+                    await write(dateValue, into(timeField(toRightOf(configuration.label))),above(configuration.above))
+                    await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label),above(configuration.above))
+                }
+                else if(configuration.below!=undefined)
+                {
+                    var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                    var timeValue=date.getCurrentTimeFormatted()
+                    await write(dateValue, into(timeField(toRightOf(configuration.label))),below(configuration.below))
+                    await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label),below(configuration.below))
+                }
+                else
+                {
+                    var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                    var timeValue=date.getCurrentTimeFormatted()
+                    await write(dateValue, into(timeField(toRightOf(configuration.label))))
+                    await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
+                }
                 break;
             case 'TypeDropdown':
-                var dropDownLabel=configuration.label
-                var dropDownValue=configuration.value
-                await selectDropDown(dropDownLabel, dropDownValue)
+                await selectTypeDropDown(configuration)
                 break;
             case 'CustomDropdown':
-                var dropDownLabel=configuration.label
-                var dropDownValue=configuration.value
-                await selectCustomDropDown(dropDownLabel, dropDownValue)
+                await selectCustomDropDown(configuration)
                 break;
             case 'Dropdown':
                 var dropDownLabel=configuration.label
@@ -177,79 +193,61 @@ async function executeConfigurations(configurations, observationFormName, isNotO
         }
     }
 }
-async function selectDropDown(locator,value){
-    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(locator))
-    await taikoInteraction.Write(value,'into',toRightOf(locator))
-    var element=`//div[contains(text(),"${value}")]`
+async function selectTypeDropDown(configuration){
+    if(configuration.above!=undefined)
+    {
+    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(configuration.label),above(configuration.above))
+    await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),above(configuration.above))
+    var element=`//div[contains(text(),"${configuration.value}")]`
     await taikoElement.waitToExists($(element))
     await wait(1000)
     await taikoInteraction.Click(element,'xpath')
-}
-
-async function selectCustomDropDown(locator,value){
-    var selectElement='//div[contains(text(),"Select...")]'
-    await taikoInteraction.Click(selectElement,'xpath',toRightOf(locator))
-    var element=`//div[contains(text(),"${value}")]`
-    await taikoInteraction.Click(element,'xpath',toRightOf(locator))
-}
-async function clearConfigurations(configurations){
-    for (var configuration of configurations) {
-        await wait(1000)
-        switch (configuration.type) {
-            case 'TextArea':
-                if(configuration.below!==undefined)
-                {
-                    await click(textBox(toRightOf(configuration.label),below(configuration.below)))
-                    await taikoInteraction.Clear(toRightOf(configuration.label),below(configuration.below))
-                }
-                else if(configuration.above!==undefined)
-                {
-                    await click(textBox(toRightOf(configuration.label),above(configuration.above)))
-                    await taikoInteraction.Clear(toRightOf(configuration.label),above(configuration.above))
-                }
-                else
-                {
-                    await taikoInteraction.Click((toRightOf(configuration.label),'textbox'))
-                    await taikoInteraction.Clear(toRightOf(configuration.label))
-                }
-            break;
-            case 'Input':
-                await taikoInteraction.Clear(toRightOf(configuration.label))
-            break;
-            case 'TextBox':
-                if (configuration.unit === undefined)
-                    await taikoInteraction.Clear(toRightOf(configuration.label))
-                else
-                    await taikoInteraction.Clear(toRightOf(configuration.label + " " + configuration.unit))
-            break;
-            case 'Button':
-            break;
-            case 'Date':
-
-            break;
-            case 'DateTime':
-
-            break;
-            case 'TypeDropdown':
-                var dropDownLabel=configuration.label
-                await unselectDropDown(dropDownLabel)
-            break;
-            case 'CustomDropdown':
-                var dropDownLabel=configuration.label
-                await taikoInteraction.Click('//span[@title="Clear value"]','xpath',toRightOf(dropDownLabel))
-                var selectElement='//div[contains(text(),"Select")]'
-                await taikoInteraction.Click(selectElement,'xpath',toRightOf(dropDownLabel))
-            break;
-            case 'Dropdown':
-            break;
-            default:
-            logHelper.info("Unhandled " + configuration.label + ":" + configuration.value)
-        }
+    }
+   else if(configuration.below!=undefined)
+    {
+    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(configuration.label),below(configuration.below))
+    await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),below(configuration.below))
+    var element=`//div[contains(text(),"${configuration.value}")]`
+    await taikoElement.waitToExists($(element))
+    await wait(1000)
+    await taikoInteraction.Click(element,'xpath')
+    }
+    else(configuration==undefined)
+    {
+    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(configuration.label))
+    await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label))
+    var element=`//div[contains(text(),"${configuration.value}")]`
+    await taikoElement.waitToExists($(element))
+    await wait(1000)
+    await taikoInteraction.Click(element,'xpath')
     }
 }
 
-async function unselectDropDown(locator){
-    await taikoInteraction.Click('//span[@class="Select-clear"]','xpath',toRightOf(locator))
+async function selectCustomDropDown(configuration){
+    if(configuration.above!=undefined)
+    {
+    var selectElement='//div[contains(text(),"Select...")]'
+    await taikoInteraction.ScrollTo(text(configuration.label))
+    await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),above(configuration.above))
+    var element=`//div[contains(text(),"${configuration.value}")]`
+    await taikoInteraction.Click(element,'xpath',toRightOf(configuration.label),above(configuration.above))
+    }
+    else if(configuration.below!=undefined)
+    {
+        var selectElement='//div[contains(text(),"Select...")]'
+        await taikoInteraction.ScrollTo(text(configuration.label))
+        await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),below(configuration.below))
+        var element=`//div[contains(text(),"${configuration.value}")]`
+        await taikoInteraction.Click(element,'xpath',toRightOf(configuration.label),below(configuration.below))
+    }
+    else if(configuration==undefined)
+    {
+        var selectElement='//div[contains(text(),"Select...")]'
+        await taikoInteraction.ScrollTo(text(configuration.label))
+        await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label))
+        var element=`//div[contains(text(),"${configuration.value}")]`
+        await taikoInteraction.Click(element,'xpath',toRightOf(configuration.label))
+    }
 }
 
 async function validateFormFromFile(configurations) {
@@ -325,7 +323,6 @@ module.exports = {
     selectEntriesTillIterationEnds: selectEntriesTillIterationEnds,
     verifyConfigurations: verifyConfigurations,
     executeConfigurations: executeConfigurations,
-    clearConfigurations:clearConfigurations,
     repeatUntilNotFound: repeatUntilNotFound,
     repeatUntilFound: repeatUntilFound,
     repeatUntilEnabled: repeatUntilEnabled,

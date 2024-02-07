@@ -1,0 +1,37 @@
+{
+    "ObservationFormName": "Clubfoot Follow up",
+    "ObservationClinicalFormName":"Clubfoot Follow up",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Feet Affected",
+            "value": "Unilateral Right Foot"
+        },
+        {
+            "type": "Button",
+            "label": "Right MC",
+            "value": "0",
+            "above":"Right LHT"
+        },
+        {
+            "type": "Button",
+            "label": "Right LHT",
+            "value": "0.5",
+            "above":"Right CLB"
+        },
+        {
+            "type": "Button",
+            "label": "Right CLB",
+            "value": "1",
+            "above":"Right MFCS"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Additional comments",
+            "value": "Edited automation comments",
+            "above":"Brace Compliance"
+        }
+    ]
+}
