@@ -99,6 +99,7 @@ async function selectEntriesTillIterationEnds(entrySequence) {
 
 
 async function executeConfigurations(configurations, observationFormName, isNotObsForm) {
+    try{
     for (var configuration of configurations) {
         await taikoElement.waitToExists(text(configuration.label))
         switch (configuration.type)
@@ -109,17 +110,17 @@ async function executeConfigurations(configurations, observationFormName, isNotO
             case 'TextArea':
                 if(configuration.below!==undefined)
                 {
-                await scrollTo(textBox(toRightOf(configuration.label),below(configuration.below)))
+                await scrollTo(text(configuration.label))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label),below(configuration.below))))
                 }
                 else if(configuration.above!==undefined)
                 {
-                await scrollTo(textBox(toRightOf(configuration.label),below(configuration.above)))
+                 await scrollTo(text(configuration.label))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label),above(configuration.above))))
                 }
                 else
                 {
-                await scrollTo(textBox(toRightOf(configuration.label)))
+                await scrollTo(text(configuration.label))
                 await write(configuration.value, into(textBox(toRightOf(configuration.label))))
                 }
                 break;
@@ -192,6 +193,10 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 logHelper.info("Unhandled " + configuration.label + ":" + configuration.value)
         }
     }
+}
+catch(err){
+logHelper.error('Error in filling forms',configuration.label)
+}
 }
 async function selectTypeDropDown(configuration){
     if(configuration.above!=undefined)
