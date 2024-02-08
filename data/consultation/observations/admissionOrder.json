@@ -5,7 +5,8 @@
         {
             "type": "CustomDropdown",
             "label": "Speciality",
-            "value": "Orthopaedics"
+            "value": "Orthopaedics",
+            "above":"Procedure"
         },
         {
             "type": "TextArea",
@@ -16,12 +17,14 @@
         {
             "type": "TypeDropdown",
             "label": "Surgeon",
-            "value": "Timothy Nunn"
+            "value": "Timothy Nunn",
+            "above":"Assisting Surgeon"
         },
         {
             "type": "TypeDropdown",
             "label": "Assisting Surgeon",
-            "value": "Timothy Nunn"
+            "value": "Timothy Nunn",
+            "below":"Surgeon"
         },
         {
             "type": "Date",
@@ -51,7 +54,8 @@
         {
             "type": "CustomDropdown",
             "label": "Reason for Admission",
-            "value": "Medical Treatment"
+            "value": "Medical Treatment",
+            "above":"Admit To"
         },
         {
             "type": "Button",

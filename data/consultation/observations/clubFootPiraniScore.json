@@ -1,0 +1,56 @@
+{
+    "ObservationFormName": "Clubfoot Pirani Score",
+    "ObservationClinicalFormName":"Clubfoot Pirani Score",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Any Relatives with Clubfoot?",
+            "value": "Yes",
+            "above":"Length of Pregnancy (weeks)"
+        },
+        {
+            "type": "Button",
+            "label": "Complications During Pregnancy?",
+            "value": "Yes",
+            "below":"Length of Pregnancy (weeks)"
+        },
+        {
+            "type": "Button",
+            "label": "Deformity Present at Birth?",
+            "value": "Yes",
+            "above":"Previous Treatments?"
+        },
+        {
+            "type": "Button",
+            "label": "Previous Treatments?",
+            "value": "Yes",
+            "below":"Deformity Present at Birth?"
+        },
+        {
+            "type": "Button",
+            "label": "Does a Parent / Guardian Consent to Treatment?",
+            "value": "Yes",
+            "above":"Does a Parent / Guardian Consent to this Form Being Included in the Database?"
+        },
+        {
+            "type": "Button",
+            "label": "Does a Parent / Guardian Consent to this Form Being Included in the Database?",
+            "value": "Yes",
+            "above":"Does a Parent / Guardian Consent to Photographs of the Patient Being Used for Evaluation and Marketing Purposes?"
+        },
+        {
+            "type": "Button",
+            "label": "Does a Parent / Guardian Consent to Photographs of the Patient Being Used for Evaluation and Marketing Purposes?",
+            "value": "Yes",
+            "below":"Does a Parent / Guardian Consent to this Form Being Included in the Database?"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Additional comments",
+            "value": "Edited automation comments",
+            "above":"Brace Compliance"
+        }
+    ]
+}

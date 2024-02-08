@@ -1,6 +1,6 @@
 {
-    "ObservationFormName": "Plastics Triage",
-    "ObservationClinicalFormName":"Plastics Triage",
+    "ObservationFormName": "Orthopaedic Triage",
+    "ObservationClinicalFormName":"Orthopaedic Triage",
     "ObservationFormDetails": [
         {
             "type": "TextArea",
@@ -68,8 +68,8 @@
         },
         {
             "type": "TypeDropdown",
-            "label": "Site",
-            "value": "Tibia",
+            "label": "Body Part",
+            "value": "Fibula",
             "below":"Skin Colour"
         },
         {

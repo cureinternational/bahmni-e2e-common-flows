@@ -199,9 +199,11 @@ logHelper.error('Error in filling forms',configuration.label)
 }
 }
 async function selectTypeDropDown(configuration){
+    var selectElement='//div[@class="Select-input"]/preceding-sibling::div'
     if(configuration.above!=undefined)
     {
-    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(configuration.label),above(configuration.above))
+    await taikoInteraction.ScrollTo(text(configuration.label))
+    await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),above(configuration.above))
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),above(configuration.above))
     var element=`//div[contains(text(),"${configuration.value}")]`
     await taikoElement.waitToExists($(element))
@@ -210,7 +212,8 @@ async function selectTypeDropDown(configuration){
     }
    else if(configuration.below!=undefined)
     {
-    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(configuration.label),below(configuration.below))
+    await taikoInteraction.ScrollTo(text(configuration.label))
+    await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),below(configuration.below))
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),below(configuration.below))
     var element=`//div[contains(text(),"${configuration.value}")]`
     await taikoElement.waitToExists($(element))
@@ -219,7 +222,8 @@ async function selectTypeDropDown(configuration){
     }
     else(configuration==undefined)
     {
-    await taikoInteraction.Click('//div[contains(text(),"Select")]','xpath',toRightOf(configuration.label))
+    await taikoInteraction.ScrollTo(text(configuration.label))
+    await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label))
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label))
     var element=`//div[contains(text(),"${configuration.value}")]`
     await taikoElement.waitToExists($(element))
@@ -229,9 +233,9 @@ async function selectTypeDropDown(configuration){
 }
 
 async function selectCustomDropDown(configuration){
+    var selectElement='//div[contains(text(),"Select...")]'
     if(configuration.above!=undefined)
     {
-    var selectElement='//div[contains(text(),"Select...")]'
     await taikoInteraction.ScrollTo(text(configuration.label))
     await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),above(configuration.above))
     var element=`//div[contains(text(),"${configuration.value}")]`

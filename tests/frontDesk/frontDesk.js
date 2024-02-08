@@ -105,9 +105,6 @@ step("Admit the patient to ipd in <visitType> visit", async function (visitType)
     if (visitType == 'OPD') {
         await taikoInteraction.EvaluateClick($(continueBtn))
     }
-    else {
-        await taikoInteraction.EvaluateClick($(yesBtn))
-    }
 })
 
 step("Search and select patient", async function () {
@@ -121,9 +118,13 @@ step("Search and select patient", async function () {
 })
 step("Select a bed from <wardType>", async function (wardType) {
     var ward = `//span[contains(text(),'${wardType}')]`
-    await taikoInteraction.Click(`${ward}`, 'xpath')
+    if(await taikoElement.isNotExists(text('General Ward -ICU')))
+    {
+        await taikoInteraction.Click(`${ward}`, 'xpath')
+    }
     await taikoInteraction.Click(availableBed, 'xpath')
     await taikoInteraction.Click(assign, 'text')
+    await taikoHelper.wait(2000)
 })
 
 step("Select the patient", async function () {

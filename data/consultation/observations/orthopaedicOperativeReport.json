@@ -10,13 +10,15 @@
         },
         {
             "type": "TypeDropdown",
-            "label": "Consultant",
-            "value": "Timothy Nunn"
+            "label": "Consultant Surgeon",
+            "value": "Timothy Nunn",
+            "above":"Surgeon"
         },
         {
             "type": "TypeDropdown",
             "label": "Surgeon",
-            "value": "Laurence Wicks"
+            "value": "Laurence Wicks",
+            "above":"Role"
         },
         {
             "type": "Button",
@@ -33,7 +35,8 @@
         {
             "type": "TypeDropdown",
             "label": "CURE Orthopedic Procedures",
-            "value": "23195 Resection humeral head"
+            "value": "23195 Resection humeral head",
+            "above":"Laterality"
         },
         {
             "type": "Button",

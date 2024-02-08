@@ -1,6 +1,6 @@
 /* globals gauge*/
 "use strict";
-const {$,click,toRightOf,text,toLeftOf,within,link,below} = require('taiko');
+const {$,click,toRightOf,text,toLeftOf,within,link,below,button,scrollDown} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension")
@@ -11,7 +11,7 @@ const taikoElement = require('../../../components/taikoElement.js');
 
 var startOpdVisit='Start OPD Visit'
 var submitBtn='.submit-btn-container'
-var startIpdVisit='Start IPD Visit'
+var startIpdVisit='Start IPD visit'
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var search='Search'
 var enter= 'Enter'
@@ -49,7 +49,7 @@ var ipdToggle=process.env.enableIPDfeature
 
 
 step("Click Start IPD Visit", async function () {
-    await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
+    await click($('(//div[@class="split-button"]/button)[2]'),toRightOf('Start OPD visit'))
     await taikoInteraction.Click(startIpdVisit,'text')
 });
 

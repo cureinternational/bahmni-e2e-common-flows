@@ -56,10 +56,7 @@
 
 # Start an IPD Visit
 * Click Start IPD Visit
-* Enter registration fees "100"
-* Save visit data
-* wait for overlay and Saved to disappear
-* Click back button
+* Click on home page
 
 # Start an Special OPD Visit
 * Click Start Special OPD Visit
@@ -140,9 +137,8 @@
 * Check if patient <firstName> <middleName> <lastName> with mobile "mobileNumber" exists
 * Create a new patient with gender <gender> with name <firstName> <middleName> <lastName>, aged <age> with mobile number <mobileNumber>
 
-# Receptionist creates a patient and starts an IPD visit
-* Open "Registration" module
-* Create a new "cure" patient with random patient details
+# Receptionist creates the <type> patient and starts an IPD
+* Receptionist creates the <type> patient
 * Start an IPD Visit
 
 # Save data
@@ -157,7 +153,7 @@
 
 # Admit the patient in <wardType>
 * Open Patient ADT page
-* Admit the patient to ipd in "OPD" visit
+* Admit the patient to ipd in "IPD" visit
 * Select a bed from <wardType>
 * Close the ADT page
 * Click on active patients list
