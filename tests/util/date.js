@@ -47,14 +47,14 @@ function getDateAgo(dateAgo) {
     return dateYearsAgo;
 }
 function addDaysAndReturnDateInDDMMYYYY(intDays) {
-    var tz=process.env.timeZone || 'Asia/Kolkata'
+    var tz=process.env.testTimeZone || 'Asia/Kolkata'
     const options = { timeZone: tz };
     const istDate = new Date().toLocaleString('en-US', options);
     return ddmmyyyy(new Date().setDate(new Date(istDate).getDate() + parseInt(intDays)))
 }
 
 function getCurrentTimeFormatted() {
-    var tz=process.env.timeZone || 'Asia/Kolkata'
+    var tz=process.env.testTimeZone || 'Asia/Kolkata'
     const options = { timeZone: tz };
     const istDate = new Date().toLocaleString('en-US', options);
     const currentDate = new Date(istDate)
