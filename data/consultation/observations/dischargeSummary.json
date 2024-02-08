@@ -6,7 +6,7 @@
             "type": "TypeDropdown",
             "label": "Consultant Surgeon",
             "value": "Laurence Wicks",
-            "below":"Discharge Summary Form"
+            "above":"Course on Ward"
         },
         {
             "type": "TextArea",

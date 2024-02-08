@@ -40,6 +40,7 @@ step('Delete the note',async function(){
 })
 
 step('Verify the OT note',async function(){
+    await taikoBrowserAction.reloadPage()
     var text=await taikoElement.getText($(savedNotesElement))
     taikoAssert.assertEquals(text,'automation test notes')
 })
