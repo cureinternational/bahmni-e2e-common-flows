@@ -51,7 +51,10 @@ function addDaysAndReturnDateInDDMMYYYY(intDays) {
 }
 
 function getCurrentTimeFormatted() {
-    const currentDate = new Date();
+    var tz=process.env.timeZone || 'Asia/Kolkata'
+    const options = { timeZone: tz };
+    const istDate = new Date().toLocaleString('en-US', options);
+    const currentDate = new Date(istDate)
     const hours = currentDate.getHours();
     const minutes = currentDate.getMinutes();
 

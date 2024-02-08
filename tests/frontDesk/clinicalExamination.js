@@ -195,7 +195,7 @@ step("Verify the patient is consulted",async function(){
     await taikoInteraction.Click('Active','link')
     var encounterTimeElement=`//a[contains(text(),'${patientId}')]/ancestor::tr/td[9]`
     var encounterTime=await taikoElement.getText($(encounterTimeElement))
-    await taikoAssert.assertNotEmpty(encounterTime)
+    taikoAssert.assertNotEmpty(encounterTime)
 })
 
 step("Goto patient clinical dashboard",async function(){
