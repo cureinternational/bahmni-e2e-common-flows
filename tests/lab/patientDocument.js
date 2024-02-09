@@ -4,7 +4,7 @@ const path = require('path');
 const taikoHelper = require("../util/taikoHelper")
 const taikoElement=require('../../../components/taikoElement.js')
 const taikoInteraction=require('../../../components/taikoInteraction.js')
-const taikoassert=require('../../../components/taikoAssert.js')
+const taikoAssert=require('../../../components/taikoAssert.js')
 var save='SAVE'
 var img='//select/../img'
 var imgElement='//div[@class="file"]//img'
@@ -19,12 +19,12 @@ step("Add a report <labReport> to <module>", async function (labReport, module) 
 step("Save the report", async function () {
 	await taikoInteraction.Click(save,'button')
 	await taikoInteraction.Click(img,'xpath')
-	await taikoassert.assertExists($(imgElement))
+	await taikoAssert.assertExists($(imgElement))
 	await taikoInteraction.Click({"class":"dialog-close-btn"},'button')
 	await taikoElement.waitNotToPresent($(imgElement))
 });
 
 step("validate patient document in patient dashboard", async function() {
 	await taikoInteraction.ScrollTo($(image))
-	await taikoassert.assertExists($(image))
+	await taikoAssert.assertExists($(image))
 });

@@ -12,10 +12,7 @@ const {
     goto
 } = require('taiko');
 const path = require('path');
-const taikoHelper = require('../util/taikoHelper');
 const console = require('console');
-const fileExtension = require('../util/fileExtension')
-const manageUsers = require('../util/requestResponse');
 const logHelper = require('./logHelper');
 const headless = process.env.headless_chrome.toLowerCase() === 'true';
 
@@ -50,7 +47,7 @@ beforeScenario(async (context) => {
         await openBrowser(browserOptions)
     }
     await setConfig({ ignoreSSLErrors: true ,retryTimeout:parseInt(process.env.retryTimeout),waitForNavigation: true,navigationTimeout:parseInt(process.env.actionTimeout)});
-    
+
 }, { tags: ['ui'] });
 
 afterScenario(async (context) => {

@@ -4,7 +4,6 @@ var assert = require("assert");
 var taikoHelper = require("./../util/taikoHelper");
 const gaugeHelper = require("./../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
-const taikoassert = require('../../../components/taikoAssert.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
@@ -42,7 +41,7 @@ step("Verify the login locations in login page", async function () {
         actualLocationsList.push(await $(element).text())
     }
     expectedLocationsList.forEach((location) => {
-        taikoassert.assertArrayPresence(actualLocationsList, location)
+        taikoAssert.assertArrayPresence(actualLocationsList, location)
     })
 
 })
@@ -56,7 +55,7 @@ step("Verify the visit locations", async function () {
         actualLocationsList.push(cleanValue)
     }
     expectedLocationsList.forEach((location) => {
-        taikoassert.assertArrayPresence(actualLocationsList, location)
+        taikoAssert.assertArrayPresence(actualLocationsList, location)
     })
 })
 
@@ -71,7 +70,7 @@ step("Verify the appointments in grid view", async function () {
 async function verifyGrid(gridName) {
     var table = `//h3[text()="${gridName}"]//parent::div//table`
     await taikoHelper.wait(2000)
-    await taikoassert.assertExists($(table))
+    await taikoAssert.assertExists($(table))
 }
 
 step("Click on <wardType>", async function (wardType) {
