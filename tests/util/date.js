@@ -51,9 +51,7 @@ function addDaysAndReturnDateInDDMMYYYY(intDays) {
     const options = { timeZone: tz };
     const istDate = new Date().toLocaleString('en-US', options);
     var currentDate=new Date(istDate).setDate(new Date(istDate).getDate()+parseInt(intDays));
-    var finalDate=ddmmyyyy(currentDate)
-            console.log(`currentdate ${finalDate}`)
-    return ddmmyyyy(currentDate + parseInt(intDays))
+    return ddmmyyyy(currentDate)
 }
 
 function getCurrentTimeFormatted() {
