@@ -173,12 +173,12 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 {
                     var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
                     var timeValue=date.getCurrentTimeFormatted()
-                    await write(dateValue, into(timeField(toRightOf(configuration.label))))
-                    gauge.screenshot();
                     await wait(2000)
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
                     gauge.screenshot();
-                    logHelper.info(date.printCurrentDate)
+                    await write(dateValue, into(timeField(toRightOf(configuration.label))))
+                    gauge.screenshot();
+                    logHelper.info(date.printCurrentDate())
                 }
                 break;
             case 'TypeDropdown':
