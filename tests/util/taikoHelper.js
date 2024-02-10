@@ -157,10 +157,9 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 if(configuration.above!=undefined)
                 {
                     var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
-                    var timeValue=configuration.value.split(",")[1]
+                    var timeValue=date.getCurrentTimeFormatted()
                     await write(dateValue, into(timeField(toRightOf(configuration.label))),above(configuration.above))
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label),above(configuration.above))
-                    await write(dateValue, into(timeField(toRightOf(configuration.label))),above(configuration.above))
                 }
                 else if(configuration.below!=undefined)
                 {
@@ -172,10 +171,11 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 else
                 {
                     var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
-                    var timeValue=configuration.value.split(",")[1]
+                    var timeValue=date.getCurrentTimeFormatted()
                     await write(dateValue, into(timeField(toRightOf(configuration.label))))
+                    gauge.screenshot();
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
-                    await write(dateValue, into(timeField(toRightOf(configuration.label))))
+                    gauge.screenshot();
                 }
                 break;
             case 'TypeDropdown':
@@ -203,12 +203,17 @@ async function selectTypeDropDown(configuration){
     if(configuration.above!=undefined)
     {
     await taikoInteraction.ScrollTo(text(configuration.label))
+    gauge.screenshot();
     await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),above(configuration.above))
+    gauge.screenshot();
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),above(configuration.above))
+    gauge.screenshot();
     var element=`//div[contains(text(),"${configuration.value}")]`
     await taikoElement.waitToExists($(element))
+    gauge.screenshot();
     await wait(1000)
     await taikoInteraction.Click(element,'xpath')
+    gauge.screenshot();
     }
    else if(configuration.below!=undefined)
     {
