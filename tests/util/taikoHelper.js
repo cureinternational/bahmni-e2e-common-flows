@@ -174,6 +174,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     var timeValue=date.getCurrentTimeFormatted()
                     await write(dateValue, into(timeField(toRightOf(configuration.label))))
                     gauge.screenshot();
+                    await wait(2000)
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
                     gauge.screenshot();
                 }
