@@ -160,6 +160,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     var timeValue=configuration.value.split(",")[1]
                     await write(dateValue, into(timeField(toRightOf(configuration.label))),above(configuration.above))
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label),above(configuration.above))
+                    await write(dateValue, into(timeField(toRightOf(configuration.label))),above(configuration.above))
                 }
                 else if(configuration.below!=undefined)
                 {
@@ -171,7 +172,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 else
                 {
                     var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
-                    var timeValue=date.getCurrentTimeFormatted()
+                    var timeValue=configuration.value.split(",")[1]
                     await write(dateValue, into(timeField(toRightOf(configuration.label))))
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
                 }
