@@ -37,7 +37,7 @@ step('close tab', async function () {
 });
 
 beforeScenario(async (context) => {
-    const browserOptions = { headless: headless, args: ['--no-sandbox','--disable-gpu','--disable-setuid-sandbox','--no-first-run','--no-zygote','--disable-dev-shm-usage', '--use-fake-ui-for-media-stream', '--window-size=1440,900'],'ignoreCertificateErrors':true,'secure':false }
+    const browserOptions = { headless: headless, args: ['--arc-disable-locale-sync','--no-sandbox','--disable-gpu','--disable-setuid-sandbox','--no-first-run','--no-zygote','--disable-dev-shm-usage', '--use-fake-ui-for-media-stream', '--window-size=1440,900'],'ignoreCertificateErrors':true,'secure':false }
     try {
         await openBrowser(browserOptions)
     }
