@@ -175,6 +175,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     var timeValue=configuration.value.split(",")[1]
                     await write(dateValue, into(timeField(toRightOf(configuration.label))))
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
+                    await write(dateValue, into(timeField(toRightOf(configuration.label))))
                 }
                 break;
             case 'TypeDropdown':
