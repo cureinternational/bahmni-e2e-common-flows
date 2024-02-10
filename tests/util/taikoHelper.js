@@ -151,34 +151,30 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                 }
                 break;
             case 'Date':
-                var dateValue = date.addDaysAndReturnDateInDDMMYYYY(configuration.value)
+                var dateValue = date.addDaysAndReturnDate(configuration.value)
                 await write(dateValue, into(timeField(toRightOf(configuration.label))))
                 break;
             case 'DateTime':
                 if(configuration.above!=undefined)
                 {
-                    var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                    var dateValue=date.addDaysAndReturnDate(configuration.value.split(",")[0])
                     var timeValue=date.getCurrentTimeFormatted()
                     await write(dateValue, into(timeField(toRightOf(configuration.label))),above(configuration.above))
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label),above(configuration.above))
                 }
                 else if(configuration.below!=undefined)
                 {
-                    var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                    var dateValue=date.addDaysAndReturnDate(configuration.value.split(",")[0])
                     var timeValue=date.getCurrentTimeFormatted()
                     await write(dateValue, into(timeField(toRightOf(configuration.label))),below(configuration.below))
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label),below(configuration.below))
                 }
                 else
                 {
-                    var dateValue=date.addDaysAndReturnDateInDDMMYYYY(configuration.value.split(",")[0])
+                    var dateValue=date.addDaysAndReturnDate(configuration.value.split(",")[0])
                     var timeValue=date.getCurrentTimeFormatted()
-                    await wait(2000)
-                    await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
-                    gauge.screenshot();
                     await write(dateValue, into(timeField(toRightOf(configuration.label))))
-                    gauge.screenshot();
-                    logHelper.info(date.printCurrentDate())
+                    await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
                 }
                 break;
             case 'TypeDropdown':

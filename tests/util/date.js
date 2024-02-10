@@ -1,5 +1,5 @@
 const logHelper = require('./logHelper');
-
+const dateFormat=process.env.dateFormat
 function yesterday() {
     const today = new Date()
     const yesterday = new Date(today)
@@ -46,12 +46,15 @@ function getDateAgo(dateAgo) {
     dateYearsAgo.setDate(dateYearsAgo.getDate() - parseInt(days))
     return dateYearsAgo;
 }
-function addDaysAndReturnDateInDDMMYYYY(intDays) {
+function addDaysAndReturnDate(intDays) {
     var tz=process.env.testTimeZone || 'Asia/Kolkata'
     const options = { timeZone: tz };
     const istDate = new Date().toLocaleString('en-US', options);
     var currentDate=new Date(istDate).setDate(new Date(istDate).getDate()+parseInt(intDays));
-    return ddmmyyyy(currentDate)
+    if(dateFormat=='mmddyyyy')
+        return mmddyyyy(currentDate)
+    else
+        return ddmmyyyy(currentDate)
 }
 
 function getCurrentTimeFormatted() {
@@ -104,6 +107,16 @@ function ddmmyyyy(dateToBeFormatted) {
     var yyyy = date.getFullYear();
 
     return `${dd.toString()}${mm.toString()}${yyyy.toString()}`;
+}
+
+function mmddyyyy(dateToBeFormatted) {
+    const date = (dateToBeFormatted == null) ? new Date() : new Date(dateToBeFormatted);
+
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = date.getFullYear();
+
+    return `${mm.toString()}${dd.toString()}${yyyy.toString()}`;
 }
 
 function ddmmyyyyHHMM(dateToBeFormatted) {
@@ -216,10 +229,10 @@ module.exports = {
     addMinutes: addMinutes,
     getDateInLongFromat: getDateInLongFromat,
     getddmmmyyyyFormattedDate: getddmmmyyyyFormattedDate,
-    addDaysAndReturnDateInDDMMYYYY: addDaysAndReturnDateInDDMMYYYY,
     getDateInShortFormat: getDateInShortFormat,
     addDaysAndReturnDateInShortFormat: addDaysAndReturnDateInShortFormat,
     calculate_age: calculate_age,
     getCurrentTimeFormatted,getCurrentTimeFormatted,
-    printCurrentDate:printCurrentDate
+    printCurrentDate:printCurrentDate,
+    addDaysAndReturnDate:addDaysAndReturnDate
 }
