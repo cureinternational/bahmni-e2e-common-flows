@@ -1,10 +1,11 @@
 "use strict";
-const {click,toRightOf, above,$} = require('taiko');
+const {click,toRightOf, above,$,text} = require('taiko');
 
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 const taikoInteraction = require("../../../components/taikoInteraction.js");
+const taikoAssert = require('../../../components/taikoAssert.js');
 
 var otScheduling = 'OT Scheduling'
 var newSurgicalBlock = 'New Surgical Block'
@@ -123,3 +124,11 @@ step("Goto operation day", async function () {
 step("Edit doctor's OT schedule", async function() {
     await taikoInteraction.Click(edit,'button')
 });
+
+step("Click on OT list view",async function(){
+    var listView='//label[contains(text(),"List View")]'
+    await taikoInteraction.Click(listView,'xpath')
+})
+step("Verify the column <name>",async function(name){
+    taikoAssert.assertExists(text(name))
+})
