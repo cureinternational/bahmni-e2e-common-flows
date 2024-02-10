@@ -174,6 +174,29 @@ function addDaysAndReturnDateInShortFormat(intDays) {
     return getDateInShortFormat(new Date().setDate(new Date().getDate() + parseInt(intDays)))
 }
 
+function printCurrentDate()
+{
+    var currentDate = new Date();
+
+    // Get the current date components
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth() + 1; // Months are zero-indexed, so we add 1
+    var day = currentDate.getDate();
+
+    // Get the current time components
+    var hours = currentDate.getHours();
+    var minutes = currentDate.getMinutes();
+    var seconds = currentDate.getSeconds();
+
+    // Format the date and time as strings
+    var currentDateStr = year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
+    var currentTimeStr = hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+    // Print the current date and time
+    console.log("Current Date: " + currentDateStr);
+    console.log("Current Time: " + currentTimeStr);
+    return "Current Date: " + currentDateStr + "Current Time: " + currentTimeStr
+}
 module.exports = {
     today: today,
     yesterday: yesterday,
@@ -197,5 +220,6 @@ module.exports = {
     getDateInShortFormat: getDateInShortFormat,
     addDaysAndReturnDateInShortFormat: addDaysAndReturnDateInShortFormat,
     calculate_age: calculate_age,
-    getCurrentTimeFormatted,getCurrentTimeFormatted
+    getCurrentTimeFormatted,getCurrentTimeFormatted,
+    printCurrentDate:printCurrentDate
 }

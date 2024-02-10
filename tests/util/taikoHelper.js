@@ -4,6 +4,7 @@ var assert = require("assert");
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const logHelper = require('./logHelper');
+const gaugeHelper = require('./gaugeHelper.js');
 
 
 async function Click(type, value, relativeLocator) {
@@ -177,6 +178,7 @@ async function executeConfigurations(configurations, observationFormName, isNotO
                     await wait(2000)
                     await write(timeValue,$(`(//input[@type="time"])[${configuration.count}]`),toRightOf(configuration.label))
                     gauge.screenshot();
+                    logHelper.info(date.printCurrentDate)
                 }
                 break;
             case 'TypeDropdown':
