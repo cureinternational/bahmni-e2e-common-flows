@@ -212,6 +212,7 @@
 * Open "Appointment scheduling" module
 * Select awaiting appointments
 * Search patient in appointment list
+* Verify the patient phone number
 * Click patient name from waitlist
 * Click Cancel
 * Click yes

@@ -451,3 +451,8 @@ step("Verify the patient appointment is re-scheduled at <appointmentTime>", asyn
  step("Check and Save anyway",async function(){
     await taikoInteraction.Click(saveAnyway,'text')
  })
+
+ step("Verify the patient phone number",async function(){
+    var phoneNumber=gaugeHelper.get("patientMobileNumber")
+    await taikoElement.waitToExists(text(phoneNumber))
+ })
