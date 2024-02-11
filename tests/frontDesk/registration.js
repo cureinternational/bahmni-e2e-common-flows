@@ -543,3 +543,8 @@ step("Enter Nutritional values",async function(){
     await taikoInteraction.Write(weight,'into',toRightOf('WEIGHT (Kg)'))
     await taikoInteraction.Write(muac,'into',toRightOf('MUAC (Cm)'))
 })
+
+step('Switch back to patient dashboard',async function(){
+    await taikoHelper.wait(implicitTimeOut)
+    await taikobrowserActions.switchTab(/default/)
+})
