@@ -216,7 +216,7 @@ step("Verify the nutrional values",async function(){
     var  height=gaugeHelper.get('patientHeight')
     var weight=gaugeHelper.get('patientWeight')
     var muac=gaugeHelper.get('patientMuac')
-    await taikoAssert.assertExists(text(height,toRightOf('HEIGHT')))
+    await taikoElement.waitToExists(text(height,toRightOf('HEIGHT')))
     await taikoAssert.assertExists(text(weight,toRightOf('WEIGHT')))
     await taikoAssert.assertExists(text(muac,toRightOf('MUAC')))
 
