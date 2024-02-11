@@ -211,3 +211,13 @@ step("Goto patient clinical dashboard",async function(){
     await taikoInteraction.Click(patientDashboardElement,'xpath')
     await taikoHelper.wait(1000)
 })
+
+step("Verify the nutrional values",async function(){
+    var  height=gaugeHelper.get('patientHeight')
+    var weight=gaugeHelper.get('patientWeight')
+    var muac=gaugeHelper.get('patientMuac')
+    await taikoAssert.assertExists(text(height,toRightOf('HEIGHT')))
+    await taikoAssert.assertExists(text(weight,toRightOf('WEIGHT')))
+    await taikoAssert.assertExists(text(muac,toRightOf('MUAC')))
+
+})

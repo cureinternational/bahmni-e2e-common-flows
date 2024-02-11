@@ -536,6 +536,8 @@ step("Enter Nutritional values",async function(){
     var height=faker.random.numeric(2)
     var muac=faker.random.numeric(2)
     gaugeHelper.save('patientWeight',weight)
+    gaugeHelper.save('patientHeight',height)
+    gaugeHelper.save('patientMuac',muac)
     await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.Write(height,'into',toRightOf('HEIGHT (Cm)'))
     await taikoInteraction.Write(weight,'into',toRightOf('WEIGHT (Kg)'))

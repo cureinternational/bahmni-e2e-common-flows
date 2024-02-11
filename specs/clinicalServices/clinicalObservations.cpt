@@ -46,6 +46,7 @@
 
 # Doctor prescribes medications <medications>
 * Open "Medications" Tab
+* Verify the nutrional values
 * Doctor prescribes medicines <medications>
 * Save data
 
