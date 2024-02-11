@@ -3,5 +3,10 @@
       "diagnosisName": "fever",
       "order": "PRIMARY",
       "certainty": "CONFIRMED"
+    },
+    "condition":{
+        "conditionCode":"M79.643",
+        "conditionName":"Pain in hand",
+        "status":"Active"
     }
   }

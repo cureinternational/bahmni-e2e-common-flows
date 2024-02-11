@@ -114,6 +114,7 @@
 
 # Verify diagnosis and condition in patient clinical dashboard
 * Verify diagnosis in patient clinical dashboard
+* Verify condition in patient clinical dashboard
 
 # Enter Form Values and validate no error is displayed on save <formPath>
 * Enter Form Values <formPath>

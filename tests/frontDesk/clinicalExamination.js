@@ -3,7 +3,6 @@ const {toRightOf,textBox,dropDown,below,$,text, button, within} = require('taiko
 var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
-var assert = require('assert');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert');
@@ -35,6 +34,9 @@ var closeConsultation='[ng-click="closeTeleConsultation()"]'
 var diagnoses='Diagnoses'
 var order='Order'
 var certainty='Certainty'
+var condition='Condition'
+var status='Status'
+var add='Add'
 var urgentBtnElement='//button[@title="Urgent"]'
 var notesBtnElement='//i[contains(@class,"fa fa-file-text-o")]'
 var okBtn='OK'
@@ -179,6 +181,13 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
     await taikoInteraction.Click(name,'xpath')
     await taikoInteraction.Click(medicalDiagnosis.diagnosis.order,'text',below(order))
     await taikoInteraction.Click(medicalDiagnosis.diagnosis.certainty,'text',below(certainty))
+    await taikoInteraction.Write(medicalDiagnosis.condition.conditionCode,'into',below(condition))
+    var conditionCode=`(//a[contains(text(),'${medicalDiagnosis.condition.conditionCode}')])[1]`
+    await taikoElement.waitToPresent($(conditionCode))
+    await taikoInteraction.Click(conditionCode,'xpath')
+    await taikoInteraction.Click(medicalDiagnosis.condition.status,'text',below(status))
+    await taikoInteraction.Click(add,'button')
+
 });
 
 step("Verify the radiology notes <order>",async function(orderFile){

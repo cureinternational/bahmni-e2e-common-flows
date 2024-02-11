@@ -156,13 +156,13 @@ step("Verify diagnosis in patient clinical dashboard", async function () {
 
 step("Verify condition in patient clinical dashboard", async function () {
     var medicalDiagnosis = gaugeHelper.get("medicalDiagnosis")
-    var medicalConditions = medicalDiagnosis.condition
-    for (var condition of medicalConditions) {
-        if (condition.status != "Inactive") {
-            assert.ok(await text(condition.conditionName, below(condition.status), within($("#Conditions"))).exists())
+    var medicalCondition = medicalDiagnosis.condition
+        if (medicalCondition.status != "Inactive")
+        {
+            assert.ok(await text(medicalCondition.conditionName, within($("#Conditions"))).exists())
         }
-    }
-});
+})
+
 
 
 step("Verify history & examination in patient clinical dashboard", async function () {
