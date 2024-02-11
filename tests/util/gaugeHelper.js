@@ -10,7 +10,7 @@ function get(key){
 }
 
 function print(key,value){
-    if(process.env.DEBUG==='true') 
+    if(process.env.DEBUG==='true')
     {
     if(typeof value=='object')
     {
@@ -22,11 +22,16 @@ function print(key,value){
     console.log(`${key} =====>>>>> ${value}`)
     gauge.message(`${key} ${value}`)
     }
-    }   
+    }
+}
+
+function takeScreenshot(){
+    gauge.screenshot();
 }
 
 module.exports = {
     save: save,
     get: get,
-    print: print
+    print: print,
+    takeScreenshot:takeScreenshot
 }

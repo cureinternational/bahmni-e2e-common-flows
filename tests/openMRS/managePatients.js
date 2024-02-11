@@ -39,7 +39,7 @@ step("Select the patients to be merged", async function() {
 
 step("Merge patients", async function() {
 	await waitFor(async () => !(await $("Loading...").exists()))
-	await confirm('Are you sure you want to merge these patients?', async () => await accept())	
+	await confirm('Are you sure you want to merge these patients?', async () => await accept())
 	await click(button("Merge Patients"))
 //	await waitFor(async () => (await text("Patients merged successfully").exists()))
 });

@@ -1,7 +1,7 @@
 
 
 function info(key,message) {
-    if(process.env.DEBUG==='true') 
+    if(process.env.DEBUG==='true')
     {
         if(typeof key=='object')
         {
@@ -17,9 +17,8 @@ function info(key,message) {
     }
 }
 
-function error(key,message) {
-    if(process.env.DEBUG==='true') 
-    {
+function error(key,message)
+{
         if(typeof key=='object')
         {
             var errorJson=JSON.stringify(key)
@@ -34,7 +33,6 @@ function error(key,message) {
             gauge.message(`${key} ${message}`)
             }
         }
-    }
 }
 
 module.exports = {
