@@ -57,7 +57,7 @@ var addNewService='Add New Service'
 var save='Save'
 var manageLocations='Manage Locations'
 var today='Today'
-var listView='List view'
+var listView='//a[contains(text(),"List view")]'
 let appointmentStartTime = gaugeHelper.get("appointmentStartTime");
 let appointmentEndTime = gaugeHelper.get("appointmentEndTime");
 var locationSearchInput="//div[@data-testid='location-search']//input"
@@ -172,7 +172,15 @@ step("Close the appointment popup",async function(){
 })
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
-    await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`))
+    var appointmentCount=(await $('.fc-title').elements()).length
+    if(appointmentCount>20)
+    {
+        await taikoInteraction.Click('//button[@ng-click="goToNextWeek()"]','xpath')
+    }
+    var dateHeader='.fc-day-header'
+    var dateElementList=await $(dateHeader).elements()
+    var firstDay=(await dateElementList[0].text()).trim()
+    await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`),below(`${firstDay}`))
     gaugeHelper.save("appointmentStartDate", date.getDateFromddmmyyyy(await textBox({ placeHolder: "dd/mm/yyyy" }).value()))
     gaugeHelper.save("startDate", await textBox({ placeHolder: "dd/mm/yyyy" }).value())
     gaugeHelper.save("startTime", await textBox({ placeHolder: "hh:mm" }).value())
@@ -370,7 +378,8 @@ step("Goto Today", async function () {
 });
 
 step("Select List View in Appointments", async function () {
-    await taikoInteraction.Click(listView,'text')
+    await taikoHelper.wait(3000)
+    await taikoInteraction.Click(listView,'xpath')
 });
 
 step("Get Apointmnet Date and Time", async function () {
