@@ -383,7 +383,7 @@ step("Enter patient last name <lastName>", async function (lastName) {
 });
 
 step("wait for <timeInMilliSeconds>", async function (timeInMilliSeconds) {
-    await taikoHelper.wait(timeInMilliSeconds)
+    await taikoHelper.wait(parseInt(timeInMilliSeconds))
 });
 
 step("Choose newly created patient", async function () {

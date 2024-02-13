@@ -22,7 +22,7 @@
 * select the Regular appointment option
 * select appointment status as "Scheduled"
 * Check and Save
-* wait for "1000"
+* wait for "6000"
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
@@ -43,7 +43,7 @@
 * select Repeats every <days> days
 * select the End date as after <times> occurances
 * Check and Save
-* wait for "1000"
+* wait for "6000"
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
@@ -91,7 +91,7 @@
 * select the Regular appointment option
 * select appointment status as "Scheduled"
 * Check and Save
-* wait for "1000"
+* wait for "6000"
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
@@ -115,7 +115,7 @@
 * Check and Save
 * Verify the conflict message
 * Check and Save anyway
-* wait for "1000"
+* wait for "6000"
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
@@ -136,7 +136,7 @@
 * select the Regular appointment option
 * select appointment status as "Scheduled"
 * Check and Save
-* wait for "1000"
+* wait for "6000"
 * Click Close
 * Select List View in Appointments
 * Get Apointmnet Date and Time
@@ -201,7 +201,7 @@
 * check the date for holiday on "02/03/2024"
 * select appointment status as "Waitlist"
 * Check and Save
-* wait for "1000"
+* wait for "6000"
 * Click Close
 * Select awaiting appointments
 * Search patient in appointment list
