@@ -72,6 +72,9 @@ var conflictMessage='You have an overlapping conflict'
 var saveAnyway='Save Anyway'
 var holidayDateElement='div.bx--form-requirement'
 var holidayText='Date selected is a Public Holiday'
+var titleElement='.fc-title'
+var nextWeekButton='//button[@ng-click="goToNextWeek()"]'
+var dateHeaderElement='.fc-day-header'
 
 step("View all appointments", async function () {
     var list=process.env.appointmentList
@@ -172,15 +175,21 @@ step("Close the appointment popup",async function(){
 })
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
-    var appointmentCount=(await $('.fc-title').elements()).length
+    var appointmentCount=(await $(titleElement).elements()).length
     if(appointmentCount>20)
     {
-        await taikoInteraction.Click('//button[@ng-click="goToNextWeek()"]','xpath')
+        await taikoInteraction.Click(nextWeekButton,'xpath')
     }
-    var dateHeader='.fc-day-header'
-    var dateElementList=await $(dateHeader).elements()
+    if(await taikoElement.isExists($(dateHeaderElement)))
+    {
+    var dateElementList=await $(dateHeaderElement).elements()
     var firstDay=(await dateElementList[0].text()).trim()
     await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`),below(`${firstDay}`))
+    }
+    else
+    {
+        await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`))
+    }
     gaugeHelper.save("appointmentStartDate", date.getDateFromddmmyyyy(await textBox({ placeHolder: "dd/mm/yyyy" }).value()))
     gaugeHelper.save("startDate", await textBox({ placeHolder: "dd/mm/yyyy" }).value())
     gaugeHelper.save("startTime", await textBox({ placeHolder: "hh:mm" }).value())
