@@ -90,6 +90,7 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
+* wait for overlay to disappear
 * Click patient name
 * Verify the details in Appointments display control with status "Scheduled"
 * Close the appointment popup
@@ -130,4 +131,6 @@
 * Open Nutritional page
 * Enter Nutritional values
 * Save data
+* wait for overlay to disappear
+* validate for no error
 * Switch back to patient dashboard

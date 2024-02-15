@@ -16,7 +16,9 @@ const csvConfig = require("./util/csvConfig");
 const gaugeHelper = require("./util/gaugeHelper");
 const logHelper=require("./util/logHelper")
 const taikoInteraction = require('../../components/taikoInteraction.js');
-var overlay='//div[@id="overlay" and @style="display: block;"]'
+const taikoassert=require("../../components/taikoAssert.js")
+var overlay='//div[@id="overlay" and contains(@style,"block")]'
+var errorElement='//DIV[@class="message-container error-message-container"]'
 
 step("put first name <firstName> middle name <middleName> lastname <lastName>", async function (firstName, middleName, lastName) {
     gaugeHelper.save("patientFirstName", firstName);
@@ -63,7 +65,7 @@ step("Check if <appName> app is opened", async function (appName) {
 });
 
 step("wait for overlay to disappear", async function () {
-    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoElement.waitNotToExists($(overlay))
 });
 
 step("wait for overlay and Saved to disappear", async function () {
@@ -97,3 +99,7 @@ step("Choose a random uploaded patient identifier", async function () {
     gaugeHelper.save("patientLastName",gaugeHelper.get("patientLastName" + (recordSeq)));
     gaugeHelper.save("patientFullName",gaugeHelper.get("patientFullName" + (recordSeq)));
 });
+
+step("validate for no error",async function(){
+    await taikoassert.assertNotExists($(errorElement))
+})

@@ -53,6 +53,7 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
+* wait for overlay to disappear
 * Click patient name
 * Cancel the <type> appointment
 * reload the page
@@ -63,6 +64,7 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
+* wait for overlay to disappear
 * Click patient name
 * Click Cancel
 * Click Cancel all
@@ -72,6 +74,7 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
+* wait for overlay to disappear
 * Click patient name
 * Edit the <type> appointment to <appointmentTime>
 * reload the page
@@ -147,11 +150,13 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
+* wait for overlay to disappear
 * Should not find the patient's name
 * Click on home page
 
 # The patient's appointment should not be found in the waitlist
 * Open "Appointment scheduling" module
+* wait for overlay to disappear
 * Select awaiting appointments
 * Should not find the patient's name
 * Click on home page
@@ -160,6 +165,7 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto appointments's date
+* wait for overlay to disappear
 * Click patient name
 * Verify the patient appointment is re-scheduled at <appointmentTime>
 * reload the page
@@ -170,6 +176,7 @@
 * Open "Appointment scheduling" module
 * View all appointments
 * Goto Next week
+* wait for overlay to disappear
 * Should not find the patient's name
 
 # Cancel the <type> appointment
@@ -203,6 +210,7 @@
 * Check and Save
 * wait for "6000"
 * Click Close
+* wait for overlay to disappear
 * Select awaiting appointments
 * Search patient in appointment list
 * Verify the appointment is present in waitlist
@@ -210,6 +218,7 @@
 
 # Receptionist cancels the newly created waitlist appointment
 * Open "Appointment scheduling" module
+* wait for overlay to disappear
 * Select awaiting appointments
 * Search patient in appointment list
 * Verify the patient phone number
