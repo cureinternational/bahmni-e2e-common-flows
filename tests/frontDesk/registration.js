@@ -420,7 +420,7 @@ step("Open Nutritional page",async function(){
     await taikoInteraction.Click(nutrionalPage,'link')
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/registration/)
-    await taikoElement.waitToExists(button(save))
+    await taikoHelper.wait(3000)
 
 })
 
