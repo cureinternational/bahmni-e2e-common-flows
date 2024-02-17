@@ -420,8 +420,7 @@ step("Open Nutritional page",async function(){
     await taikoInteraction.Click(nutrionalPage,'link')
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/registration/)
-    await taikoHelper.wait(3000)
-
+    await taikoElement.waitToExists(button(save))
 })
 
 step("Confirm if you want to close the visit", async function () {
