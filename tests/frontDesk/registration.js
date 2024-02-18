@@ -40,7 +40,7 @@ var fee='//*[text()="Registration Fee"]/following::input[@type="number"]'
 var registrationFee='Registration Fee'
 var createNew='Create New'
 var enterVisitDetails='Enter Visit page Details'
-var closeVisit='Close Visit'
+var closeVisit='button.cancel'
 var registration='Registration'
 var homeBtn='//a[contains(@class,"back-btn")]/i[@class="fa fa-home"]'
 var activePatientList='(//a[contains(@class,"back-btn")]/i[@class="fa fa-users"])[2]'
@@ -59,7 +59,7 @@ var yob='Year Of Birth'
 var patientADTpage='Patient ADT Page'
 var nutrionalPage='Nutritional Values'
 var visitAttributes='Visit Attributes'
-var closePopupText='Are you sure you want to close this visit?'
+var closePopupText='Are you sure you want to close this visit'
 var uploadPopup='[ng-click="launchPhotoUploadPopup()"]'
 var confirmPhoto='Confirm Photo'
 var patientID='Patient ID'
@@ -277,7 +277,7 @@ step("Enter visit details", async function () {
 
 step("Close visit", async function () {
     await taikoHelper.wait(3000)
-    await taikoInteraction.AlertClick(closeVisit,'button',closePopupText)
+    await taikoInteraction.AlertClick(closeVisit,'xpath',closePopupText)
     await taikoHelper.wait(2000)
     await taikobrowserActions.switchTab(/default/)
 });
