@@ -276,9 +276,9 @@ step("Enter visit details", async function () {
 });
 
 step("Close visit", async function () {
-    await taikoHelper.wait(implicitTimeOut)
+    await taikoHelper.wait(3000)
     await taikoInteraction.AlertClick(closeVisit,'button',closePopupText)
-    await taikoHelper.wait(implicitTimeOut)
+    await taikoHelper.wait(2000)
     await taikobrowserActions.switchTab(/default/)
 });
 
@@ -419,7 +419,6 @@ step("Open Nutritional page",async function(){
     await taikoElement.waitToExists(link(nutrionalPage))
     await taikoInteraction.Click(nutrionalPage,'link')
     await taikoHelper.wait(implicitTimeOut)
-    await taikobrowserActions.switchTab(/Patient Registration/)
     await taikoElement.waitToExists(button(save))
 })
 
