@@ -259,8 +259,8 @@ step("select the Regular appointment option", async function () {
 });
 
 step("select appointment status as <status>",async function(status){
-    var appointMentStatus=`//span[text()="${status}"]`
-    await taikoInteraction.ScrollTo($(appointMentStatus))
+    var appointMentStatus=`//span[contains(text(),"${status}")]`
+    await taikoInteraction.ScrollTo('Notes')
     await taikoInteraction.Click(appointMentStatus,'xpath')
 })
 

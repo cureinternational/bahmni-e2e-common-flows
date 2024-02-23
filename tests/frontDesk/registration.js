@@ -276,9 +276,9 @@ step("Enter visit details", async function () {
 });
 
 step("Close visit", async function () {
-    await taikoHelper.wait(3000)
+    await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.AlertClick(closeVisit,'xpath',closePopupText)
-    await taikoHelper.wait(2000)
+    await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/default/)
 });
 
