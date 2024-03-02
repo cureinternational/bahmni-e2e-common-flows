@@ -1,4 +1,4 @@
-const {$,button,toRightOf,toLeftOf,text,link,below,press,timeField,fileField,accept} = require('taiko');
+const {$,button,toRightOf,toLeftOf,text,link,below,press,timeField,fileField,accept,confirm} = require('taiko');
 var users = require("../util/users");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper=require("../util/gaugeHelper")
