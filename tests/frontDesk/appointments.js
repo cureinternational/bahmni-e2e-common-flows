@@ -73,6 +73,7 @@ var saveAnyway='Save Anyway'
 var holidayDateElement='div.bx--form-requirement'
 var holidayText='Date selected is a Public Holiday'
 var titleElement='.fc-title'
+var noAppointmentsfound='No appointments found'
 var nextWeekButton='//button[@ng-click="goToNextWeek()"]'
 var dateHeaderElement='.fc-day-header'
 
@@ -175,16 +176,19 @@ step("Close the appointment popup",async function(){
 })
 
 step("Open calender at time <appointmentTime>", async function (appointmentTime) {
-    var appointmentCount=(await $(titleElement).elements()).length
-    if(appointmentCount>20)
+    if(await taikoElement.isNotExists(text(noAppointmentsfound)))
     {
+        var appointmentCount=(await $(titleElement).elements()).length
+        if(appointmentCount>20)
+        {
         await taikoInteraction.Click(nextWeekButton,'xpath')
-    }
-    if(await taikoElement.isExists($(dateHeaderElement)))
-    {
-    var dateElementList=await $(dateHeaderElement).elements()
-    var firstDay=(await dateElementList[0].text()).trim()
-    await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`),below(`${firstDay}`))
+        }
+        if(await taikoElement.isExists($(dateHeaderElement)))
+        {
+        var dateElementList=await $(dateHeaderElement).elements()
+        var firstDay=(await dateElementList[0].text()).trim()
+        await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`),below(`${firstDay}`))
+        }
     }
     else
     {
