@@ -1,4 +1,4 @@
-const {$,dropDown,button,within,toRightOf,write,click,toLeftOf,text,into,textBox,waitFor,below} = require('taiko');
+const {$,dropDown,button,within,toRightOf,write,click,toLeftOf,text,into,textBox,waitFor,below,above} = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
@@ -189,6 +189,10 @@ step("Open calender at time <appointmentTime>", async function (appointmentTime)
         var firstDay=(await dateElementList[0].text()).trim()
         await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`),below(`${firstDay}`))
         }
+        else
+        {
+        await taikoInteraction.Click(fcwidgetcontent,'xpath',toRightOf(`${appointmentTime}`))
+        }
     }
     else
     {
@@ -345,9 +349,11 @@ step("Click Edit <type> appointment", async function (type) {
 
 step("Update the time as <time>",async function(time){
     var value=time.split(" ")
-    await taikoInteraction.Clear(below(startTime))
-    await taikoInteraction.Clear(below(endTime))
-    await taikoInteraction.Write(value[0],'into',below(startTime))
+    await taikoHelper.wait(3000)
+    await taikoInteraction.ScrollTo('Notes')
+    await taikoInteraction.Clear(below(startTime),above('Notes'))
+    await taikoInteraction.Clear(below(endTime),above('Notes'))
+    await taikoInteraction.Write(value[0],'into',above('Notes'))
 })
 
 step("Open admin tab of Appointments", async function () {

@@ -97,3 +97,10 @@ step("Click patient name from waitlist", async function () {
     var fullName = gaugeHelper.get("patientFullName")
     await taikoInteraction.Click(fullName,'text')
 });
+
+step("Filter by provider name",async function(){
+    var provider=process.env.provider
+    await taikoInteraction.Write(provider,'into',{placeHolder:"Enter provider name"})
+    await taikoInteraction.pressEnter()
+    await taikoHelper.wait(2000)
+})

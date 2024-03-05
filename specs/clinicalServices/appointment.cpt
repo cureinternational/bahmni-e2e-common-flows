@@ -15,7 +15,7 @@
 # Receptionist creates a walkin appointment at <appointmentTime> for service
 * Open "Appointment scheduling" module
 * View all appointments
-* Goto Next week
+* Goto tomorrow's date
 * Open calender at time <appointmentTime>
 * Select patient
 * Search and select service
@@ -24,6 +24,7 @@
 * Check and Save
 * wait for "6000"
 * Click Close
+* wait for overlay to disappear
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 * Click on home page
@@ -31,7 +32,7 @@
 # Receptionist creates a recurring appointment for <days> days every <times> at time <appointmentTime>
 * Open "Appointment scheduling" module
 * View all appointments
-* Goto Today
+* Goto tomorrow's date
 * Open calender at time <appointmentTime>
 * Select patient
 * Search and select category
@@ -45,6 +46,7 @@
 * Check and Save
 * wait for "6000"
 * Click Close
+* wait for overlay to disappear
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 * Click on home page
@@ -54,6 +56,7 @@
 * View all appointments
 * Goto appointments's date
 * wait for overlay to disappear
+* Filter by provider name
 * Click patient name
 * Cancel the <type> appointment
 * reload the page
@@ -65,6 +68,7 @@
 * View all appointments
 * Goto appointments's date
 * wait for overlay to disappear
+* Filter by provider name
 * Click patient name
 * Click Cancel
 * Click Cancel all
@@ -75,6 +79,7 @@
 * View all appointments
 * Goto appointments's date
 * wait for overlay to disappear
+* Filter by provider name
 * Click patient name
 * Edit the <type> appointment to <appointmentTime>
 * reload the page
@@ -83,7 +88,7 @@
 # Receptionist creates a regular appointment <appointmentTime>
 * Open "Appointment scheduling" module
 * View all appointments
-* Goto Next week
+* Goto tomorrow's date
 * Open calender at time <appointmentTime>
 * Select patient
 * Search and select category
@@ -96,6 +101,7 @@
 * Check and Save
 * wait for "6000"
 * Click Close
+* wait for overlay to disappear
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 * Click on home page
@@ -103,7 +109,7 @@
 # Receptionist creates a conflict regular appointment
 * Open "Appointment scheduling" module
 * View all appointments
-* Goto Next week
+* Goto tomorrow's date
 * Click Add New appointment
 * Select patient
 * Search and select category
@@ -120,6 +126,7 @@
 * Check and Save anyway
 * wait for "6000"
 * Click Close
+* wait for overlay to disappear
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 * Click on home page
@@ -141,6 +148,7 @@
 * Check and Save
 * wait for "6000"
 * Click Close
+* wait for overlay to disappear
 * Select List View in Appointments
 * Get Apointmnet Date and Time
 * Click on home page
@@ -166,6 +174,7 @@
 * View all appointments
 * Goto appointments's date
 * wait for overlay to disappear
+* Filter by provider name
 * Click patient name
 * Verify the patient appointment is re-scheduled at <appointmentTime>
 * reload the page
@@ -205,7 +214,7 @@
 * Search and select provider
 * Search and select location
 * select the Regular appointment option
-* check the date for holiday on "02/03/2024"
+* check the date for holiday on "07/12/2024"
 * select appointment status as "Waitlist"
 * Check and Save
 * wait for "6000"

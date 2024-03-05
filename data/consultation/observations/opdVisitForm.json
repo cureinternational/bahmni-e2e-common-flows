@@ -19,6 +19,12 @@
             "label": "Outcome",
             "value": "Admission",
             "below":"Treatment Plan"
+        },
+        {
+            "type": "Button",
+            "label": "Did you check for Allergies?",
+            "value": "Yes",
+            "below":"Orders for Follow-Up Clinic"
         }
     ],
     "EditObservationFormDetails": [

@@ -1,4 +1,4 @@
-const {$,button,toRightOf,toLeftOf,text,link,below,press,timeField,fileField,accept,confirm} = require('taiko');
+const {$,button,toRightOf,toLeftOf,text,link,below,press,timeField,fileField,accept,confirm, click,scrollTo,highlight} = require('taiko');
 var users = require("../util/users");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper=require("../util/gaugeHelper")
@@ -278,7 +278,10 @@ step("Enter visit details", async function () {
 step("Close visit", async function () {
     await taikoHelper.wait(implicitTimeOut)
     await confirm('Are you sure you want to close this visit?', async () => await accept())
-    await taikoInteraction.Click(closeVisit,'button')
+    await scrollTo(button("Close Visit"))
+    await highlight(button("Close Visit"))
+    await click(button("Close Visit"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/default/)
 
 });
@@ -417,8 +420,9 @@ step("Open Visit attributes",async function()
     await taikobrowserActions.switchTab(/Patient Registration/)
 })
 step("Open Nutritional page",async function(){
+    await taikoHelper.wait(2000)
     await taikoInteraction.Click(nutrionalPage,'link')
-    await taikoHelper.wait(implicitTimeOut)
+    await taikoHelper.wait(2000)
 })
 
 step("Confirm if you want to close the visit", async function () {
