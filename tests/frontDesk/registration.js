@@ -422,6 +422,8 @@ step("Open Visit attributes",async function()
 step("Open Nutritional page",async function(){
     await taikoHelper.wait(2000)
     await taikoInteraction.Click(nutrionalPage,'link')
+    await taikoHelper.wait(implicitTimeOut)
+    await taikobrowserActions.switchTab(/registration/)
     await taikoHelper.wait(2000)
 })
 
