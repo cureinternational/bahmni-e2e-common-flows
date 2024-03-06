@@ -420,7 +420,7 @@ step("Open Visit attributes",async function()
     await taikobrowserActions.switchTab(/Patient Registration/)
 })
 step("Open Nutritional page",async function(){
-    await taikoHelper.wait(2000)
+    await taikoHelper.wait(implicitTimeOut)
     await taikoInteraction.Click(nutrionalPage,'link')
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/registration/)
