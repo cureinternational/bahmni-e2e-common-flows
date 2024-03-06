@@ -92,7 +92,10 @@
 * Goto appointments's date
 * wait for overlay to disappear
 * Filter by provider name
-* Click patient name
+* Filter by appointment status "Scheduled"
+* Select List View in Appointments
+* wait for overlay to disappear
+* Click patient name from list view
 * Verify the details in Appointments display control with status "Scheduled"
 * Close the appointment popup
 * Click on home page

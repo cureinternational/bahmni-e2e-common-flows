@@ -87,6 +87,11 @@ step("Click patient name", async function () {
     }
 });
 
+step("Click patient name from list view", async function () {
+        var patientName=gaugeHelper.get("patientFullName")
+        await taikoInteraction.Click(patientName,'text')
+});
+
 step("Should not find the patient's name", async function () {
     var fullName = gaugeHelper.get("patientFullName")
     await taikoElement.isNotExists(text(fullName))
@@ -101,6 +106,12 @@ step("Click patient name from waitlist", async function () {
 step("Filter by provider name",async function(){
     var provider=process.env.provider
     await taikoInteraction.Write(provider,'into',{placeHolder:"Enter provider name"})
+    await taikoInteraction.pressEnter()
+    await taikoHelper.wait(2000)
+})
+
+step("Filter by appointment status <status>",async function(status){
+    await taikoInteraction.Write(status,'into',{placeHolder:"Enter status Name"})
     await taikoInteraction.pressEnter()
     await taikoHelper.wait(2000)
 })

@@ -45,7 +45,7 @@ step("Click the order <order>", async function (order) {
    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
    var patientFirstName = gaugeHelper.get("patientFirstName");
    await taikoInteraction.Click(patientIdentifierValue,'link')
-   await taikoHelper.wait(1000)
+   await taikoHelper.wait(implicitWaitTime)
    await taikoBrowserAction.switchTab(/lab/)
    await taikoBrowserAction.switchTab(/Lab Entry/)
    await taikoBrowserAction.reloadPage()

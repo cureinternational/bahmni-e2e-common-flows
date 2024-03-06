@@ -57,8 +57,11 @@
 * Goto appointments's date
 * wait for overlay to disappear
 * Filter by provider name
-* Click patient name
-* Cancel the <type> appointment
+* Filter by appointment status "Scheduled"
+* Select List View in Appointments
+* wait for overlay to disappear
+* Click patient name from list view
+* Cancel the <type> appointment from list view
 * reload the page
 * Click on home page
 
@@ -69,7 +72,10 @@
 * Goto appointments's date
 * wait for overlay to disappear
 * Filter by provider name
-* Click patient name
+* Filter by appointment status "Scheduled"
+* Select List View in Appointments
+* wait for overlay to disappear
+* Click patient name from list view
 * Click Cancel
 * Click Cancel all
 * reload the page
@@ -80,7 +86,10 @@
 * Goto appointments's date
 * wait for overlay to disappear
 * Filter by provider name
-* Click patient name
+* Filter by appointment status "Scheduled"
+* Select List View in Appointments
+* wait for overlay to disappear
+* Click patient name from list view
 * Edit the <type> appointment to <appointmentTime>
 * reload the page
 * Click on home page
@@ -175,7 +184,10 @@
 * Goto appointments's date
 * wait for overlay to disappear
 * Filter by provider name
-* Click patient name
+* Filter by appointment status "Scheduled"
+* Select List View in Appointments
+* wait for overlay to disappear
+* Click patient name from list view
 * Verify the patient appointment is re-scheduled at <appointmentTime>
 * reload the page
 * Click on home page
@@ -190,6 +202,9 @@
 
 # Cancel the <type> appointment
 * Cancel <type> appointment
+
+# Cancel the <type> appointment from list view
+* Cancel <type> appointment from list view
 
 # Validate Appointment Details in Clinical Dashboard with status as <status>
 * Open clinical tab with all section

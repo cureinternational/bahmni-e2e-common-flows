@@ -342,6 +342,24 @@ step("Cancel <type> appointment", async function (type) {
     }
 });
 
+step("Cancel <type> appointment from list view", async function (type) {
+    var btnstatus=taikoElement.elementDisabled(button(cancel))
+
+    if(btnstatus)
+    {
+        await taikoInteraction.Click(cancelBtn,'xpath')
+        if("regular"==type)
+        {
+            await taikoInteraction.EvaluateClick($(btnYes))
+        }
+
+        else if("recurring"==type)
+        {
+            await taikoInteraction.EvaluateClick($(btnYesAll))
+        }
+    }
+});
+
 step("Click Edit <type> appointment", async function (type) {
     await taikoElement.isExists(text(edit))
     await taikoInteraction.Click(edit,'button')
@@ -456,7 +474,9 @@ step("Verify if all the providers are present",async function(){
 step("Verify the patient appointment is re-scheduled at <appointmentTime>", async function (appointmentTime){
     let appointmentStartTime = appointmentTime.split(" ")[0];
     let appointmentEnd = appointmentTime.split(" ")[1];
-    await taikoAssert.assertExists(text(`${appointmentStartTime}:00 ${appointmentEnd} - ${appointmentStartTime}:30 ${appointmentEnd}`, toRightOf('Slot:')))
+    let patientFullName=gaugeHelper.get('patientFullName')
+    await taikoAssert.assertExists(text(patientFullName))
+    await taikoAssert.assertExists(text(`${appointmentStartTime}:00 ${appointmentEnd}`))
  });
 
  step('Enter the appointment date',async function(){
