@@ -8,6 +8,7 @@ const taikoHelper = require('../util/taikoHelper.js');
 var tab='//li[contains(@class,"tab-item")]'
 var speciliatyList=process.env.specialityList.split(',')
 var myPatients='My Patients'
+var identifer='Identifier'
 var implicitWaitTime=parseInt(process.env.implicitTimeOut)
 
 
@@ -30,9 +31,9 @@ step("Verify the patient visit is added in my patient queue and the <speciality>
     var lastName = gaugeHelper.get("patientLastName")
     var fullName = firstName+' '+lastName
     await taikoInteraction.Click(myPatients,'text')
-    await taikoHelper.wait(implicitWaitTime)
+    await taikoElement.waitToExists(text(identifer))
     await taikoassert.assertExists(text(fullName))
     await taikoInteraction.Click(speciality,'text')
-    await taikoHelper.wait(implicitWaitTime)
+    await taikoElement.waitToExists(text(identifer))
     await taikoassert.assertExists(text(fullName))
 })
