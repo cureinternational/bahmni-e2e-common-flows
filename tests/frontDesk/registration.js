@@ -40,7 +40,7 @@ var fee='//*[text()="Registration Fee"]/following::input[@type="number"]'
 var registrationFee='Registration Fee'
 var createNew='Create New'
 var enterVisitDetails='Enter Visit page Details'
-var closeVisit='button.cancel'
+var closeVisit='Close Visit'
 var registration='Registration'
 var homeBtn='//a[contains(@class,"back-btn")]/i[@class="fa fa-home"]'
 var activePatientList='(//a[contains(@class,"back-btn")]/i[@class="fa fa-users"])[2]'
@@ -276,11 +276,9 @@ step("Enter visit details", async function () {
 });
 
 step("Close visit", async function () {
-    await taikoHelper.wait(implicitTimeOut)
-    await confirm('Are you sure you want to close this visit?', async () => await accept())
-    await scrollTo(button("Close Visit"))
-    await highlight(button("Close Visit"))
-    await click(button("Close Visit"), { waitForNavigation: true, navigationTimeout: process.env.actionTimeout })
+    await taikoElement.waitToExists(button(closeVisit))
+    confirm('Are you sure you want to close this visit?', async () => await accept())
+    await click(button(closeVisit),{navigationTimeout: process.env.actionTimeout})
     await taikoHelper.wait(implicitTimeOut)
     await taikobrowserActions.switchTab(/default/)
 
@@ -420,11 +418,12 @@ step("Open Visit attributes",async function()
     await taikobrowserActions.switchTab(/Patient Registration/)
 })
 step("Open Nutritional page",async function(){
-    await taikoHelper.wait(implicitTimeOut)
-    await taikoInteraction.Click(nutrionalPage,'link')
-    await taikoHelper.wait(implicitTimeOut)
-    await taikobrowserActions.switchTab(/registration/)
-    await taikoHelper.wait(2000)
+    await taikoElement.waitToExists(link(nutrionalPage))
+    await scrollTo(link(nutrionalPage))
+    await highlight(link(nutrionalPage))
+    await click(link(nutrionalPage),{navigationTimeout: process.env.actionTimeout})
+    var patientFullName=gaugeHelper.get("patientFullName")
+    await taikoElement.waitToExists(text(patientFullName))
 })
 
 step("Confirm if you want to close the visit", async function () {
