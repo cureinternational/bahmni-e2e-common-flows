@@ -1,4 +1,4 @@
-const {$,dropDown,button,within,toRightOf,write,click,toLeftOf,text,into,textBox,waitFor,below,above} = require('taiko');
+const {$,dropDown,button,within,toRightOf,write,click,toLeftOf,text,into,textBox,waitFor,below,above,link} = require('taiko');
 var date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
@@ -14,6 +14,7 @@ var addNewAppointment = 'Add new appointment'
 var patientNameId='Patient Name or ID'
 var lastName = gaugeHelper.get("patientLastName")
 var searchbox='//input[@id="PatientSearch"]'
+var searchboxprogram='//input[@id="patientIdentifier"]'
 var service='Service'
 var appointmentCategorySearch='appointment-category-search'
 var specialitySearch='speciality-search'
@@ -106,6 +107,15 @@ step("Select patient", async function () {
         {
             await taikoInteraction.EvaluateClick($(patientNameElement))
         }
+});
+
+step("Select patient from program queue", async function () {
+    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
+        await taikoInteraction.Write(patientIdentifierValue,"xpath",searchboxprogram)
+        await taikoInteraction.Click(patientIdentifierValue,'link')
+        await taikoHelper.wait(3000)
+        await taikoBrowserAction.switchTab(/consultationContext/)
+        await taikoHelper.wait(3000)
 });
 
 step("Select service <service>", async function (serviceName) {

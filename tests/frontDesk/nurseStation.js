@@ -1,11 +1,12 @@
 "use strict";
 const path = require('path');
-const {click,write,dropDown,into,textBox,below,within,text,$,button} = require('taiko');
+const {click,write,dropDown,into,textBox,below,within,text,$,button, toRightOf} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
+const taikobrowserActions = require('../../../components/taikobrowserActions.js');
 
 
 var toAdmit = "To Admit"
@@ -30,6 +31,12 @@ var obsSearchElement='input#templateSearch'
 var implicitTime=parseInt(process.env.implicitTimeOut)
 var sideMenu='//button[@data-testid="overflow-menu"]'
 var chooseOption='Choose an option'
+var newProgramEnrollment='New Program Enrollment'
+var doctorNotes="Doctor's Notes :"
+var specificDoctor="Specific Doctor :"
+var speciality="Speciality :"
+var enroll="Enroll"
+var prePatientDashboard="Pre-patient Triage Dashboard"
 
 step("Doctor opens admission tab", async function () {
 	await taikoInteraction.Click(toAdmit,'text')
@@ -129,3 +136,18 @@ step("Select the general ward", async function () {
 	await taikoInteraction.Click(generalWard,'text')
 	await taikoInteraction.Click(generalWardRoom,'text')
 });
+
+step("Enroll the patient to prepatient triage",async function(){
+	await taikoInteraction.Click(newProgramEnrollment,'text')
+	await taikoInteraction.Write('test notes','into',toRightOf(doctorNotes))
+	await taikoInteraction.Write(process.env.provider,'into',toRightOf(specificDoctor))
+	await taikoInteraction.Dropdown(speciality,process.env.speciality)
+	await taikoInteraction.Click(enroll,'text')
+	await taikoHelper.wait(implicitTime)
+	await taikobrowserActions.switchTab(/search/)
+	await taikoHelper.wait(implicitTime)
+})
+
+step("Click on pre-patient dashboard",async function(){
+	await taikoInteraction.Click(prePatientDashboard,'text')
+})

@@ -38,3 +38,9 @@
 # Nurse discharges the patient
 * Open "InPatient" module
 * Doctor at ADT gives discharge disposition
+
+# Nurse enroll the patient to pre-patient triage
+* Open "Triage / Programs" module
+* Select patient from program queue
+* Enroll the patient to prepatient triage
+* Click on pre-patient dashboard
