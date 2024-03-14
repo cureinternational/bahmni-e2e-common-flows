@@ -66,9 +66,33 @@
         },
         {
             "type": "Button",
+            "label": "Grounding Pad Site Applied",
+            "value": "Yes",
+            "above":"Grounding Pad Site Location"
+        },
+        {
+            "type": "Button",
             "label": "Urinary Catheter",
             "value": "Yes",
             "below":"Cut Range"
+        },
+        {
+            "type": "Button",
+            "label": "Sponge Count",
+            "value": "N/A",
+            "below":"Medication"
+        },
+        {
+            "type": "Button",
+            "label": "Needle Sharp Count",
+            "value": "Correct",
+            "below":"Sponge Count"
+        },
+        {
+            "type": "Button",
+            "label": "Instrument Count",
+            "value": "Correct",
+            "below":"Needle Sharp Count"
         },
         {
             "type": "Button",
