@@ -159,9 +159,9 @@ async function verifyDisplayControl(controlName) {
 }
 
 step('Close the ADT page', async function () {
-    await switchTo(/ADT/)
+    await switchTo(/IPD/)
     await switchTo(/adt/)
-    await closeTab(/ADT/)
+    await closeTab(/IPD/)
     await waitFor(2000)
 })
 
