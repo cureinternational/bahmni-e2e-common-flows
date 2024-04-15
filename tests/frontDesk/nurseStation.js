@@ -30,6 +30,7 @@ var obsSearchElement='input#templateSearch'
 var implicitTime=parseInt(process.env.implicitTimeOut)
 var sideMenu='//button[@data-testid="overflow-menu"]'
 var chooseOption='Choose an option'
+var datapath=process.env.dataPath
 
 step("Doctor opens admission tab", async function () {
 	await taikoInteraction.Click(toAdmit,'text')
@@ -103,8 +104,11 @@ step("Click Admit on popup", async function () {
 	await taikoInteraction.Click(admit,'text')
 });
 
-step("Enter Form Values <observationFormFile>", async function (observationFormFile) {
-	var observationFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${observationFormFile}.json`))
+step("Enter Form Values <observationFormFile>", async function (formGroup) {
+	var formgroup=process.env[formGroup].split(',')
+	for(let i=0;i<formgroup.length;i++)
+	{
+	var observationFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${datapath}/consultation/observations/${formgroup[i]}.json`))
 	gaugeHelper.save(observationFormValues.ObservationFormName, observationFormValues)
 	var shortformName=observationFormValues.ObservationFormName.split(' ')
 	await taikoInteraction.Click(addNewObsForm,'button')
@@ -119,6 +123,7 @@ step("Enter Form Values <observationFormFile>", async function (observationFormF
 	await taikoHelper.executeConfigurations(observationFormValues.ObservationFormDetails, observationFormValues.ObservationFormName)
 	await taikoInteraction.Click(save,'text')
 	await taikoHelper.wait(implicitTime)
+	}
 })
 
 step("Click History and Examination", async function () {

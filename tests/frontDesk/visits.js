@@ -45,6 +45,8 @@ var patientDashboard='[ng-click="gotoPatientDashboard()"]'
 var save='Save'
 var implicitWaitTime=parseInt(process.env.implicitTimeOut)
 var ipdToggle=process.env.enableIPDfeature
+var datapath=process.env.dataPath
+
 
 
 
@@ -127,7 +129,7 @@ step("Verify medical prescription is updated as non ipd for <medications>",async
     var prescriptionsList = prescriptionNames.split(',')
     var prescriptionsCount = prescriptionsList.length
     for (var i = 0; i < prescriptionsCount; i++) {
-        var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         var drugName = medicalPrescriptions.drug_name;
         var stoppedDrugElement=`//span[contains(text(),"${drugName}")]/parent::td[@class="drug strike-text"]`
@@ -187,7 +189,7 @@ step("Verify no error displayed on page", async function () {
 });
 
 step("Validate obs <form> on the patient clinical dashboard", async function (formPath) {
-    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
+    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${datapath}/${formPath}.json`))
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
     var viewFormElement="//SPAN[normalize-space()='" + obsFormValues.ObservationClinicalFormName.trim() + "']/..//i[@class='fa fa-eye']"
     await taikoInteraction.EvaluateClick($(viewFormElement))
@@ -195,26 +197,36 @@ step("Validate obs <form> on the patient clinical dashboard", async function (fo
     await taikoInteraction.Click(formClose,'xpath')
 });
 
-step("Validate new obs <form> on the patient clinical dashboard", async function (formPath) {
-    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
+step("Validate new obs <form> on the patient clinical dashboard", async function (formGroup) 
+{
+    var formgroup=process.env[formGroup].split(',')
+	for(let i=0;i<formgroup.length;i++)
+	{
+    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${datapath}/consultation/observations/${formgroup[i]}.json`))
     gaugeHelper.save(obsFormValues.ObservationClinicalFormName, obsFormValues)
     await taikoHelper.wait(3000)
     var formLinkElement='//span[text()="'+obsFormValues.ObservationClinicalFormName+'"]/following-sibling::span/a'
     await taikoInteraction.EvaluateClick($(formLinkElement))
     await taikoHelper.validateNewFormFromFile(obsFormValues.ObservationFormDetails,obsFormValues.ObservationClinicalFormName)
     await taikoInteraction.Click(newformClose,'xpath')
+    }
 });
 
 step("Goto patient dashboard", async function () {
     await taikoInteraction.Click(patientDashboard,'xpath')
 });
 
-step("Edit new obs <form> on the patient clinical dashboard",async function(formPath){
-    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${formPath}.json`))
+step("Edit new obs <form> on the patient clinical dashboard",async function(formGroup)
+{
+    var formgroup=process.env[formGroup].split(',')
+	for(let i=0;i<formgroup.length;i++)
+	{
+    var obsFormValues = JSON.parse(fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${datapath}/consultation/observations/${formgroup[i]}.json`))
     await taikoHelper.wait(1000)
     var editForm='//span[text()="'+obsFormValues.ObservationClinicalFormName+'"]/parent::div/descendant::i'
     await taikoInteraction.Click(editForm,'xpath')
     await taikoHelper.executeConfigurations(obsFormValues.EditObservationFormDetails, obsFormValues.ObservationFormName)
     await taikoInteraction.Click(save,'text')
     await taikoHelper.wait(implicitWaitTime)
+    }
 })

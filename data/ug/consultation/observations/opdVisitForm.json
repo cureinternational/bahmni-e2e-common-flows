@@ -1,0 +1,26 @@
+{
+    "ObservationFormName": "OPD Visit Form",
+    "ObservationClinicalFormName":"OPD Visit Form",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "OPD Visit Speciality",
+            "value": "Neuro",
+            "above":"Seen By"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Seen By",
+            "value": "Other Doctor",
+            "above":"Medical Alert"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "edited automation Treatment Plan notes",
+            "below":"Summary / Impression"
+        }
+    ]
+}

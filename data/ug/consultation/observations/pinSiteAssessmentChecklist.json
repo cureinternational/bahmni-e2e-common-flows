@@ -1,0 +1,80 @@
+{
+    "ObservationFormName": "Pin Site Assessment Checklist",
+    "ObservationClinicalFormName":"Pin Site Assessment Checklist",
+    "ObservationFormDetails": [
+        {
+            "type": "DateTime",
+            "label": "Assessment Date and Time",
+            "value": "-1,09:30AM",
+            "count":"1"
+        },
+        {
+            "type": "Button",
+            "label": "Pain Using Age Appropriate",
+            "value": "Yes",
+            "above":"Change in Colour or Smell or"
+        },
+        {
+            "type": "Button",
+            "label": "Change in Colour or Smell or",
+            "value": "Yes",
+            "above":"Inflamation, Irritation and Infection"
+        },
+        {
+            "type": "Button",
+            "label": "Inflamation, Irritation and Infection",
+            "value": "Yes",
+            "above":"Pin Looseing"
+        },
+        {
+            "type": "Button",
+            "label": "Pin Looseing",
+            "value": "Yes",
+            "above":"Sensation and Motor Function"
+        },
+        {
+            "type": "Button",
+            "label": "Sensation and Motor Function",
+            "value": "Yes",
+            "above":"Numbness or Tingling at The Pin"
+        },
+        {
+            "type": "Button",
+            "label": "Numbness or Tingling at The Pin",
+            "value": "Yes",
+            "above":"Swelling or Hardening of The Skin"
+        },
+        {
+            "type": "Button",
+            "label": "Swelling or Hardening of The Skin",
+            "value": "Yes",
+            "above":"Fever"
+        },
+        {
+            "type": "Button",
+            "label": "Fever",
+            "value": "Yes",
+            "above":"Patient and Family Emotional"
+        },
+        {
+            "type": "Button",
+            "label": "Patient and Family Emotional",
+            "value": "Yes",
+            "above":"Patient Comfort"
+        },
+        {
+            "type": "Button",
+            "label": "Patient Comfort",
+            "value": "Yes",
+            "above":"Comments"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "Edited automation comments",
+            "below":"Patient Comfort"
+        }
+    ]
+}

@@ -11,9 +11,10 @@ const taikoHelper = require('../util/taikoHelper');
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 const implicitWaitTime=parseInt(process.env.implicitTimeOut)
 var orderCompleted='Order is Completed'
+var datapath=process.env.dataPath
 
 step("Click the order <order>", async function (order) {
-    var orderFile = `./bahmni-e2e-common-flows/data/${order}.json`;
+    var orderFile = `./bahmni-e2e-common-flows/data/${datapath}/${order}.json`;
     var radiologyOrder = JSON.parse(fileExtension.parseContent(orderFile))
     await taikoInteraction.Click(radiologyOrder.test,'text')
  });
@@ -40,7 +41,7 @@ step("Click the order <order>", async function (order) {
  })
 
  step("Verify the lab order <order>",async function(order){
-   var orderFile = `./bahmni-e2e-common-flows/data/${order}.json`;
+   var orderFile = `./bahmni-e2e-common-flows/data/${datapath}/${order}.json`;
     var labOrder = JSON.parse(fileExtension.parseContent(orderFile))
    var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
    var patientFirstName = gaugeHelper.get("patientFirstName");

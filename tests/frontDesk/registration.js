@@ -227,7 +227,7 @@ step(["Log out if still logged in", "Receptionist logs out"], async function () 
 step("Login as user <user> with location <location>", async function (user, location) {
     await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),'into',toRightOf(userName))
     await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),'into',toRightOf(passWord))
-    await taikoInteraction.Dropdown(locationDropDown,location)
+    await taikoInteraction.Dropdown(locationDropDown,process.env.loginLocation)
     await taikoInteraction.Click(login,'button')
 })
 
@@ -483,6 +483,7 @@ step("Create a new relation", async function () {
     gaugeHelper.save("relationName", firstName+' '+lastName)
     await taikoInteraction.Write(lastName,'default',relationLastNameElement)
     await taikoInteraction.Write('01/01/1980','default',relationBirthDateElement)
+    await taikoInteraction.ScrollTo(text(gender))
     await taikoInteraction.Dropdown(below(gender),'Male')
     await taikoElement.waitToEnabled(button(register))
     await taikoInteraction.Click(register,'text')

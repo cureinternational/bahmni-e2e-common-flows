@@ -23,6 +23,7 @@ var reportsTable='Reports Table'
 var labLiteSearch='//input[@role="searchbox"]'
 var closeNotification='//button[@title="closes notification"]'
 var implicitTimeOut = parseInt(process.env.implicitTimeOut)
+var datapath=process.env.dataPath
 
 step("start patient search", async function () {
     await taikoInteraction.Click('//button[@aria-label="Search Patient"]','xpath')
@@ -58,7 +59,7 @@ step("Select prescribed test in Pending Lab Orders table", async function () {
 step("Select Lab Report in side panel", async function () {
     var labReportFile = "labReport1.jpg";
     gaugeHelper.save("labReportFile", labReportFile)
-    await attach(path.join('./bahmni-e2e-common-flows/data/reports/' + labReportFile), fileField(above(text("Report Date"))), { waitForEvents: ['DOMContentLoaded'] });
+    await attach(path.join(`./bahmni-e2e-common-flows/data/${datapath}/reports/` + labReportFile), fileField(above(text("Report Date"))), { waitForEvents: ['DOMContentLoaded'] });
 });
 
 step("Select today's date in Report Date Field", async function () {

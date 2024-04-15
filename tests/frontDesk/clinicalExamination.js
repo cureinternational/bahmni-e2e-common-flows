@@ -45,24 +45,37 @@ var implicitWaitTime=parseInt(process.env.implicitTimeOut)
 var addNewObservation='Add New Obs Form'
 var section='//h2[contains(text(),"Selected Orders")]'
 var ipdToggle=process.env.enableIPDfeature
+var datapath=process.env.dataPath
+var panels='PANELS'
+var radiologyorders='CT Brain'
 
 step("click radiology",async function(){
-    await taikoInteraction.Click(radiology,'text')
+    var checkradiologytab=await taikoElement.isExists(text(radiologyorders))
+    if(!checkradiologytab)
+    {
+        await taikoInteraction.Click(radiology,'text')
+    }
 })
 
 step("click laboratory",async function(){
-    await taikoInteraction.Click(laboratory,'text')
+    var checkLaboratorytab=await taikoElement.isExists(text(panels))
+    if(!checkLaboratorytab)
+    {
+        await taikoInteraction.Click(laboratory,'text')
+    }
+        
 })
 
 step("Doctor prescribe tests <prescriptions>", async function (prescriptionFile) {
-    var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionFile}.json`;
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionFile}.json`;
     var testPrescription = JSON.parse(fileExtension.parseContent(prescriptionFile))
     var notesList=testPrescription.notes
     gauge.message(testPrescription)
     gaugeHelper.save("LabTest", testPrescription.test)
     await taikoHelper.repeatUntilFound(text(testPrescription.test))
     await taikoInteraction.Click(testPrescription.test, 'text')
-    await taikoInteraction.ScrollTo(text(testPrescription.heading))
+        await taikoInteraction.ScrollTo(text(testPrescription.heading))
+    await taikoInteraction.ScrollTo(text(testPrescription.test))
     await taikoInteraction.Click(urgentBtnElement,'xpath',toRightOf(testPrescription.test))
     await taikoInteraction.Click(notesBtnElement,'xpath',toRightOf(testPrescription.test))
     for(let i=0;i<notesList.length;i++)
@@ -85,7 +98,7 @@ step("Doctor prescribes medicines <prescriptionNames>", async function (prescrip
     var prescriptionsCount = prescriptionsList.length
     gaugeHelper.save("prescriptionsCount", prescriptionsCount)
     for (var i = 0; i < prescriptionsCount; i++) {
-        var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
         gaugeHelper.save("prescriptions" + i, prescriptionFile)
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         gauge.message(medicalPrescriptions)
@@ -114,7 +127,7 @@ step("Doctor updates medicines <medications>", async function (prescriptionNames
     var prescriptionsList = prescriptionNames.split(',')
     var prescriptionsCount = prescriptionsList.length
     for (var i = 0; i < prescriptionsCount; i++) {
-        var prescriptionFile = `./bahmni-e2e-common-flows/data/${prescriptionsList[i]}.json`;
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
         var drugName = medicalPrescriptions.drug_name;
            if(medicalPrescriptions.isIPD=='true' && ipdToggle=='true')
@@ -169,7 +182,7 @@ step("Join teleconsultation", async function () {
 });
 
 step("Doctor notes the diagnosis and condition <filePath>", async function (filePath) {
-    var diagnosisFile = `./bahmni-e2e-common-flows/data/${filePath}.json`;
+    var diagnosisFile = `./bahmni-e2e-common-flows/data/${datapath}/${filePath}.json`;
     gaugeHelper.save("diagnosisFile", diagnosisFile)
     var medicalDiagnosis = JSON.parse(fileExtension.parseContent(diagnosisFile))
     gaugeHelper.save("medicalDiagnosis", medicalDiagnosis)
@@ -191,7 +204,7 @@ step("Doctor notes the diagnosis and condition <filePath>", async function (file
 });
 
 step("Verify the radiology notes <order>",async function(orderFile){
-    var prescriptionFile = `./bahmni-e2e-common-flows/data/${orderFile}.json`;
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${orderFile}.json`;
     var testPrescription = JSON.parse(fileExtension.parseContent(prescriptionFile))
     var notesList=testPrescription.notes
     notesList.forEach(async function (note) {

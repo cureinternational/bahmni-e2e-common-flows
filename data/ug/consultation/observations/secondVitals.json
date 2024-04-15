@@ -1,0 +1,59 @@
+{
+    "ObservationFormName": "Second Vitals",
+    "ObservationFormDetails": [
+        {
+            "type": "TextBox",
+            "label": "Pulse",
+            "short_name": "HR",
+            "value": "72",
+            "unit":""
+        },
+        {
+            "type": "TextBox",
+            "label": "Arterial blood oxygen saturation (pulse oximeter)",
+            "short_name": "SpO2",
+            "value": "99",
+            "unit":"(%)"
+        },
+        {
+            "type": "TextBox",
+            "label": "Respiratory rate",
+            "short_name": "Respiratory rate",
+            "value": "99",
+            "unit":""
+        },
+        {
+            "type": "TextBox",
+            "label": "Temperature",
+            "short_name": "Temperature",
+            "value": "99",
+            "unit":"(F)"
+        },
+        {
+            "type": "Group",
+            "label": "Blood Pressure",
+            "value": [
+                {
+                    "type": "TextBox",
+                    "label": "Diastolic blood pressure",
+                    "short_name": "DBP",
+                    "value": "110",
+                    "unit":"(mmHg)"
+                },
+                {
+                    "type": "TextBox",
+                    "label": "Systolic blood pressure",
+                    "short_name": "Sbp",
+                    "value": "110",
+                    "unit":"(mmHg)"
+                },
+                {
+                    "type": "Button",
+                    "label": "Body position",
+                    "short_name": "Body position",
+                    "value": "standing"
+                }
+            ]
+        }
+    ]
+}

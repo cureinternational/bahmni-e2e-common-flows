@@ -31,6 +31,8 @@ var implicitTimeOut = parseInt(process.env.implicitTimeOut)
 var yesBtn = 'button#modal-revise-button1'
 var continueBtn = 'button#modal-revise-button3'
 var ipdToggle=process.env.enableIPDfeature
+var datapath=process.env.dataPath
+var wardname=process.env.wardName
 
 
 step("Verify the login locations in login page", async function () {
@@ -85,7 +87,7 @@ step("Enter the patient id in search box", async function () {
 })
 
 step("Verify the patient presence in the <wardType>", async function (wardType) {
-    var ward = `//span[contains(text(),'${wardType}')]`
+    var ward = `//span[contains(text(),'${wardname}')]`
     if (!await taikoElement.isPresent($('//input[@ng-model="searchText"]'))) {
         await taikoInteraction.Click(`${ward}`, 'xpath')
     }
@@ -116,7 +118,8 @@ step("Search and select patient", async function () {
     await taikoInteraction.EvaluateClick($(patientNameElement))
 })
 step("Select a bed from <wardType>", async function (wardType) {
-    var ward = `//span[contains(text(),'${wardType}')]`
+
+    var ward = `//span[contains(text(),'${wardname}')]`
     if(await taikoElement.isNotExists(text('General Ward -ICU')))
     {
         await taikoInteraction.Click(`${ward}`, 'xpath')
@@ -170,7 +173,7 @@ step("Verify the patient is not appearing", async function () {
 })
 
 step("Verify the columns in the table <tableFile>", async function (tableFile) {
-    var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
+    var tableFile = `./bahmni-e2e-common-flows/data/${datapath}/${tableFile}.json`;
     gaugeHelper.save("tableFile", tableFile)
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableHeaders = table.columns
@@ -187,7 +190,7 @@ step("Verify the columns in the table <tableFile>", async function (tableFile) {
 })
 
 step("Verify the sorting in the table <tableFile>", async function (tableFile) {
-    var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
+    var tableFile = `./bahmni-e2e-common-flows/data/${datapath}/${tableFile}.json`;
     gaugeHelper.save("tableFile", tableFile)
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableElement = `//table[@class='${table.class}']`
@@ -229,7 +232,7 @@ function sortDates(datesArray) {
 step("Click on Add to drug chart link for the medication <drug>", async function (drug) {
    if(ipdToggle=='true')
     {
-    var prescriptionFile = `./bahmni-e2e-common-flows/data/${drug}.json`
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${drug}.json`
     var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
     var drugName = medicalPrescriptions.drug_name
     await taikoInteraction.Click('Add to Drug Chart', 'text', toRightOf(drugName))
@@ -239,7 +242,7 @@ step("Click on Add to drug chart link for the medication <drug>", async function
 step("Enter the start time for the medication <drug>", async function (drug) {
     if(ipdToggle=='true')
 {
-    var prescriptionFile = `./bahmni-e2e-common-flows/data/${drug}.json`
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${drug}.json`
     var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
     var startTime = medicalPrescriptions.startTime
     var element = `//div[@class="bx--time-picker__input"]`

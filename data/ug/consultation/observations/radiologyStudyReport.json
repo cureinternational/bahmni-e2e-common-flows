@@ -1,0 +1,24 @@
+{
+    "ObservationFormName": "Radiology Study Report",
+    "ObservationClinicalFormName":"Radiology Study Report",
+    "ObservationFormDetails": [
+        {
+            "type": "Date",
+            "label": "Date of Study",
+            "value": "0"
+        },
+        {
+            "type": "Date",
+            "label": "Date of Report",
+            "value": "0"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Study Findings",
+            "value": "Edited automation comments",
+            "below":"Study Site, Projections and Comment"
+        }
+    ]
+}

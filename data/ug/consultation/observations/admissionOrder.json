@@ -1,0 +1,84 @@
+{
+    "ObservationFormName": "Admission Order Form",
+    "ObservationClinicalFormName":"Admission Order Form",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Speciality",
+            "value": "Orthopaedics",
+            "above":"Procedure"
+        },
+        {
+            "type": "TextArea",
+            "label": "Procedure",
+            "value": "admission order procedure",
+            "above":"Surgeon"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Surgeon",
+            "value": "Other Doctor",
+            "above":"Assisting Surgeon"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Assisting Surgeon",
+            "value": "Other Doctor",
+            "below":"Surgeon"
+        },
+        {
+            "type": "Date",
+            "label": "Date",
+            "value": "1"
+        },
+        {
+            "type": "Input",
+            "label": "Hours",
+            "value": "1"
+        },
+        {
+            "type": "Input",
+            "label": "Minutes",
+            "value": "30"
+        },
+        {
+            "type": "Button",
+            "label": "No Date Reason",
+            "value": "Other"
+        },
+        {
+            "type": "Date",
+            "label": "Date of Admission",
+            "value": "1"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Reason for Admission",
+            "value": "Medical Treatment",
+            "above":"Admit To"
+        },
+        {
+            "type": "Button",
+            "label": "Admit To",
+            "value": "Private Ward"
+        },
+        {
+            "type": "Button",
+            "label": "Physician Checklist",
+            "value": "Crutches Ordered"
+        },
+        {
+            "type": "Button",
+            "label": "Physician Orders on Admission",
+            "value": "Remove Cast"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "edited automation test comments",
+            "below":"Physician Orders on Admission"
+        }
+    ]
+}
