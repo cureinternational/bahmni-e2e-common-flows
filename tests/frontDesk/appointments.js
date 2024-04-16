@@ -465,6 +465,7 @@ step("Verify if all the providers are present",async function(){
     {
         var providerElement=`//div[text()='${providers[i]}']`
         await taikoInteraction.Write(providers[i],"xpath",providerSearchInput)
+        await taikoHelper.wait(1000)
         await taikoAssert.assertExists($(providerElement))
         await taikoInteraction.Click(providerSearchBtn,'xpath')
     }

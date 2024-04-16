@@ -9,7 +9,7 @@
             "above":"Seen By"
         },
         {
-            "type": "TypeDropdown",
+            "type": "CustomDropdown",
             "label": "Seen By",
             "value": "Other Doctor",
             "above":"Medical Alert"

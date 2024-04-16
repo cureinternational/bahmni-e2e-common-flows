@@ -101,6 +101,7 @@ step("Should not find the patient's name", async function () {
 
 step("Click patient name from waitlist", async function () {
     var fullName = gaugeHelper.get("patientFullName")
+    await taikoElement.waitToExists(text(fullName))
     await taikoInteraction.Click(fullName,'text')
 });
 

@@ -224,7 +224,7 @@ async function selectTypeDropDown(configuration){
     await wait(1000)
     await taikoInteraction.Click(element,'xpath')
     }
-    else(configuration==undefined)
+    else if(configuration==undefined)
     {
     await taikoInteraction.ScrollTo(text(configuration.label))
     await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label))

@@ -526,8 +526,8 @@ step("Verify the relation is added", async function () {
 
 step("Search the patient by phone number", async function () {
     var phoneNumber=gaugeHelper.get("patientMobileNumber")
-    await taikoInteraction.Write(phoneNumber,'below','Phone Number')
-    await taikoInteraction.Write(phoneNumber,'into',{placeHolder:'Phone Number'})
+    var phoneNumberPlaceHolder=process.env.phoneNumberPlaceHolder
+    await taikoInteraction.Write(phoneNumber,'into',{placeHolder:phoneNumberPlaceHolder})
     await taikoInteraction.pressEnter()
 })
 
