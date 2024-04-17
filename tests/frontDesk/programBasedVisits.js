@@ -77,6 +77,7 @@ step("Verify the programs list",async function(){
    for(let i=1;i<tabLength;i++)
    {
     var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`
+    await taikoHelper.wait(2000)
     var program=(await $(tabItem).text()).trim()
     if(program!='All')
     {

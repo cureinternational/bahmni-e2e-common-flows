@@ -1,0 +1,12 @@
+{
+    "diagnosis": {
+      "diagnosisName": "Pain in  limb",
+      "order": "PRIMARY",
+      "certainty": "CONFIRMED"
+    },
+    "condition":{
+        "conditionCode":"M24.20",
+        "conditionName":"Disorder of ligament",
+        "status":"Active"
+    }
+  }

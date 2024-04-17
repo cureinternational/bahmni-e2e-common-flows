@@ -82,6 +82,7 @@ var relation=process.env.relationName
 var relationNameElement='//input[@name="name"]'
 var search='Search'
 var name='NAME'
+var cancel='Cancel'
 
 step("Open <moduleName> module", async function (moduleName) {
     await taikoInteraction.Click(moduleName,'text')
@@ -483,7 +484,7 @@ step("Create a new relation", async function () {
     gaugeHelper.save("relationName", firstName+' '+lastName)
     await taikoInteraction.Write(lastName,'default',relationLastNameElement)
     await taikoInteraction.Write('01/01/1980','default',relationBirthDateElement)
-    await taikoInteraction.ScrollTo(text(gender))
+    await taikoInteraction.ScrollTo(button(cancel))
     await taikoInteraction.Dropdown(below(gender),'Male')
     await taikoElement.waitToEnabled(button(register))
     await taikoInteraction.Click(register,'text')

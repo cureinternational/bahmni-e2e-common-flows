@@ -1,0 +1,26 @@
+{
+    "ObservationFormName": "Fall Risk Assessment and Reassessment",
+    "ObservationClinicalFormName":"Fall Risk Assessment and Reassessment",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Age",
+            "value": "Less Than 3 Years",
+            "above":"Gender"
+        },
+        {
+            "type": "Button",
+            "label": "Gender",
+            "value": "Male",
+            "above":"Diagnosis"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Environmental Factors",
+            "value": "Outpatient Area",
+            "above":"Response to Surgery"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "drug_name": "Ceftriaxone",
+    "rule":"mg/kg",
+    "units": "mg",
+    "frequency": "Twice a day",
+    "dose": "1",
+    "duration": "2",
+    "notes": "Every 12 hours for 5 days",
+    "isIPD":"true"
+}

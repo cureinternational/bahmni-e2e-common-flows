@@ -1,0 +1,26 @@
+{
+    "ObservationFormName": "Discharge Summary Form",
+    "ObservationClinicalFormName":"Discharge Summary Form",
+    "ObservationFormDetails": [
+        {
+            "type": "TypeDropdown",
+            "label": "Consultant Surgeon",
+            "value": "Ilho Moyo",
+            "above":"Course on Ward"
+        },
+        {
+            "type": "TextArea",
+            "label": "Radiology Notes",
+            "value": "automation test notes",
+            "below":"Lab Investigation Notes"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Orders for Follow-Up Clinic",
+            "value": "automation test follow up notes",
+            "below":"Follow Up Date"
+        }
+    ]
+}

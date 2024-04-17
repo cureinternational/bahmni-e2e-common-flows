@@ -1,0 +1,32 @@
+{
+    "ObservationFormName": "OPD Visit Form",
+    "ObservationClinicalFormName":"OPD Visit Form",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Speciality",
+            "value": "Neuro",
+            "above":"Seen By"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Seen By",
+            "value": "Ilho Moyo",
+            "above":"Medical Alert"
+        },
+        {
+            "type": "Button",
+            "label": "Did you check for Allergies?",
+            "value": "Yes",
+            "below":"Orders for Follow-Up Clinic"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "edited automation Treatment Plan notes",
+            "below":"Summary / Impression"
+        }
+    ]
+}
