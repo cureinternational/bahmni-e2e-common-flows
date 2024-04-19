@@ -192,3 +192,13 @@
 * Click on "Drug Chart" tab
 * Verify if the medication <medicine> is present
 * Click on "General" tab
+
+# Enroll the patient for prePatient triage
+* Open "Programs" module
+* Select the patient
+* Click on new enrollment
+* Enter Doctor notes
+* Enter Specific Doctor
+* Select speciality
+* Click Enroll
+* Switch to patient search

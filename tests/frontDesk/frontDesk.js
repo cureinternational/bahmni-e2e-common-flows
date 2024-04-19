@@ -7,7 +7,8 @@ var fileExtension = require("../util/fileExtension");
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
-const taikoBrowserAction=require('../../../components/taikobrowserActions.js')
+const taikoBrowserAction=require('../../../components/taikobrowserActions.js');
+const taikobrowserActions = require('../../../components/taikobrowserActions.js');
 
 var expectedLocationsList = process.env.registrationLocations.split(",")
 var locationOption = '//select[@id="location"]/option'
@@ -33,7 +34,12 @@ var continueBtn = 'button#modal-revise-button3'
 var ipdToggle=process.env.enableIPDfeature
 var datapath=process.env.dataPath
 var wardname=process.env.wardName
-
+var doctor=process.env.provider
+var newProgramEnrollment='New Program Enrollment'
+var doctorNotes='Notes'
+var specificDotor='Specific Doctor'
+var speciality=process.env.speciality
+var enroll='Enroll'
 
 step("Verify the login locations in login page", async function () {
     var actualLocationsList = []
@@ -278,4 +284,32 @@ step("Click on Patient Dashboard",async function(){
 
 step("Click on IPD back button",async function(){
     await taikoBrowserAction.navigateBack()
+})
+
+step("Switch to patient search",async function(){
+    await taikoHelper.wait(2000)
+    await taikobrowserActions.switchTab(/search/)
+    await taikoHelper.wait(2000)
+})
+
+step("Click on new enrollment",async function(){
+    await taikoHelper.wait(2000)
+    await taikoInteraction.Click(newProgramEnrollment,'text')
+})
+
+step("Enter Doctor notes",async function(){
+    await taikoInteraction.Write('notes','into',toRightOf(doctorNotes))
+})
+
+step('Enter Specific Doctor',async function(){
+    await taikoInteraction.Write(doctor,'into',toRightOf(specificDotor))
+})
+
+step('Select speciality',async function()
+{
+    await taikoInteraction.Dropdown(toRightOf('Speciality'),speciality)
+})
+
+step('Click Enroll',async function(){
+    await taikoInteraction.Click(enroll,'button')
 })
