@@ -1,11 +1,12 @@
 "use strict";
 const path = require('path');
-const {click,write,dropDown,into,textBox,below,within,text,$,button} = require('taiko');
+const {click,write,dropDown,into,textBox,below,within,text,$,button, toRightOf} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
+const taikoAssert = require('../../../components/taikoAssert.js');
 
 
 var toAdmit = "To Admit"
@@ -31,6 +32,14 @@ var implicitTime=parseInt(process.env.implicitTimeOut)
 var sideMenu='//button[@data-testid="overflow-menu"]'
 var chooseOption='Choose an option'
 var datapath=process.env.dataPath
+var currentVisitElement='//i[@id="currentVisitIcon"]/parent::a'
+var addToDrugChart='Add to Drug Chart'
+var nursingTasks='Nursing Tasks'
+var drugChart='Drug Chart'
+var done='Done'
+var notes='Notes'
+var taskTime='Task Time'
+var administeredLate='Administered Late'
 
 step("Doctor opens admission tab", async function () {
 	await taikoInteraction.Click(toAdmit,'text')
@@ -134,3 +143,49 @@ step("Select the general ward", async function () {
 	await taikoInteraction.Click(generalWard,'text')
 	await taikoInteraction.Click(generalWardRoom,'text')
 });
+
+step("Click on current visit",async function(){
+	await taikoInteraction.Click(currentVisitElement,'xpath')
+})
+
+step("Nurse create medication tasks for <prescriptionNames>",async function(prescriptionNames){
+	var prescriptionsList = prescriptionNames.split(',')
+    var prescriptionsCount = prescriptionsList.length
+    for (var i = 0; i < prescriptionsCount; i++) {
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
+        var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+        var drugName = medicalPrescriptions.drug_name;
+        await taikoInteraction.Click(addToDrugChart,'text',toRightOf(drugName))
+		await taikoInteraction.Click(save,'text')
+    }
+})
+
+step("Nurse administer medication for <prescriptionNames>",async function(prescriptionNames){
+	var prescriptionsList = prescriptionNames.split(',')
+    var prescriptionsCount = prescriptionsList.length
+    for (var i = 0; i < prescriptionsCount; i++) {
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
+        var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+        var drugName = medicalPrescriptions.drug_name;
+		var medicinenotes=medicalPrescriptions.medicationNotes;
+		await taikoInteraction.ScrollTo(administeredLate)
+        await taikoInteraction.Click(drugName,'text',below(nursingTasks))
+		await taikoInteraction.Click(done,'text')
+		await taikoInteraction.Write(medicinenotes,'into',toRightOf(taskTime))
+		await taikoInteraction.Click(save,'text')
+		await taikoInteraction.Click(save,'text')
+    }
+})
+
+step("Validate the medication task for <prescriptionNames>",async function(prescriptionNames){
+	var prescriptionsList = prescriptionNames.split(',')
+    var prescriptionsCount = prescriptionsList.length
+    for (var i = 0; i < prescriptionsCount; i++) {
+        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
+        var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+        var drugName = medicalPrescriptions.drug_name;
+		var medicinenotes=medicalPrescriptions.medicationNotes;
+        await taikoAssert.assertExists(text(drugName,below(nursingTasks)))
+		await taikoAssert.assertExists(text(drugName,below(drugChart)))
+    }
+})

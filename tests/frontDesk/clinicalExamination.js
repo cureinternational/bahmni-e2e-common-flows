@@ -48,6 +48,7 @@ var ipdToggle=process.env.enableIPDfeature
 var datapath=process.env.dataPath
 var panels='PANELS'
 var radiologyorders='CT Brain'
+var currentVisit='//i[@id="currentVisitIcon"]/parent::a'
 
 step("click radiology",async function(){
     var checkradiologytab=await taikoElement.isExists(text(radiologyorders))
@@ -233,4 +234,8 @@ step("Verify the nutrional values",async function(){
     await taikoAssert.assertExists(text(weight,toRightOf('WEIGHT')))
     await taikoAssert.assertExists(text(muac,toRightOf('MUAC')))
 
+})
+
+step("Goto to active visit",async function(){
+    await taikoInteraction.Click(currentVisit,'xpath')
 })
