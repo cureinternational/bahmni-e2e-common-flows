@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const {click,write,dropDown,into,textBox,below,within,text,$,button, toRightOf} = require('taiko');
+const {click,write,dropDown,into,textBox,below,within,text,$,button, toRightOf, above} = require('taiko');
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
 var fileExtension = require("../util/fileExtension");
@@ -40,6 +40,7 @@ var done='Done'
 var notes='Notes'
 var taskTime='Task Time'
 var administeredLate='Administered Late'
+var ipdHomeButton='//a[@href="/bahmni/home/#/dashboard"]'
 
 step("Doctor opens admission tab", async function () {
 	await taikoInteraction.Click(toAdmit,'text')
@@ -188,4 +189,21 @@ step("Validate the medication task for <prescriptionNames>",async function(presc
         await taikoAssert.assertExists(text(drugName,below(nursingTasks)))
 		await taikoAssert.assertExists(text(drugName,below(drugChart)))
     }
+})
+
+step("Click on IPD home button",async function(){
+	await taikoInteraction.Click(ipdHomeButton,'xpath')
+})
+
+step("Nurse saves the system tasks <systemTasks>",async function(systemTasks){
+	var systemTasksFile = `./bahmni-e2e-common-flows/data/${datapath}/${systemTasks}.json`;
+	var systemMedicationTasks = JSON.parse(fileExtension.parseContent(systemTasksFile))
+	var tasks = systemMedicationTasks.tasks;
+	await taikoInteraction.ScrollTo(administeredLate)
+	await taikoInteraction.Click(tasks[0],'text')
+    for (var i = 0; i < tasks.length; i++) {
+		var taskName=tasks[i];
+        await taikoInteraction.Click(done,'text',above(taskName))
+    }
+	await taikoInteraction.Click(save,'text')
 })

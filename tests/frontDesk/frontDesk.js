@@ -40,6 +40,7 @@ var doctorNotes='Notes'
 var specificDotor='Specific Doctor'
 var speciality=process.env.speciality
 var enroll='Enroll'
+var ipdPatientDashboard="//a[contains(@href,'clinical/#/default/')]"
 
 step("Verify the login locations in login page", async function () {
     var actualLocationsList = []
@@ -272,10 +273,10 @@ step("Click on <tabType> tab", async function (tabType) {
 })
 
 step("Verify if the medication <medicine> is present", async function (medicine) {
-   // var prescriptionFile = `./bahmni-e2e-common-flows/data/${medicine}.json`
-   // var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
-   // var drugName = medicalPrescriptions.drug_name
-   // await taikoElement.isPresent(text(drugName))
+   var prescriptionFile = `./bahmni-e2e-common-flows/${datapath}/${medicine}.json`
+   var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+   var drugName = medicalPrescriptions.drug_name
+   await taikoElement.isPresent(text(drugName))
 })
 
 step("Click on Patient Dashboard",async function(){
@@ -312,4 +313,8 @@ step('Select speciality',async function()
 
 step('Click Enroll',async function(){
     await taikoInteraction.Click(enroll,'button')
+})
+
+step("Click on IPD patient dashboard",async function(){
+    await taikoInteraction.Click(ipdPatientDashboard,'xpath')
 })

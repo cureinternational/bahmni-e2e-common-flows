@@ -146,8 +146,7 @@
 * Verify the patient presence in the <wardType>
 * Select the patient
 * Discharge the patient
-* Click on IPD back button
-* Click on home page
+* Click on IPD home button
 
 # Admit the patient in <wardType>
 * Open Patient ADT page
@@ -184,6 +183,7 @@
 * Verify the patient present in search results
 
 # Nurse saves the medication <medicine> timing
+* Goto to active visit
 * Click on Add to drug chart link for the medication <medicine>
 * Enter the start time for the medication <medicine>
 * Click on drug chart save
@@ -191,7 +191,7 @@
 # Verify if the medication <medicine> is present in drug chart modal
 * Click on "Drug Chart" tab
 * Verify if the medication <medicine> is present
-* Click on "General" tab
+* Click on IPD patient dashboard
 
 # Enroll the patient for prePatient triage
 * Open "Programs" module

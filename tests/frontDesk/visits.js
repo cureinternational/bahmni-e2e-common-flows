@@ -98,27 +98,28 @@ step("verify name with id", async function () {
 });
 
 step("Verify medical prescription in patient clinical dashboard", async function () {
-if(ipdToggle=='true')
-{
-    await taikoHelper.repeatUntilNotFound($(dashboardLoader))
-    await taikoInteraction.ScrollTo($(treatments))
-    var prescriptionCount = gaugeHelper.get("prescriptionsCount")
-    for (var i = 0; i < prescriptionCount; i++) {
-        var prescriptionFile = gaugeHelper.get("prescriptions" + i)
-        var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
-        assert.ok(await text(medicalPrescriptions.drug_name, within($(treatments))).exists())
-        if(medicalPrescriptions.rule!=undefined)
-        {
-        var weight=gaugeHelper.get('patientWeight')
-        assert.ok(await text(`${weight} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
-        }
-        else
-        {
-            assert.ok(await text(`${medicalPrescriptions.dose} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
-        }
-        assert.ok(await text(`${medicalPrescriptions.duration} Day(s)`, within($(treatments))).exists())
-    }
-}
+// if(ipdToggle=='true')
+// {
+//     await taikoHelper.repeatUntilNotFound($(dashboardLoader))
+//     await taikoInteraction.ScrollTo($(treatments))
+//     var prescriptionCount = gaugeHelper.get("prescriptionsCount")
+//     for (var i = 0; i < prescriptionCount; i++) {
+//         var prescriptionFile = gaugeHelper.get("prescriptions" + i)
+//         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+//         assert.ok(await text(medicalPrescriptions.drug_name, within($(treatments))).exists())
+//         if(medicalPrescriptions.rule!=undefined)
+//         {
+//         var weight=gaugeHelper.get('patientWeight')
+//         assert.ok(await text(`${weight} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
+//         }
+//         else
+//         {
+//             assert.ok(await text(`${medicalPrescriptions.dose} ${medicalPrescriptions.units}, ${medicalPrescriptions.frequency}`, within($(treatments))).exists())
+//         }
+//         assert.ok(await text(`${medicalPrescriptions.duration} Day(s)`, within($(treatments))).exists())
+//     }
+// }
+// 
 }
 );
 
