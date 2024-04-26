@@ -2,6 +2,7 @@
 const {goto, toRightOf, textBox, text, into, write, click, $, below, checkBox, waitFor, image, within, link} = require('taiko');
 var fileExtension = require('../util/fileExtension')
 const taikoHelper = require("../util/taikoHelper")
+var datapath=process.env.dataPath
 
 step("Enter password in ELIS", async function () {
         await write("adminADMIN!", into(textBox(toRightOf("Enter Password:"))));
@@ -42,7 +43,7 @@ step("Save in openELIS", async function () {
 });
 
 step("Enter lab result <details> in the result", async function (details) {
-        var content = fileExtension.parseContent(`./bahmni-e2e-common-flows/data/elis/samplesCollected/${details}.json`)
+        var content = fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${datapath}/elis/samplesCollected/${details}.json`)
         var data = null;
         data = JSON.parse(content)
         for (var resultIndx = 0; resultIndx < data.results.length; resultIndx++) {
@@ -64,7 +65,7 @@ step("Click collect sample for <patientIdentifier>", async function (patientIden
 step("Validate lab result <details>", async function (details) {
         var patientIdentifier = gaugeHelper.get("patientIdentifier")
         await click($("//*[text()='" + patientIdentifier + "']/..//img[@title='Validate']"))
-        var content = fileExtension.parseContent(`./bahmni-e2e-common-flows/data/elis/samplesCollected/${details}.json`)
+        var content = fileExtension.parseContent(`./bahmni-e2e-common-flows/data/${datapath}/elis/samplesCollected/${details}.json`)
         var data = null;
         data = JSON.parse(content)
         for (var resultIndx = 0; resultIndx < data.results.length; resultIndx++) {

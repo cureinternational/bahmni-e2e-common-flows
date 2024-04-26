@@ -1,0 +1,51 @@
+{
+    "ObservationFormName": "Rehab Assessment",
+    "ObservationClinicalFormName":"Rehab Assessment",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Referred By",
+            "value": "Other Doctor",
+            "above":"Consent Granted For Physiotherapy"
+        },
+        {
+            "type": "Button",
+            "label": "Consent Granted For Physiotherapy",
+            "value": "Yes"
+        },
+        {
+            "type": "TextArea",
+            "label": "Rehab Diagnosis",
+            "value": "automation rehab diagnosis comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Short-term Goals",
+            "value": "automation test short term goals comments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Long-term Goals",
+            "value": "automation test long term goals comments"
+        },
+        {
+            "type": "Button",
+            "label": "Health Education Completed?",
+            "value": "No",
+            "below":"Long-term Goals"
+        },
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "automation test treatment plan comments"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Impairments (Body Function)",
+            "value": "Edited automation test comments",
+            "below":"Impairments (Body Structure)"
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+	"class":"table patient-list-table",
+	"columns":["Identifier","Name","Date Of Birth","Gender","Service","Provider","Appointment Location","Visit Time","Encounter Time","Appointment Notes"],
+	"sortBy":{"column":"Visit Time","type":"date","order":"desc"}
+}

@@ -1,0 +1,38 @@
+{
+    "ObservationFormName": "Vitals",
+    "ObservationClinicalFormName":"Vitals",
+    "ObservationFormDetails": [
+        {
+            "type": "Input",
+            "label": "Pulse (beats/min)",
+            "value": "75"
+        },
+        {
+            "type": "Input",
+            "label": "Respiratory Rate",
+            "value": "16"
+        },
+        {
+            "type": "Input",
+            "label": "Temperature (C)",
+            "value": "36"
+        },
+        {
+            "type": "Input",
+            "label": "Systolic Blood Pressure (mmHg)",
+            "value": "120"
+        },
+        {
+            "type": "Button",
+            "label": "Body Position",
+            "value": "Sitting"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "Input",
+            "label": "Temperature (C)",
+            "value": "1"
+        }
+    ]
+}

@@ -13,9 +13,10 @@ var pulse='Pulse (beats/min)'
 var addNewObsForm='Add New Obs Form'
 var historyNotes='History Notes'
 var smokingHistory='Smoking History'
-var reportjpg='./bahmni-e2e-common-flows/data/consultation/observations/patientReport.jpg'
+var datapath=process.env.dataPath
+var reportjpg=`./bahmni-e2e-common-flows/data/${datapath}/consultation/observations/patientReport.jpg`
 var report='//*[@class="consultation-image"]/input'
-var reportVideo='./bahmni-e2e-common-flows/data/consultation/observations/Video.mp4'
+var reportVideo=`./bahmni-e2e-common-flows/data/${datapath}/consultation/observations/Video.mp4`
 var video='//*[@class="consultation-video"]/input'
 var author='Author'
 var comment='Comment'
@@ -100,6 +101,7 @@ step("Should not find the patient's name", async function () {
 
 step("Click patient name from waitlist", async function () {
     var fullName = gaugeHelper.get("patientFullName")
+    await taikoElement.waitToExists(text(fullName))
     await taikoInteraction.Click(fullName,'text')
 });
 

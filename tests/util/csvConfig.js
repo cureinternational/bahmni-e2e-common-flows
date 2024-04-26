@@ -4,6 +4,7 @@ var path = require('path');
 const { Parser } = require('json2csv');
 const { csv } = require('csvtojson');
 var users = require("./users");
+var datapath=process.env.dataPath
 
 async function modifyCsvContent(file, index, key, value) {
   let str = fs.readFileSync(file, "utf-8");
@@ -16,12 +17,12 @@ async function modifyCsvContent(file, index, key, value) {
 }
 
 async function getCSVasJson(profile) {
-  let file = path.join('./bahmni-e2e-common-flows/data/admin/profileUpload/', profile.toLowerCase() + '.csv');
+  let file = path.join(`./bahmni-e2e-common-flows/data/${datapath}/admin/profileUpload/`, profile.toLowerCase() + '.csv');
   return await csv().fromFile(file);
 }
 
 async function updateCSV(profile) {
-  let file = path.join('./bahmni-e2e-common-flows/data/admin/profileUpload/', profile.toLowerCase() + '.csv');
+  let file = path.join(`./bahmni-e2e-common-flows/data/${datapath}/admin/profileUpload/`, profile.toLowerCase() + '.csv');
   let str = fs.readFileSync(file, "utf-8");
   var lines = str.split("\n").length;
   for (let i = 0; i < lines - 1; i++) {

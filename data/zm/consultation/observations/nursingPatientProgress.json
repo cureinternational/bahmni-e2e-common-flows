@@ -1,0 +1,32 @@
+{
+    "ObservationFormName": "Nursing Patient Progress Notes",
+    "ObservationClinicalFormName":"Nursing Patient Progress Notes",
+    "ObservationFormDetails": [
+        {
+            "type": "DateTime",
+            "label": "Date and Time",
+            "value": "-1,09:30AM",
+            "count":"1"
+        },
+        {
+            "type": "TypeDropdown",
+            "label": "Nurse",
+            "value": "Mukela Mwikisa",
+            "above":"Other Nurse Name"
+        },
+        {
+            "type": "TextArea",
+            "label": "Other Nurse Name",
+            "value": "automation other nurse name test",
+            "below":"Nurse"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Medical Orders",
+            "value": "edited automation medical order test",
+            "below":"Notes"
+        }
+    ]
+}

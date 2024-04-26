@@ -9,9 +9,10 @@ var save='SAVE'
 var img='//select/../img'
 var imgElement='//div[@class="file"]//img'
 var image='a.img-concept'
+var datapath=process.env.dataPath
 
 step("Add a report <labReport> to <module>", async function (labReport, module) {
-	await taikoInteraction.Attach(path.join("./bahmni-e2e-common-flows/data/reports", `${labReport}.jpg`), fileField({ 'name': 'image-document-upload' }));
+	await taikoInteraction.Attach(path.join(`./bahmni-e2e-common-flows/data/${datapath}/reports`, `${labReport}.jpg`), fileField({ 'name': 'image-document-upload' }));
 	await taikoInteraction.Dropdown({ id: 'file0' },module)
 	await taikoHelper.repeatUntilEnabled(button(save))
 });

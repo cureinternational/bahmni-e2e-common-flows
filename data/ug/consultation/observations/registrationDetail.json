@@ -1,0 +1,85 @@
+{
+    "ObservationFormName": "Registration Detail",
+    "ObservationFormDetails": [
+        {
+            "type": "Group",
+            "label": "Nutritional  Values",
+            "value": [
+                {
+                    "type": "TextBox",
+                    "label": "Height (cm)",
+                    "short_name": "HT",
+                    "value": "154"
+                },
+                {
+                    "type": "TextBox",
+                    "label": "Weight (kg)",
+                    "short_name": "WT",
+                    "value": "52"
+                }
+            ]
+        },
+        {
+            "type": "Group",
+            "label": "Blood Pressure",
+            "value": [
+                {
+                    "type": "TextBox",
+                    "label": "Systolic blood pressure",
+                    "short_name": "Sbp",
+                    "value": "60"
+                },
+                {
+                    "type": "TextBox",
+                    "label": "Diastolic blood pressure",
+                    "short_name": "DBP",
+                    "value": "50"
+                },
+                {
+                    "type": "Button",
+                    "label": "Body position",
+                    "value": "recumbent"
+                }
+            ]
+        },
+        {
+            "type": "Group",
+            "label": "Vitals",
+            "value": [
+                {
+                    "type": "TextBox",
+                    "label": "Pulse",
+                    "short_name": "HR",
+                    "value": "72"
+                },
+                {
+                    "type": "TextBox",
+                    "label": "Arterial blood oxygen saturation (pulse oximeter)",
+                    "short_name": "Spo2",
+                    "value": "7"
+                }
+            ]
+        },
+        {
+            "type": "Group",
+            "label": "Fee Information",
+            "value": [
+                {
+                    "type": "TextBox",
+                    "label": "Registration Fee",
+                    "value": "720"
+                },
+                {
+                    "type": "TextArea",
+                    "label": "Doctor Name",
+                    "value": "Aman Prakash"
+                },
+                {
+                    "type": "TextBox",
+                    "label": "Consultation Fee",
+                    "value": "1000"
+                }
+            ]
+        }
+    ]
+}

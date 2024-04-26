@@ -7,6 +7,7 @@ const taikoElement = require('../../../components/taikoElement.js');
 const taikoHelper = require('../util/taikoHelper.js');
 var tab='//li[contains(@class,"tab-item")]'
 var speciliatyList=process.env.specialityList.split(',')
+var implementationspecialitylist=process.env.implementationSpecialityList.split(',')
 var myPatients='My Patients'
 var identifer='Identifier'
 var implicitWaitTime=parseInt(process.env.implicitTimeOut)
@@ -19,7 +20,7 @@ step("Verify the specialitis list", async function () {
    {
     var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`
     var speciality=(await $(tabItem).text()).trim()
-    if(speciality!='My Patients'&&speciality!='Active'&&speciality!='All'&&speciality!='Notifications')
+    if(!implementationspecialitylist.includes(speciality))
     {
     await taikoassert.assertArray(speciliatyList,speciality)
     }
@@ -33,7 +34,7 @@ step("Verify the patient visit is added in my patient queue and the <speciality>
     await taikoInteraction.Click(myPatients,'text')
     await taikoElement.waitToExists(text(identifer))
     await taikoassert.assertExists(text(fullName))
-    await taikoInteraction.Click(speciality,'text')
+    await taikoInteraction.Click(process.env.speciality,'text')
     await taikoElement.waitToExists(text(identifer))
     await taikoassert.assertExists(text(fullName))
 })

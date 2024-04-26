@@ -148,9 +148,9 @@
 * Open calender at time <appointmentTime>
 * Select patient
 * Search and select category
-* Search and select speciality as <speciality>
-* Search and select service as <service>
-* Search and select provider as <provider>
+* Search and select speciality
+* Search and select service
+* Search and select provider
 * Search and select location
 * select the Regular appointment option
 * select appointment status as "Scheduled"

@@ -82,6 +82,7 @@ var relation=process.env.relationName
 var relationNameElement='//input[@name="name"]'
 var search='Search'
 var name='NAME'
+var cancel='Cancel'
 
 step("Open <moduleName> module", async function (moduleName) {
     await taikoInteraction.Click(moduleName,'text')
@@ -227,7 +228,7 @@ step(["Log out if still logged in", "Receptionist logs out"], async function () 
 step("Login as user <user> with location <location>", async function (user, location) {
     await taikoInteraction.Write(users.getUserNameFromEncoding(process.env[user]),'into',toRightOf(userName))
     await taikoInteraction.Write(users.getPasswordFromEncoding(process.env[user]),'into',toRightOf(passWord))
-    await taikoInteraction.Dropdown(locationDropDown,location)
+    await taikoInteraction.Dropdown(locationDropDown,process.env.loginLocation)
     await taikoInteraction.Click(login,'button')
 })
 
@@ -422,6 +423,8 @@ step("Open Nutritional page",async function(){
     await scrollTo(link(nutrionalPage))
     await highlight(link(nutrionalPage))
     await click(link(nutrionalPage),{navigationTimeout: process.env.actionTimeout})
+    await taikobrowserActions.switchTab(/registration/)
+    await taikobrowserActions.switchTab(/Patient Registration/)
     var patientFullName=gaugeHelper.get("patientFullName")
     await taikoElement.waitToExists(text(patientFullName))
 })
@@ -481,6 +484,7 @@ step("Create a new relation", async function () {
     gaugeHelper.save("relationName", firstName+' '+lastName)
     await taikoInteraction.Write(lastName,'default',relationLastNameElement)
     await taikoInteraction.Write('01/01/1980','default',relationBirthDateElement)
+    await taikoInteraction.ScrollTo(button(cancel))
     await taikoInteraction.Dropdown(below(gender),'Male')
     await taikoElement.waitToEnabled(button(register))
     await taikoInteraction.Click(register,'text')
@@ -523,8 +527,8 @@ step("Verify the relation is added", async function () {
 
 step("Search the patient by phone number", async function () {
     var phoneNumber=gaugeHelper.get("patientMobileNumber")
-    await taikoInteraction.Write(phoneNumber,'below','Phone Number')
-    await taikoInteraction.Write(phoneNumber,'into',{placeHolder:'Phone Number'})
+    var phoneNumberPlaceHolder=process.env.phoneNumberPlaceHolder
+    await taikoInteraction.Write(phoneNumber,'into',{placeHolder:phoneNumberPlaceHolder})
     await taikoInteraction.pressEnter()
 })
 

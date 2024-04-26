@@ -57,6 +57,7 @@
 
 # Doctor prescribes radiology test <tests>
 * Open "Orders" Tab
+* click radiology
 * Doctor prescribe tests <tests>
 * Save data
 

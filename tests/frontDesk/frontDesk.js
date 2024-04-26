@@ -7,7 +7,8 @@ var fileExtension = require("../util/fileExtension");
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoAssert = require('../../../components/taikoAssert.js');
 const taikoInteraction = require('../../../components/taikoInteraction.js');
-const taikoBrowserAction=require('../../../components/taikobrowserActions.js')
+const taikoBrowserAction=require('../../../components/taikobrowserActions.js');
+const taikobrowserActions = require('../../../components/taikobrowserActions.js');
 
 var expectedLocationsList = process.env.registrationLocations.split(",")
 var locationOption = '//select[@id="location"]/option'
@@ -31,7 +32,15 @@ var implicitTimeOut = parseInt(process.env.implicitTimeOut)
 var yesBtn = 'button#modal-revise-button1'
 var continueBtn = 'button#modal-revise-button3'
 var ipdToggle=process.env.enableIPDfeature
-
+var datapath=process.env.dataPath
+var wardname=process.env.wardName
+var doctor=process.env.provider
+var newProgramEnrollment='New Program Enrollment'
+var doctorNotes='Notes'
+var specificDotor='Specific Doctor'
+var speciality=process.env.speciality
+var enroll='Enroll'
+var ipdPatientDashboard="//a[contains(@href,'clinical/#/default/')]"
 
 step("Verify the login locations in login page", async function () {
     var actualLocationsList = []
@@ -85,7 +94,7 @@ step("Enter the patient id in search box", async function () {
 })
 
 step("Verify the patient presence in the <wardType>", async function (wardType) {
-    var ward = `//span[contains(text(),'${wardType}')]`
+    var ward = `//span[contains(text(),'${wardname}')]`
     if (!await taikoElement.isPresent($('//input[@ng-model="searchText"]'))) {
         await taikoInteraction.Click(`${ward}`, 'xpath')
     }
@@ -116,7 +125,8 @@ step("Search and select patient", async function () {
     await taikoInteraction.EvaluateClick($(patientNameElement))
 })
 step("Select a bed from <wardType>", async function (wardType) {
-    var ward = `//span[contains(text(),'${wardType}')]`
+
+    var ward = `//span[contains(text(),'${wardname}')]`
     if(await taikoElement.isNotExists(text('General Ward -ICU')))
     {
         await taikoInteraction.Click(`${ward}`, 'xpath')
@@ -170,7 +180,7 @@ step("Verify the patient is not appearing", async function () {
 })
 
 step("Verify the columns in the table <tableFile>", async function (tableFile) {
-    var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
+    var tableFile = `./bahmni-e2e-common-flows/data/${datapath}/${tableFile}.json`;
     gaugeHelper.save("tableFile", tableFile)
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableHeaders = table.columns
@@ -187,7 +197,7 @@ step("Verify the columns in the table <tableFile>", async function (tableFile) {
 })
 
 step("Verify the sorting in the table <tableFile>", async function (tableFile) {
-    var tableFile = `./bahmni-e2e-common-flows/data/${tableFile}.json`;
+    var tableFile = `./bahmni-e2e-common-flows/data/${datapath}/${tableFile}.json`;
     gaugeHelper.save("tableFile", tableFile)
     var table = JSON.parse(fileExtension.parseContent(tableFile))
     var tableElement = `//table[@class='${table.class}']`
@@ -229,7 +239,7 @@ function sortDates(datesArray) {
 step("Click on Add to drug chart link for the medication <drug>", async function (drug) {
    if(ipdToggle=='true')
     {
-    var prescriptionFile = `./bahmni-e2e-common-flows/data/${drug}.json`
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${drug}.json`
     var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
     var drugName = medicalPrescriptions.drug_name
     await taikoInteraction.Click('Add to Drug Chart', 'text', toRightOf(drugName))
@@ -239,7 +249,7 @@ step("Click on Add to drug chart link for the medication <drug>", async function
 step("Enter the start time for the medication <drug>", async function (drug) {
     if(ipdToggle=='true')
 {
-    var prescriptionFile = `./bahmni-e2e-common-flows/data/${drug}.json`
+    var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${drug}.json`
     var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
     var startTime = medicalPrescriptions.startTime
     var element = `//div[@class="bx--time-picker__input"]`
@@ -263,10 +273,10 @@ step("Click on <tabType> tab", async function (tabType) {
 })
 
 step("Verify if the medication <medicine> is present", async function (medicine) {
-   // var prescriptionFile = `./bahmni-e2e-common-flows/data/${medicine}.json`
-   // var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
-   // var drugName = medicalPrescriptions.drug_name
-   // await taikoElement.isPresent(text(drugName))
+   var prescriptionFile = `./bahmni-e2e-common-flows/${datapath}/${medicine}.json`
+   var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+   var drugName = medicalPrescriptions.drug_name
+   await taikoElement.isPresent(text(drugName))
 })
 
 step("Click on Patient Dashboard",async function(){
@@ -275,4 +285,36 @@ step("Click on Patient Dashboard",async function(){
 
 step("Click on IPD back button",async function(){
     await taikoBrowserAction.navigateBack()
+})
+
+step("Switch to patient search",async function(){
+    await taikoHelper.wait(2000)
+    await taikobrowserActions.switchTab(/search/)
+    await taikoHelper.wait(2000)
+})
+
+step("Click on new enrollment",async function(){
+    await taikoHelper.wait(2000)
+    await taikoInteraction.Click(newProgramEnrollment,'text')
+})
+
+step("Enter Doctor notes",async function(){
+    await taikoInteraction.Write('notes','into',toRightOf(doctorNotes))
+})
+
+step('Enter Specific Doctor',async function(){
+    await taikoInteraction.Write(doctor,'into',toRightOf(specificDotor))
+})
+
+step('Select speciality',async function()
+{
+    await taikoInteraction.Dropdown(toRightOf('Speciality'),speciality)
+})
+
+step('Click Enroll',async function(){
+    await taikoInteraction.Click(enroll,'button')
+})
+
+step("Click on IPD patient dashboard",async function(){
+    await taikoInteraction.Click(ipdPatientDashboard,'xpath')
 })

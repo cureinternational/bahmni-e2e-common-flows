@@ -202,36 +202,25 @@ async function selectTypeDropDown(configuration){
     if(configuration.above!=undefined)
     {
     await taikoInteraction.ScrollTo(text(configuration.label))
-    gauge.screenshot();
     await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),above(configuration.above))
-    gauge.screenshot();
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),above(configuration.above))
-    gauge.screenshot();
-    var element=`//div[contains(text(),"${configuration.value}")]`
-    await taikoElement.waitToExists($(element))
-    gauge.screenshot();
-    await wait(1000)
+    var element='//div[@role="option"]'
     await taikoInteraction.Click(element,'xpath')
-    gauge.screenshot();
     }
    else if(configuration.below!=undefined)
     {
     await taikoInteraction.ScrollTo(text(configuration.label))
     await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label),below(configuration.below))
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label),below(configuration.below))
-    var element=`//div[contains(text(),"${configuration.value}")]`
-    await taikoElement.waitToExists($(element))
-    await wait(1000)
+    var element='//div[@role="option"]'
     await taikoInteraction.Click(element,'xpath')
     }
-    else(configuration==undefined)
+    else if(configuration==undefined)
     {
     await taikoInteraction.ScrollTo(text(configuration.label))
     await taikoInteraction.Click(selectElement,'xpath',toRightOf(configuration.label))
     await taikoInteraction.Write(configuration.value,'into',toRightOf(configuration.label))
-    var element=`//div[contains(text(),"${configuration.value}")]`
-    await taikoElement.waitToExists($(element))
-    await wait(1000)
+    var element='//div[@role="option"]'
     await taikoInteraction.Click(element,'xpath')
     }
 }

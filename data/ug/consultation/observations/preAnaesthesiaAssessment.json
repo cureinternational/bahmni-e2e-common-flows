@@ -1,0 +1,32 @@
+{
+    "ObservationFormName": "Pre Anaesthesia Assessment",
+    "ObservationClinicalFormName":"Pre Anaesthesia Assessment",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Prematurity / time on a ventilator",
+            "value": "Yes",
+            "above":"Did you check for Allergies?"
+        },
+        {
+            "type": "Button",
+            "label": "Did you check for Allergies?",
+            "value": "Yes",
+            "above":"History of Respiratory Problem"
+        },
+        {
+            "type": "Button",
+            "label": "History of Respiratory Problem",
+            "value": "Yes",
+            "above":"Smoking Status"
+        }
+    ],
+    "EditObservationFormDetails":[
+        {
+            "type": "TextArea",
+            "label": "Comments",
+            "value": "Edited automation test comments",
+            "below":"Other notes to be captured"
+        }
+    ]
+}

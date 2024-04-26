@@ -1,0 +1,12 @@
+{
+    "diagnosis": {
+      "diagnosisName": "Pain in limb",
+      "order": "PRIMARY",
+      "certainty": "CONFIRMED"
+    },
+    "condition":{
+        "conditionCode":"Amenorrhea",
+        "conditionName":"Amenorrhea",
+        "status":"Active"
+    }
+  }
