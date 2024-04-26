@@ -12,11 +12,11 @@
             "type": "Button",
             "label": "Did you check for Allergies?",
             "value": "Yes",
-            "above":"Respiratory disorders"
+            "above":"History of Respiratory Problem"
         },
         {
             "type": "Button",
-            "label": "Respiratory disorders",
+            "label": "History of Respiratory Problem",
             "value": "Yes",
             "above":"Smoking Status"
         }

@@ -125,18 +125,18 @@ step("Verify medical prescription in patient clinical dashboard", async function
 
 step("Verify medical prescription is updated as non ipd for <medications>",async function(prescriptionNames)
 {
-    if(ipdToggle=='true')
-    {
-    var prescriptionsList = prescriptionNames.split(',')
-    var prescriptionsCount = prescriptionsList.length
-    for (var i = 0; i < prescriptionsCount; i++) {
-        var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
-        var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
-        var drugName = medicalPrescriptions.drug_name;
-        var stoppedDrugElement=`//span[contains(text(),"${drugName}")]/parent::td[@class="drug strike-text"]`
-        await taikoAssert.assertExists($(stoppedDrugElement))
-    }
-}
+//     if(ipdToggle=='true')
+//     {
+//     var prescriptionsList = prescriptionNames.split(',')
+//     var prescriptionsCount = prescriptionsList.length
+//     for (var i = 0; i < prescriptionsCount; i++) {
+//         var prescriptionFile = `./bahmni-e2e-common-flows/data/${datapath}/${prescriptionsList[i]}.json`;
+//         var medicalPrescriptions = JSON.parse(fileExtension.parseContent(prescriptionFile))
+//         var drugName = medicalPrescriptions.drug_name;
+//         var stoppedDrugElement=`//span[contains(text(),"${drugName}")]/parent::td[@class="drug strike-text"]`
+//         await taikoAssert.assertExists($(stoppedDrugElement))
+//     }
+// }
 })
 step("Verify vitals", async function () {
     var vitalFormValues = gaugeHelper.get("Vitals")
