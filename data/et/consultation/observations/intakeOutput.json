@@ -1,0 +1,49 @@
+{
+    "ObservationFormName": "Intake & Output",
+    "ObservationClinicalFormName":"Intake & Output",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Select Category",
+            "value": "Intake"
+        },
+        {
+            "type": "Button",
+            "label": "Select Category",
+            "value": "Output",
+            "above":"Intake Route"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Intake Route",
+            "value": "IV",
+            "above":"Intake Quantity (ml)"
+        },
+        {
+            "type": "Input",
+            "label": "Intake Quantity (ml)",
+            "value": "20",
+            "above":"Date & Time"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Output Route",
+            "value": "Stool",
+            "above":"Output Quantity (ml)"
+        },
+        {
+            "type": "Input",
+            "label": "Output Quantity (ml)",
+            "value": "20",
+            "above":"Date & Time"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "Input",
+            "label": "Output Quantity (ml)",
+            "value": "1",
+            "below":"Output Route"
+        }
+    ]
+}

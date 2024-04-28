@@ -1,0 +1,80 @@
+{
+    "ObservationFormName": "Bone Gap",
+    "ObservationClinicalFormName":"Bone Gap",
+    "ObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Identify the Bone and Defect",
+            "value": "Left Side",
+            "above":"Bone"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Bone",
+            "value": "Tibia",
+            "above":"Site"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Site",
+            "value": "Diaphysis",
+            "above":"Length of Defect"
+        },
+        {
+            "type": "Input",
+            "label": "Length of Defect (cm)",
+            "value": "20",
+            "above":"Physeal Growth Disturbance Seen Or"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "Physeal Growth Disturbance Seen Or",
+            "value": "Yes",
+            "above":"Deformity Presen"
+        },
+        {
+            "type": "Button",
+            "label": "Deformity Present",
+            "value": "Yes",
+            "above":"Any Shortening of the Affected"
+        },
+        {
+            "type": "Button",
+            "label": "Any Shortening of the Affected",
+            "value": "Yes",
+            "above":"Cause of Defect"
+        },
+        {
+            "type": "Button",
+            "label": "Cause of Defect",
+            "value": "Post Trauma",
+            "above":"Is There Any Active Infection at"
+        },
+        {
+            "type": "Button",
+            "label": "Is There Any Active Infection at",
+            "value": "Yes",
+            "above":"Has There Been Any Surgery So Far"
+        },
+        {
+            "type": "Button",
+            "label": "Has There Been Any Surgery So Far",
+            "value": "No",
+            "above":"What Is Your Proposed Reconstructive Approach For The"
+        },
+        {
+            "type": "CustomDropdown",
+            "label": "What Is Your Proposed Reconstructive Approach For The",
+            "value": "Allograft",
+            "below":"Has There Been Any Surgery So Far"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "Button",
+            "label": "Has There Been Any Surgery So Far",
+            "value": "Yes",
+            "above":"What Is Your Proposed Reconstructive Approach For The"
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    "ObservationFormName": "Cast",
+    "ObservationClinicalFormName":"Cast",
+    "ObservationFormDetails": [
+        {
+            "type": "CustomDropdown",
+            "label": "Referred By",
+            "value": "Other Doctor",
+            "above":"Rehab Diagnosis"
+        },
+        {
+            "type": "TextArea",
+            "label": "Rehab Diagnosis",
+            "value": "test rehab diagnosis",
+            "above":"Impairments"
+        },
+        {
+            "type": "TextArea",
+            "label": "Impairments",
+            "value": "test impaiments",
+            "above":"Number of Casting"
+        },
+        {
+            "type": "TextArea",
+            "label": "Treatment Plan",
+            "value": "test treatment plan",
+            "below":"Number of Casting"
+        }
+    ],
+    "EditObservationFormDetails": [
+        {
+            "type": "TextArea",
+            "label": "Referral Comments",
+            "value": "test referral comments",
+            "below":"Treatment Plan"
+        }
+    ]
+}

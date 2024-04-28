@@ -423,8 +423,6 @@ step("Open Nutritional page",async function(){
     await scrollTo(link(nutrionalPage))
     await highlight(link(nutrionalPage))
     await click(link(nutrionalPage),{navigationTimeout: process.env.actionTimeout})
-    await taikobrowserActions.switchTab(/registration/)
-    await taikobrowserActions.switchTab(/Patient Registration/)
     var patientFullName=gaugeHelper.get("patientFullName")
     await taikoElement.waitToExists(text(patientFullName))
 })
