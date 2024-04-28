@@ -137,6 +137,7 @@ step("Select a bed from <wardType>", async function (wardType) {
 })
 
 step("Select the patient", async function () {
+    await taikoBrowserAction.reloadPage()
     await taikoHelper.wait(implicitTimeOut)
     var patientIdentifierValue = gaugeHelper.get("patientIdentifier");
     await taikoInteraction.Click(patientIdentifierValue, 'link')
