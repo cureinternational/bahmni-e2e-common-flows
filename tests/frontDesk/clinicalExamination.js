@@ -1,5 +1,5 @@
 "use strict";
-const {toRightOf,textBox,dropDown,below,$,text, button, within} = require('taiko');
+const {toRightOf,textBox,dropDown,below,$,text,scrollTo, button, within} = require('taiko');
 var fileExtension = require("../util/fileExtension");
 const taikoHelper = require("../util/taikoHelper")
 const gaugeHelper = require("../util/gaugeHelper")
@@ -238,4 +238,36 @@ step("Verify the nutrional values",async function(){
 
 step("Goto to active visit",async function(){
     await taikoInteraction.Click(currentVisit,'xpath')
+})
+
+step("Open Add Allergy side panel",async function(){
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    await taikoHelper.wait(2000)
+    var addAllergy = '//div[@class="add-button"]'
+    await taikoInteraction.Click(addAllergy, 'xpath')
+    await taikoHelper.wait(1000)
+})
+
+step("Doctor saves <allergy> for the patient",async function(allergy){
+    var allergyFile = `./bahmni-e2e-common-flows/data/${datapath}/${allergy}.json`;
+    var allergyDetails = JSON.parse(fileExtension.parseContent(allergyFile))
+    var allergen=allergyDetails.allergen
+    var reaction=allergyDetails.reaction
+    var severity=allergyDetails.severity
+    await taikoInteraction.Click('//input[@id="allergen-search"]','xpath')
+    await taikoInteraction.Write(allergen,'into',below('Search Allergen'))
+    await taikoInteraction.Click("Reaction(s)",'text')
+    await taikoInteraction.Click(reaction,'text')
+    await scrollTo(textBox({ placeholder: "Additional comments such as onset date etc." }))
+    await taikoInteraction.Click(severity,'text')
+    await taikoInteraction.Click('Save','button')
+    await taikoHelper.wait(2000)
+})
+
+step("Verify allergies <allergy>",async function(allergy){
+    await taikoHelper.repeatUntilNotFound($(overlay))
+    var allergyFile = `./bahmni-e2e-common-flows/data/${datapath}/${allergy}.json`;
+    var allergyDetails = JSON.parse(fileExtension.parseContent(allergyFile))
+    var allergen=allergyDetails.allergen
+    await taikoElement.isExists(text(allergen))   
 })

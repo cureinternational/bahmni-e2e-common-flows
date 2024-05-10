@@ -139,3 +139,11 @@
 * wait for overlay to disappear
 * validate for no error
 * Switch back to patient dashboard
+
+
+# Doctor adds allergies <allergies>
+* Open Add Allergy side panel
+* Doctor saves <allergies> for the patient
+
+# Verify allergies <allegies> in patient clinical dashboard
+* Verify allergies <allegies>
