@@ -15,7 +15,7 @@ var registration='Registration'
 var overlay='//div[@id="overlay" and @style="display: block;"]'
 var save='Save'
 var saveElement ='//button[@type="submit"]'
-var prePatientCheckbox='input#pre-registration-attribute'
+var prePatientCheckbox='input#related-identifier-attribute'
 var patientGender = users.getRandomPatientGender();
 var years='Years'
 var isNewPatient='isNewPatient'

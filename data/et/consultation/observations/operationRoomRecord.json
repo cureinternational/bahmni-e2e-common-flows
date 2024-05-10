@@ -6,21 +6,49 @@
             "type": "CustomDropdown",
             "label": "Speciality",
             "value": "Plastic",
-            "above":"Anaesthesia Start Time"
+            "above":"Room Entered"
         },
         {
             "type": "DateTime",
-            "label": "Anaesthesia Start Time",
+            "label": "Room Entered",
             "value": "0,0",
-            "above":"Surgical Start Time",
+            "above":"Anesthesia Induction Start Time",
             "count":"1"
         },
         {
             "type": "DateTime",
-            "label": "PACU Transfer Time",
-            "value": "0,0",
-            "above":"Operation Room",
+            "label": "Anesthesia Induction Start Time",
+            "value": "1,0",
+            "above":"Anesthesia Induction End Time",
+            "count":"2"
+        },
+        {
+            "type": "DateTime",
+            "label": "Anesthesia Induction End Time",
+            "value": "2,0",
+            "above":"Operation Start Time",
+            "count":"3"
+        },
+        {
+            "type": "DateTime",
+            "label": "Operation Start Time",
+            "value": "3,0",
+            "above":"Operation End Time",
+            "count":"4"
+        },
+        {
+            "type": "DateTime",
+            "label": "Operation End Time",
+            "value": "4,0",
+            "above":"Room Departure",
             "count":"5"
+        },
+        {
+            "type": "DateTime",
+            "label": "Room Departure",
+            "value": "5,0",
+            "above":"Operation Room",
+            "count":"6"
         },
         {
             "type": "CustomDropdown",
