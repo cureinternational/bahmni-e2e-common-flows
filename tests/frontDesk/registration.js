@@ -422,7 +422,9 @@ step("Open Nutritional page",async function(){
     await taikoElement.waitToExists(link(nutrionalPage))
     await scrollTo(link(nutrionalPage))
     await highlight(link(nutrionalPage))
+    taikoInteraction.Click(nutrionalPage,'text')
     await click(link(nutrionalPage),{navigationTimeout: process.env.actionTimeout})
+    await taikobrowserActions.switchTab(/registration/)
     var patientFullName=gaugeHelper.get("patientFullName")
     await taikoElement.waitToExists(text(patientFullName))
 })
@@ -543,9 +545,9 @@ step("Enter Nutritional values",async function(){
     gaugeHelper.save('patientHeight',height)
     gaugeHelper.save('patientMuac',muac)
     await taikoHelper.wait(implicitTimeOut)
-    await taikoInteraction.Write(height,'into',toRightOf('HEIGHT (Cm)'))
-    await taikoInteraction.Write(weight,'into',toRightOf('WEIGHT (Kg)'))
-    await taikoInteraction.Write(muac,'into',toRightOf('MUAC (Cm)'))
+    await taikoInteraction.Write(height,'into',toRightOf('HEIGHT'))
+    await taikoInteraction.Write(weight,'into',toRightOf('WEIGHT'))
+    await taikoInteraction.Write(muac,'into',toRightOf('MUAC'))
 })
 
 step('Switch back to patient dashboard',async function(){
