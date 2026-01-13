@@ -64,7 +64,7 @@ function getRandomPatientGender() {
 
 async function downloadAndReturnImage() {
     fileExtension.createDirIfNotPresent("temp");
-    var filepath = "temp/image" +'27'+ ".jpeg"
+    var filepath = "temp/image" + faker.datatype.number({ min: 1, max: 100 }) + ".jpg"
     var response = "";
     let max_Retry = 5
     while (max_Retry > 0) {
