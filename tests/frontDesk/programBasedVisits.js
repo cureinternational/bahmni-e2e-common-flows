@@ -1,96 +1,90 @@
-const { $, toRightOf, below, link, text, within, select, click, dropDown, waitFor, evaluate, highlight, scrollTo } = require('taiko');
-const { press,write } = require('taiko');
-const gaugeHelper = require("./../util/gaugeHelper")
-var assert = require("assert");
-var date = require("../util/date");
+const {$,toRightOf,below,link,text,within,select,click,dropDown,waitFor,evaluate,highlight,scrollTo,press,write} = require('taiko');
+const assert = require("assert");
+const gaugeHelper = require("./../util/gaugeHelper");
+const date = require("../util/date");
 const taikoHelper = require("../util/taikoHelper");
 const taikoInteraction = require('../../../components/taikoInteraction.js');
 const taikoElement = require('../../../components/taikoElement.js');
 const taikoassert = require('../../../components/taikoAssert.js');
 
-var startOpdVisit='Start OPD Visit'
-var submitBtn=".submit-btn-container"
-var startSpecialOpdVisit='Start Special OPD Visit'
-var overlay='//div[@id="overlay" and @style="display: block;"]'
-var newProgramEnrollment='New Program Enrollment'
-var dob='Date of birth'
-var programDropdown='Program :'
-var program='Program'
-var startDate='Start Date'
-var treatmentDate='Treatment Date'
-var doctorInCharge='Doctor-In-Charge'
-var idNumber='ID Number'
-var patientStage='Patient Stage'
-var enroll='Enroll'
-var saved='Saved'
-var messageText='.message-text'
-var dashboardLink='#dashboard-link'
-var all='All'
-var tab='//li[contains(@class,"tab-item")]'
-var programList=process.env.programList.split(',')
+var startOpdVisit = 'Start OPD Visit'
+var submitBtn = ".submit-btn-container"
+var startSpecialOpdVisit = 'Start Special OPD Visit'
+var overlay = '//div[@id="overlay" and @style="display: block;"]'
+var newProgramEnrollment = 'New Program Enrollment'
+var dob = 'Date of birth'
+var programDropdown = 'Program :'
+var program = 'Program'
+var startDate = 'Start Date'
+var treatmentDate = 'Treatment Date'
+var doctorInCharge = 'Doctor-In-Charge'
+var idNumber = 'ID Number'
+var patientStage = 'Patient Stage'
+var enroll = 'Enroll'
+var saved = 'Saved'
+var messageText = '.message-text'
+var dashboardLink = '#dashboard-link'
+var all = 'All'
+var tab = '//li[contains(@class,"tab-item")]'
+var programList = process.env.programList.split(',')
 
-step("Click Start Special OPD Visit", async function() {
-    await taikoInteraction.Click(startOpdVisit,'button',within($(submitBtn)))
-    await taikoInteraction.Click(startSpecialOpdVisit,'button',within($(submitBtn)))
+step("Click Start Special OPD Visit", async function () {
+    await taikoInteraction.Click(startOpdVisit, 'button', within($(submitBtn)))
+    await taikoInteraction.Click(startSpecialOpdVisit, 'button', within($(submitBtn)))
 });
 
-step("Begin new program enrollment", async function() {
+step("Begin new program enrollment", async function () {
     await taikoElement.waitToExists(text(newProgramEnrollment))
-    await taikoInteraction.Click(newProgramEnrollment,'text',below(dob))
+    await taikoInteraction.Click(newProgramEnrollment, 'text', below(dob))
 });
 
-step("Create a program <program>", async function(programName) {
+step("Create a program <program>", async function (programName) {
     await taikoElement.waitToPresent(programDropdown)
-    await taikoInteraction.Dropdown(toRightOf(program),programName)
+    await taikoInteraction.Dropdown(toRightOf(program), programName)
 });
 
-step("Select program starting <numberOfYearsAgo_startDate> years ago with treatment start <numberOfYearsAgo_treatmentDate> years ago", async function(numberOfYearsAgo_startDate, numberOfYearsAgo_treatmentDate) {
+step("Select program starting <numberOfYearsAgo_startDate> years ago with treatment start <numberOfYearsAgo_treatmentDate> years ago", async function (numberOfYearsAgo_startDate, numberOfYearsAgo_treatmentDate) {
     var startDateValue = date.getDateYearsAgo(numberOfYearsAgo_startDate);
-    await taikoInteraction.Timefield({type:"date"},startDateValue)
+    await taikoInteraction.Timefield({ type: "date" }, startDateValue)
     var treatmentDateValue = date.getDateYearsAgo(numberOfYearsAgo_treatmentDate);
-    await taikoInteraction.Timefield({type:"date"},treatmentDateValue)
-   // await timeField({type:"date"},toRightOf(treatmentDate)).select(treatmentDateValue);
+    await taikoInteraction.Timefield({ type: "date" }, treatmentDateValue)
+    // await timeField({type:"date"},toRightOf(treatmentDate)).select(treatmentDateValue);
 });
 
 step("Select other details id <id>, dr incharge <doctor> and treatment stage <stage>", async function (id, doctor, stage) {
-    await taikoInteraction.Write(id,'into',toRightOf(idNumber))
-    await taikoInteraction.Write(doctor,'into',toRightOf(doctorInCharge))
-    await taikoInteraction.Dropdown(toRightOf(patientStage),stage)
+    await taikoInteraction.Write(id, 'into', toRightOf(idNumber))
+    await taikoInteraction.Write(doctor, 'into', toRightOf(doctorInCharge))
+    await taikoInteraction.Dropdown(toRightOf(patientStage), stage)
 });
 
-step("Enroll in program", async function() {
-    await taikoInteraction.Click(enroll,'button')
+step("Enroll in program", async function () {
+    await taikoInteraction.Click(enroll, 'button')
     await taikoElement.waitToExists(text(saved))
 });
 
-step("Open the program dashboard <program>", async function(program) {
+step("Open the program dashboard <program>", async function (program) {
     await taikoElement.waitToExists(text(`${program} Dashboard`))
-    await taikoInteraction.Click(`${program} Dashboard`,'text',within($(dashboardLink)))
+    await taikoInteraction.Click(`${program} Dashboard`, 'text', within($(dashboardLink)))
 });
 
 step("Goto All sections", async function () {
     await taikoHelper.repeatUntilFound(link(all))
-    await taikoInteraction.Click(all,'link')
+    await taikoInteraction.Click(all, 'link')
     await taikoHelper.repeatUntilFound(link(all))
 });
 
-step("Verify the programs list",async function(){
-    var tabLength=(await $(tab).elements()).length
+step("Verify the programs list", async function () {
+    var tabLength = (await $(tab).elements()).length
 
-   for(let i=1;i<tabLength;i++)
-   {
-    var tabItem=`//li[contains(@class,"tab-item")][${i}]//span[1]`
-    await taikoHelper.wait(2000)
-    var program=(await $(tabItem).text()).trim()
-    if(program!='All')
-    {
-    await taikoassert.assertArray(programList,program)
+    for (let i = 1; i < tabLength; i++) {
+        var tabItem = `//li[contains(@class,"tab-item")][${i}]//span[1]`
+        await taikoHelper.wait(2000)
+        var program = (await $(tabItem).text()).trim()
+        if (program != 'All') {
+            await taikoassert.assertArray(programList, program)
+        }
     }
-}
 })
-
-const { $, toRightOf, below, link, text, within, select, click, dropDown, waitFor, evaluate, highlight, scrollTo, press, write } = require('taiko');
-const gaugeHelper = require("./../util/gaugeHelper"), assert = require("assert"), date = require("../util/date"), taikoHelper = require("../util/taikoHelper"), taikoInteraction = require('../../../components/taikoInteraction.js'), taikoElement = require('../../../components/taikoElement.js'), taikoassert = require('../../../components/taikoAssert.js');
 
 step('Select patient into <programName> program', async function (programName) {
     const enrollLink = $("//a[contains(@class, 'section-title') and contains(normalize-space(), 'New Program Enrollment')]");
@@ -124,7 +118,7 @@ step('Navigate to Program page', async function () {
         await taikoElement.waitToExists(patientsLink, 10000);
         await scrollTo(patientsLink);
         await click(patientsLink);
-    } catch (e) {}
+    } catch (e) { }
 });
 
 step('Enroll patient into Smile Train program with <idNumber>, <surgeonName>, <anaesthesiologistName>, <programStage>, <surgeryType>, <serviceName>', async function (idNumber, surgeonName, anaesthesiologistName, programStage, surgeryType, serviceName) {
@@ -227,5 +221,5 @@ step('Navigate to Smile Train', async function () {
     } catch (e) {
         await evaluate(smileLink, el => el.click());
     }
-    await taikoElement.waitToExists(queueRows, 15000).catch(() => {});
+    await taikoElement.waitToExists(queueRows, 15000).catch(() => { });
 });
